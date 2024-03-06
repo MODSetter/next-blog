@@ -6,7 +6,7 @@ export default function Home() {
   return (
     <>
     <Navbar />
-    <Link href={'/testpost'} />
+    {/* <Link href={'/testpost'} /> */}
     </>
   );
 }
