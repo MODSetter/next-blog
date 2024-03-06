@@ -11,13 +11,13 @@ interface PostProps {
 
 export default async function BlogPostPage({
     params: { postslug },
-  }: BlogPostPageProps, post: PostProps) {
+  }: BlogPostPageProps) {
     
     return (
       <article className="max-w-prose m-auto space-y-5">
         {postslug}
-        <h1 className="text-3xl text-center font-bold">{post.title}</h1>
-        <p className="text-lg">{post.content}</p>
+        <h1 className="text-3xl text-center font-bold">{"post.title"}</h1>
+        <p className="text-lg">{"post.content"}</p>
       </article>
     );
   }
