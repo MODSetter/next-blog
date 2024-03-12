@@ -1,12 +1,12 @@
 import Navbar from "@/components/Navbar";
-import Image from "next/image";
-import Link from "next/link";
+import PostList from "@/components/PostList";
 
 export default function Home() {
   return (
     <>
     <Navbar />
-    <Link href={'/testpost'} >Hello</Link>
+    {/* get all post slugs-postid */}
+    <PostList />
     </>
   );
 }
