@@ -1,3 +1,4 @@
+import CreatePost from "@/components/CreatePost";
 import Navbar from "@/components/Navbar";
 import PostList from "@/components/PostList";
 
@@ -7,6 +8,7 @@ export default function Home() {
     <Navbar />
     {/* get all post slugs-postid */}
     <PostList />
+    <CreatePost />
     </>
   );
 }
