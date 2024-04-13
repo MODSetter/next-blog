@@ -18,9 +18,9 @@ const NavBar = () => {
 
       <div className="flex gap-2">
         <Button variant="outline">About Us</Button>
-        <Button variant="outline">
-          <Link href={"/dashboard"}>Login</Link>
-        </Button>
+        <Link href={"/dashboard"}>
+          <Button variant="outline">Login</Button>
+        </Link>
         <ThemeToggle />
       </div>
     </Alert>
