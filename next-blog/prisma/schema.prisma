@@ -23,7 +23,7 @@ model User {
 }
 
 model Post {
-  id              Int      @id @default(autoincrement())
+  slug              String      @id 
   title           String
   content         String
   updatedAt       DateTime @updatedAt
@@ -32,12 +32,10 @@ model Post {
 
   author   User @relation(fields: [authorId], references: [id])
   authorId Int
-
-  postSlug Slug?
 }
 
-model Slug {
-  slug   String @id @unique
-  post   Post   @relation(fields: [postId], references: [id])
-  postId Int    @unique
-}
+// model Slug {
+//   slug   String @id @unique
+//   post   Post   @relation(fields: [postId], references: [id])
+//   postId Int    @unique
+// }

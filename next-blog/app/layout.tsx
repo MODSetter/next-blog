@@ -3,6 +3,7 @@ import { Inter,Roboto,Montserrat } from "next/font/google";
 import "./globals.css";
 
 import { ThemeProvider } from "@/components/theme-provider"
+import NavBar from "@/components/nav-bar";
 
 const inter = Montserrat({ weight: "300", subsets: ["latin"] });
 
