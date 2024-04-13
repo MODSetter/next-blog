@@ -23,7 +23,7 @@ model User {
 }
 
 model Post {
-  slug              String      @id 
+  slug            String   @id
   title           String
   content         String
   updatedAt       DateTime @updatedAt

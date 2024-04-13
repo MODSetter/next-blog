@@ -4,6 +4,7 @@ import "./globals.css";
 
 import { ThemeProvider } from "@/components/theme-provider"
 import NavBar from "@/components/nav-bar";
+import Footer from "@/components/Footer";
 
 const inter = Montserrat({ weight: "300", subsets: ["latin"] });
 

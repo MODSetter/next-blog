@@ -2,6 +2,7 @@ import { getPostBySlug } from "../../db/getters";
 import type { Metadata } from "next";
 import sitemap from "../sitemap";
 import NavBar from "@/components/nav-bar";
+import Footer from "@/components/Footer";
 
 interface BlogPostPageProps {
   params: { postslug: string };
@@ -50,6 +51,7 @@ export default async function BlogPostPage({
           ></div>
         </div>
       </div>
+      <Footer />
     </>
   );
 }
