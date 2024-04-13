@@ -17,12 +17,13 @@ const PostList = async () => {
             <Image
               src={postpic}
               alt="Picture of the author"
-              sizes="100vh"
-              // Make the image display full width
+              sizes="100vw"
               style={{
-                width: "100%",
-                height: "auto",
+                width: '100%',
+                height: 'auto',
               }}
+              width={100}
+              height={100}
             />
           </div>
           <div className="grow">
