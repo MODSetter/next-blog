@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/table";
 import Image from "next/image";
 import postpic from "../../../public/images/unnamed.png";
+import Link from "next/link";
 
 const PostManagement = () => {
   const invoices = [

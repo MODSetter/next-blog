@@ -4,25 +4,26 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import postpic from "../../../public/images/unnamed.png";
-import Image from "next/image";
+import { useEditor, EditorContent } from "@tiptap/react";
 
-import { useEditor, EditorContent } from '@tiptap/react'
-import StarterKit from '@tiptap/starter-kit'
+import StarterKit from "@tiptap/starter-kit";
 
-
-const EditPost = () => {
-
+const NewPost = () => {
   const editor = useEditor({
-    extensions: [
-      StarterKit,
-    ],
-    content: '<p>Hello World! 🌎️</p>',
-  })
+    extensions: [StarterKit],
+    content: `
+    <h2>
+  Hi there,
+</h2>
+<p>
+  this is a <em>basic</em> example of <strong>tiptap</strong>. Sure, there are all kind of basic text styles you’d probably expect from a text editor. But wait until you see the lists:
+</p>
+    `,
+  });
 
   return (
     <div className="flex flex-col p-4 gap-4">
-      <div className="text-4xl">Edit Post</div>
+      <div className="text-4xl">Create a New Post</div>
       <div>
         <fieldset className="grid gap-6 rounded-lg border p-4">
           <legend className="-ml-1 px-1 text-sm font-medium">Post</legend>
@@ -32,20 +33,15 @@ const EditPost = () => {
               <Input type="email" id="btitle" placeholder="Blog Tile" />
             </div>
             <div>
-            <Label htmlFor="tiptap">Content</Label>
-            <EditorContent editor={editor} id="tiptap" className="border"/>
+              <Label htmlFor="tiptap">Content</Label>
+              <EditorContent editor={editor} id="tiptap" className="border" />
+              {editor?.getHTML()}
             </div>
             <div>
               <Label htmlFor="opengraphimage">
                 Opengraph Image(Used in social media)
               </Label>
-              <Image
-                id="opengraphimage"
-                src={postpic}
-                alt="Picture of the author"
-                width={100}
-                height={100}
-              />
+              <Input id="opengraphimage" type="file" />
             </div>
             <div>
               <Label htmlFor="bmetakeys">Meta Keywords</Label>
@@ -65,7 +61,7 @@ const EditPost = () => {
             </div>
             <div className="flex gap-4">
               <Button variant="secondary">Preview</Button>
-              <Button>Make Changes</Button>
+              <Button>POST</Button>
             </div>
           </div>
         </fieldset>
@@ -74,4 +70,4 @@ const EditPost = () => {
   );
 };
 
-export default EditPost;
+export default NewPost;
