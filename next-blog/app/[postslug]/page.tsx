@@ -1,6 +1,6 @@
 import { getPostBySlug } from "../../db/getters";
 import type { Metadata } from "next";
-import sitemap from "../sitemap";
+// import sitemap from "../sitemap";
 import NavBar from "@/components/nav-bar";
 import Footer from "@/components/Footer";
 

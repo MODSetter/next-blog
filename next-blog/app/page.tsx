@@ -1,8 +1,6 @@
-import { Dashboard } from "@/components/DashTest";
 import Footer from "@/components/Footer";
 import NavBar from "@/components/nav-bar";
 import PostList from "@/components/PostList";
-import { ThemeToggle } from "@/components/theme-toggle";
 
 export default function Home() {
   return (

@@ -1,3 +1,4 @@
+"use client";
 import Link from "next/link";
 import {
   Bell,
@@ -39,56 +40,22 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import postpic from "../../public/images/unnamed.png";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { ThemeToggle } from "@/components/theme-toggle";
-import Image from "next/image";
+import PostManagement from "./components/PostManagement";
+import { SetStateAction, useState } from "react";
+import Analytics from "./components/Analytics";
+import MySettings from "./components/MySettings";
+import MyDashBoard from "./components/MyDashBoard";
+import NewPost from "./components/NewPost";
 
 export default function Dashboard() {
-  const invoices = [
-    {
-      invoice: "INV001",
-      paymentStatus: "How to dsscccccccccccccccco posts?",
-      totalAmount: "$250.00",
-      paymentMethod: "Credit Card",
-    },
-    {
-      invoice: "INV002",
-      paymentStatus: "How to vvssdfdv  do posts?",
-      totalAmount: "$150.00",
-      paymentMethod: "PayPal",
-    },
-    {
-      invoice: "INV003",
-      paymentStatus: "How to do posts?",
-      totalAmount: "$350.00",
-      paymentMethod: "Bank Transfer",
-    },
-    {
-      invoice: "INV004",
-      paymentStatus: "How to do poHow to do posts?sts?",
-      totalAmount: "$450.00",
-      paymentMethod: "Credit Card",
-    },
-    {
-      invoice: "INV005",
-      paymentStatus: "How to do posts?",
-      totalAmount: "$550.00",
-      paymentMethod: "PayPal",
-    },
-    {
-      invoice: "INV006",
-      paymentStatus: "Pending",
-      totalAmount: "$200.00",
-      paymentMethod: "Bank Transfer",
-    },
-    {
-      invoice: "INV007",
-      paymentStatus: "Unpaid",
-      totalAmount: "$300.00",
-      paymentMethod: "Credit Card",
-    },
-  ];
+  const [toggleTab, setToggleTag] = useState(0);
+
+  const currentTab = (index: SetStateAction<number>) => {
+    console.log(index)
+    setToggleTag(index);
+  }
 
   return (
     <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
@@ -125,28 +92,32 @@ export default function Dashboard() {
             <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
               <Link
                 href="#"
-                className="flex items-center gap-3 rounded-lg bg-muted px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:bg-muted"
+                onClick={() => currentTab(0)}
               >
                 <Home className="h-4 w-4" />
                 Dashboard
               </Link>
               <Link
                 href="#"
-                className="flex items-center gap-3 rounded-lg px-3 py-2 text-primary transition-all hover:text-primary"
+                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:bg-muted"
+                onClick={() => currentTab(1)}
               >
                 <CircleFadingPlus className="h-4 w-4" />
                 Posts
               </Link>
               <Link
                 href="#"
-                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:bg-muted"
+                onClick={() => currentTab(2)}
               >
                 <LineChart className="h-4 w-4" />
                 Analytics
               </Link>
               <Link
                 href="#"
-                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:bg-muted"
+                onClick={() => currentTab(3)}
               >
                 <Settings className="h-4 w-4" />
                 Settings
@@ -175,11 +146,12 @@ export default function Dashboard() {
                   className="flex items-center gap-2 text-lg font-semibold"
                 >
                   <Rss className="h-6 w-6" />
-                  <span className="sr-only">Acme Inc</span>
+                  <span>Next-Blog</span>
                 </Link>
                 <Link
                   href="#"
                   className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
+                  onClick={() => currentTab(0)}
                 >
                   <Home className="h-5 w-5" />
                   Dashboard
@@ -187,6 +159,7 @@ export default function Dashboard() {
                 <Link
                   href="#"
                   className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
+                  onClick={() => currentTab(1)}
                 >
                   <CircleFadingPlus className="h-5 w-5" />
                   Posts
@@ -194,6 +167,7 @@ export default function Dashboard() {
                 <Link
                   href="#"
                   className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
+                  onClick={() => currentTab(2)}
                 >
                   <LineChart className="h-5 w-5" />
                   Analytics
@@ -201,6 +175,7 @@ export default function Dashboard() {
                 <Link
                   href="#"
                   className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
+                  onClick={() => currentTab(3)}
                 >
                   <Settings className="h-5 w-5" />
                   Settings
@@ -212,60 +187,22 @@ export default function Dashboard() {
           <ThemeToggle />
         </header>
         <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead className="text-3xl p-4">POSTS</TableHead>
-              </TableRow>
-            </TableHeader>
+          <div className={toggleTab === 0 ? "" : "hidden"}>
+            <NewPost />
+            {/* <MyDashBoard /> */}
+          </div>
 
-            <TableBody>
-              {invoices.map((invoice) => (
-                <TableRow key={invoice.invoice}>
-                  <TableCell>
-                    <Image
-                      src={postpic}
-                      alt="Picture of the author"
-                      height={55}
-                      width={55}
-                    />
-                  </TableCell>
-                  <TableCell>{invoice.paymentStatus}</TableCell>
-                  <TableCell>
-                    <Button variant="outline">Edit</Button>
-                  </TableCell>
-                  <TableCell className="text-right">
-                    <Button variant="destructive">Destructive</Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+          <div className={toggleTab === 1 ? "" : "hidden"}>
+            <PostManagement />
+          </div>
 
-          <Pagination>
-            <PaginationContent>
-              <PaginationItem>
-                <PaginationPrevious href="#" />
-              </PaginationItem>
-              <PaginationItem>
-                <PaginationLink href="#">1</PaginationLink>
-              </PaginationItem>
-              <PaginationItem>
-                <PaginationLink href="#" isActive>
-                  2
-                </PaginationLink>
-              </PaginationItem>
-              <PaginationItem>
-                <PaginationLink href="#">3</PaginationLink>
-              </PaginationItem>
-              <PaginationItem>
-                <PaginationEllipsis />
-              </PaginationItem>
-              <PaginationItem>
-                <PaginationNext href="#" />
-              </PaginationItem>
-            </PaginationContent>
-          </Pagination>
+          <div className={toggleTab === 2 ? "" : "hidden"}>
+            <Analytics />
+          </div>
+
+          <div className={toggleTab === 3 ? "" : "hidden"}>
+            <MySettings />
+          </div>
         </main>
       </div>
     </div>
