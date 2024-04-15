@@ -8,7 +8,7 @@ import Link from "next/link";
 
 const NavBar = () => {
   return (
-    <Alert className="flex justify-between">
+    <Alert className="flex justify-between bg-sky-500/10">
       <div>
         <Link href="/">
           <Terminal className="h-4 w-4" />

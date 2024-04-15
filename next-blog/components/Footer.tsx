@@ -4,7 +4,7 @@ import { JSX, SVGProps } from "react"
 
 export default function Footer() {
   return (
-    <footer className="py-6 border-y">
+    <footer className="py-6 border-y bg-lime-500/10 border border-dashed">
       <div className="container mx-auto px-4 md:px-6 flex flex-col md:flex-row items-center justify-between">
         <div className="text-center md:text-left mb-4 md:mb-0">
           <p className="text-sm">© 2024 Next-Blog All rights reserved.</p>

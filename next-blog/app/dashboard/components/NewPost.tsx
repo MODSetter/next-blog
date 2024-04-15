@@ -11,6 +11,16 @@ import { useState } from "react";
 import Image from "next/image";
 import PreviewPost from "./PreviewPost";
 
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+
 const NewPost = () => {
   const editor = useEditor({
     extensions: [StarterKit],
@@ -57,13 +67,12 @@ const NewPost = () => {
 
   return (
     <>
-      <div className={preview ? "" : "hidden"}>
+      {/* <div className={preview ? "" : "hidden"}>
         <Button onClick={() => setPreview(false)}>Go Back</Button>
         <PreviewPost title={title} content={editor?.getHTML()} />
-      </div>
-      <div
-        className={preview ? "hidden" : "flex flex-col p-4 gap-4"}
-      >
+        
+      </div> */}
+      <div className={"flex flex-col p-4 gap-4"}>
         <div className="text-4xl">Create a New Post</div>
         <div>
           <fieldset className="grid gap-6 rounded-lg border p-4">
@@ -146,9 +155,28 @@ const NewPost = () => {
                 />
               </div>
               <div className="flex gap-4">
-                <Button variant="secondary" onClick={() => setPreview(true)}>
+                {/* <Button variant="secondary" onClick={() => setPreview(true)}>
                   Preview
-                </Button>
+                </Button> */}
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Button variant="outline">Preview</Button>
+                  </DialogTrigger>
+                  <DialogContent className={"lg:max-w-screen-lg overflow-y-scroll max-h-screen max-w-full"}>
+                    <DialogHeader>
+                      <DialogTitle>Preview</DialogTitle>
+                      {/* <DialogDescription>
+                 
+                      </DialogDescription> */}
+                    </DialogHeader>
+                    <DialogHeader>
+                    <PreviewPost
+                          title={title}
+                          content={editor?.getHTML()}
+                        />
+                    </DialogHeader>
+                  </DialogContent>
+                </Dialog>
                 <Button onClick={() => handleSubmit()}>POST</Button>
               </div>
             </div>
