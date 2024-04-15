@@ -24,6 +24,7 @@ model User {
 
 model Post {
   slug            String   @id
+  opengraphimage  String
   title           String
   content         String
   updatedAt       DateTime @updatedAt

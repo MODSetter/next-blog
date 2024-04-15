@@ -12,6 +12,7 @@ CREATE TABLE "User" (
 -- CreateTable
 CREATE TABLE "Post" (
     "slug" TEXT NOT NULL,
+    "opengraphimage" TEXT NOT NULL,
     "title" TEXT NOT NULL,
     "content" TEXT NOT NULL,
     "updatedAt" TIMESTAMP(3) NOT NULL,

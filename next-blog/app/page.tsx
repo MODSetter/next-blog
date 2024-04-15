@@ -7,7 +7,7 @@ export default function Home() {
     <>
       <div className="flex flex-col h-screen justify-between">
         <NavBar />
-        <div className="container mx-auto p-4">
+        <div className="grow container mx-auto p-4">
           <PostList />
         </div>
         <Footer />
