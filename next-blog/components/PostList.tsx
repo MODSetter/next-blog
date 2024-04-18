@@ -22,7 +22,7 @@ const PostList = async () => {
       <div className="flex flex-wrap justify-center gap-4">
         {allPostMetaData.map(
           ({ slug, opengraphimage, title, metaDescription }) => (
-            <Card className="w-[320px] rounded-3xl flex flex-col justify-between bg-zinc-200/10">
+            <Card className="w-[320px] rounded-3xl flex flex-col justify-between bg-slate-100/5">
               <CardHeader className="gap-3">
                 <CardTitle className="text-lg">{`${title}`}</CardTitle>
 
@@ -34,13 +34,11 @@ const PostList = async () => {
                   className="rounded-lg"
                 />
               </CardHeader>
-              <CardContent>
-                {metaDescription}
-              </CardContent>
+              <CardContent className="text-balance text-ellipsis overflow-hidden">{metaDescription}</CardContent>
               <Link href={`/${slug}`}>
-              <CardFooter className="flex justify-center">
-              <Button className="grow">Read More</Button>
-              </CardFooter>
+                <CardFooter className="flex justify-center">
+                  <Button className="grow">Read More</Button>
+                </CardFooter>
               </Link>
             </Card>
             // <div
