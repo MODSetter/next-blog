@@ -8,6 +8,8 @@ export async function getPostsMetaWithPostSlug() {
             opengraphimage: true,
             title: true,
             metaDescription: true,
+            updatedAt: true,
+            views: true
         }
     })
     return posts

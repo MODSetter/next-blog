@@ -2,6 +2,7 @@ import Footer from "@/components/Footer";
 import NavBar from "@/components/nav-bar";
 import PostList from "@/components/PostList";
 
+
 export default function Home() {
   return (
     <>

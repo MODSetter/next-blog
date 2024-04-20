@@ -15,9 +15,10 @@ CREATE TABLE "Post" (
     "opengraphimage" TEXT NOT NULL,
     "title" TEXT NOT NULL,
     "content" TEXT NOT NULL,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "metaDescription" TEXT,
     "metaKeywords" TEXT[],
+    "views" INTEGER NOT NULL DEFAULT 0,
     "authorId" INTEGER NOT NULL,
 
     CONSTRAINT "Post_pkey" PRIMARY KEY ("slug")

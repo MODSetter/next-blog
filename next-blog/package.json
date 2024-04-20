@@ -14,12 +14,15 @@
     "build:production": "npx dotenv -e .env.local -- npm run migrate && npm run generate && npm run build"
   },
   "dependencies": {
+    "@hookform/resolvers": "^3.3.4",
     "@prisma/client": "^5.10.2",
     "@radix-ui/react-dialog": "^1.0.5",
     "@radix-ui/react-dropdown-menu": "^2.0.6",
     "@radix-ui/react-label": "^2.0.2",
     "@radix-ui/react-navigation-menu": "^1.1.4",
+    "@radix-ui/react-separator": "^1.0.3",
     "@radix-ui/react-slot": "^1.0.2",
+    "@tinymce/tinymce-react": "^5.0.1",
     "@tiptap/pm": "^2.3.0",
     "@tiptap/react": "^2.3.0",
     "@tiptap/starter-kit": "^2.3.0",
@@ -31,9 +34,11 @@
     "next-themes": "^0.3.0",
     "react": "^18",
     "react-dom": "^18",
+    "react-hook-form": "^7.51.3",
     "tailwind-merge": "^2.2.2",
     "tailwindcss-animate": "^1.0.7",
-    "uploadthing": "^6.9.0"
+    "uploadthing": "^6.9.0",
+    "zod": "^3.22.5"
   },
   "devDependencies": {
     "@types/node": "^20",

@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 // import sitemap from "../sitemap";
 import NavBar from "@/components/nav-bar";
 import Footer from "@/components/Footer";
+import { incView } from "@/db/setters";
 
 interface BlogPostPageProps {
   params: { postslug: string };
@@ -33,6 +34,7 @@ export default async function BlogPostPage({
   params: { postslug },
 }: BlogPostPageProps) {
   const post = await getPostBySlug(postslug);
+  await incView(postslug);
   {
     /* <p className="text-lg" dangerouslySetInnerHTML={ { __html: post ? post.content: "empty" } }></p> */
   }
@@ -45,7 +47,6 @@ export default async function BlogPostPage({
           <div className="flex flex-col gap-y-4">
             <h1 className="text-4xl font-semibold">{post?.title}</h1>
             <div
-              className="text-lg p-2"
               dangerouslySetInnerHTML={{
                 __html: post ? post.content : "404 Error",
               }}

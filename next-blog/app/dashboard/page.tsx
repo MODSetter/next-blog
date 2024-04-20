@@ -43,7 +43,7 @@ import {
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { ThemeToggle } from "@/components/theme-toggle";
 import PostManagement from "./components/PostManagement";
-import { SetStateAction, useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 import Analytics from "./components/Analytics";
 import MySettings from "./components/MySettings";
 import MyDashBoard from "./components/MyDashBoard";
@@ -53,6 +53,18 @@ import { useRouter } from "next/router";
 
 import postpic from "../../public/images/unnamed.png";
 import Image from "next/image";
+import { JsonObject } from "@prisma/client/runtime/library";
+import AllPosts from "./components/AllPosts";
+import prisma from "../../db/prismaclient";
+
+export interface Post {
+  slug: string;
+  opengraphimage: string;
+  title: string;
+  updatedAt: Date;
+  metaDescription: string | null;
+  views: number;
+}
 
 export default function Dashboard() {
   const [toggleTab, setToggleTag] = useState(0);
@@ -62,50 +74,25 @@ export default function Dashboard() {
     setToggleTag(index);
   };
 
-  const invoices = [
-    {
-      invoice: "INV001",
-      paymentStatus: "How to dsscccccccccccccccco posts?",
-      totalAmount: "$250.00",
-      paymentMethod: "Credit Card",
-    },
-    {
-      invoice: "INV002",
-      paymentStatus: "How to vvssdfdv  do posts?",
-      totalAmount: "$150.00",
-      paymentMethod: "PayPal",
-    },
-    {
-      invoice: "INV003",
-      paymentStatus: "How to do posts?",
-      totalAmount: "$350.00",
-      paymentMethod: "Bank Transfer",
-    },
-    {
-      invoice: "INV004",
-      paymentStatus: "How to do poHow to do posts?sts?",
-      totalAmount: "$450.00",
-      paymentMethod: "Credit Card",
-    },
-    {
-      invoice: "INV005",
-      paymentStatus: "How to do posts?",
-      totalAmount: "$550.00",
-      paymentMethod: "PayPal",
-    },
-    {
-      invoice: "INV006",
-      paymentStatus: "Pending",
-      totalAmount: "$200.00",
-      paymentMethod: "Bank Transfer",
-    },
-    {
-      invoice: "INV007",
-      paymentStatus: "Unpaid",
-      totalAmount: "$300.00",
-      paymentMethod: "Credit Card",
-    },
-  ];
+
+  // const [allposts, setAllposts] = useState<Post[]>(null);
+  // useEffect(() => {
+  //   fetch('/api/posts/getallposts')
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       console.log(data)
+  //       setAllposts(data)
+  //       // setLoading(false)
+  //     })
+  // }, [])
+
+  // const alpostdata = await fetch('/api/posts/getallposts')
+  // fetch('/api/posts/getallposts')
+  // .then(response => response.json())
+  // .then(data => console.log(data))
+  // .catch(error => console.error('Error:', error));
+  // console.log(alpostdata)
+ 
 
   return (
     <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
@@ -237,77 +224,11 @@ export default function Dashboard() {
           <ThemeToggle />
         </header>
         <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
-          <div className={toggleTab === 0 ? "" : "hidden"}>
-            <EditPost />
-            {/* <NewPost /> */}
-            {/* <MyDashBoard /> */}
-          </div>
-
-          <div className={toggleTab === 1 ? "" : "hidden"}>
-            <div className="text-3xl mb-4">
-              POSTS
-            </div>
-            <Table className="border">
-              <TableHeader>
-                <TableRow>
-                  <TableHead>OpenGraph Image</TableHead>
-                  <TableHead>Post Title</TableHead>
-                  <TableHead>Last Modified</TableHead>
-                </TableRow>
-              </TableHeader>
-
-              <TableBody>
-                {invoices.map((invoice) => (
-                  <TableRow key={invoice.invoice}>
-                    <TableCell>
-                      <Image
-                        src={postpic}
-                        alt="Picture of the author"
-                        height={55}
-                        width={55}
-                      />
-                    </TableCell>
-                    <TableCell>{invoice.paymentStatus}</TableCell>
-                    <TableCell>
-                    2024-04-13T10:35:53.741Z
-                    </TableCell>
-                    <TableCell className="text-right">
-                    <Button variant="secondary" onClick={() => currentTab(5)}>Edit</Button>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-
-            <Pagination className="m-4">
-              <PaginationContent>
-                <PaginationItem>
-                  <PaginationPrevious href="#" />
-                </PaginationItem>
-                <PaginationItem>
-                  <PaginationLink href="#">1</PaginationLink>
-                </PaginationItem>
-                <PaginationItem>
-                  <PaginationLink href="#" isActive>
-                    2
-                  </PaginationLink>
-                </PaginationItem>
-                <PaginationItem>
-                  <PaginationLink href="#">3</PaginationLink>
-                </PaginationItem>
-                <PaginationItem>
-                  <PaginationEllipsis />
-                </PaginationItem>
-                <PaginationItem>
-                  <PaginationNext href="#" />
-                </PaginationItem>
-              </PaginationContent>
-            </Pagination>
-
-            <div>
-              <Button onClick={() => currentTab(4)}>Create New Post</Button>
-            </div>
-          </div>
+          {toggleTab === 0 ? <MyDashBoard /> : null}
+          {toggleTab === 1 ? <AllPosts /> : null}
+          
+          
+          {/* <Button onClick={() => currentTab(4)}>Create New Post</Button> */}
 
           <div className={toggleTab === 2 ? "" : "hidden"}>
             <Analytics />
@@ -322,7 +243,7 @@ export default function Dashboard() {
           </div>
 
           <div className={toggleTab === 5 ? "" : "hidden"}>
-            <EditPost />
+            {/* <EditPost /> */}
           </div>
         </main>
       </div>

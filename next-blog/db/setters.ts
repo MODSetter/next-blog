@@ -1,14 +1,12 @@
-export async function createPost(formData: FormData) {
-    'use server'
- 
-    const rawFormData = {
-      title: formData.get('title'),
-      metakeywords: formData.get('metakeys'),
-      metadescription: formData.get('metadesc'),
-    }
+import prisma from "./prismaclient";
 
-    console.log(rawFormData);
- 
-    // mutate data
-    // revalidate cache
-  }
+
+export async function incView(slug: string) {
+  const updateView = await prisma.post.updateMany({
+    data: {
+      views: {
+        increment: 1,
+      },
+    }
+  })
+}

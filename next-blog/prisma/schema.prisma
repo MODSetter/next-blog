@@ -27,16 +27,14 @@ model Post {
   opengraphimage  String
   title           String
   content         String
-  updatedAt       DateTime @updatedAt
+  updatedAt       DateTime @default(now())
   metaDescription String?
   metaKeywords    String[]
+
+  views Int @default(0)
 
   author   User @relation(fields: [authorId], references: [id])
   authorId Int
 }
 
-// model Slug {
-//   slug   String @id @unique
-//   post   Post   @relation(fields: [postId], references: [id])
-//   postId Int    @unique
-// }
+
