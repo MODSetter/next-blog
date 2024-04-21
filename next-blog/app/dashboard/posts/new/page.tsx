@@ -1,3 +1,4 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -6,11 +7,10 @@ import { useEditor, EditorContent } from "@tiptap/react";
 
 import StarterKit from "@tiptap/starter-kit";
 
-import { UploadDropzone } from "../../../utils/uploadthing";
+import { UploadDropzone } from "../../../../utils/uploadthing";
 import { useState } from "react";
 import Image from "next/image";
-import PreviewPost from "./PreviewPost";
-
+import PreviewPost from "../../../ui/dashboard/PreviewPost";
 import { Editor } from "@tinymce/tinymce-react";
 
 import {
@@ -26,6 +26,7 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
+import { useRouter } from 'next/navigation';
 
 const schema = z.object({
   rslug: z.string().regex(new RegExp("^[a-z0-9]+(?:-[a-z0-9]+)*$")),
@@ -36,50 +37,11 @@ const schema = z.object({
 
 type FormFields = z.infer<typeof schema>;
 
-const NewPost = () => {
-  // const editor = useEditor({
-  //   extensions: [StarterKit],
-  //   content: `
-  //   <h2>Hi there,</h2>
-  //   `,
-  // });
-
-  const [slug, setSlug] = useState<string>("");
+const page = () => {
   const [title, setTitle] = useState<string>("");
-  // const [content, setContent] = useState<string>("");
   const [imageUrl, setImageUrl] = useState<string>("");
-  const [metakeywords, setMetakeywords] = useState<string>("");
-  const [metadescription, setMetadescription] = useState<string>("");
-  const [preview, setPreview] = useState<Boolean>(false);
-
-  const [content, setContent] = useState<string>();
-
-  // const handleSubmit = async () => {
-
-  //   setContent(editorhtml)
-  //   //Validate form data
-  //   //send to api
-  //   const data = {
-  //     rslug: slug,
-  //     rtitle: title,
-  //     rcontent: editorhtml,
-  //     rimgurl: imageUrl,
-  //     rmetakeys: metakeywords.split(","),
-  //     rmetadesc: metadescription,
-  //   };
-  //   const requestOptions = {
-  //     method: "POST",
-  //     headers: { "Content-Type": "application/json" },
-  //     body: JSON.stringify(data),
-  //   };
-  //   const response = await fetch("/api/posts/createnewpost", requestOptions);
-  //   const res = await response.json();
-  //   //on sucsess proceed
-  //   //inform user that post created
-  //   //reset this page states
-  //   console.log(res);
-  // };
-
+  const [content, setContent] = useState<string>("");
+  const router = useRouter()
   const {
     register,
     handleSubmit,
@@ -88,7 +50,7 @@ const NewPost = () => {
   } = useForm<FormFields>({
     resolver: zodResolver(schema),
   });
-
+  
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
     try {
       console.log(data);
@@ -97,12 +59,12 @@ const NewPost = () => {
         if (imgurlregex.test(imageUrl)) {
           //API CALL TO CREATE POST
           const reqdata = {
-            rslug: slug,
-            rtitle: title,
+            rslug: data.rslug,
+            rtitle: data.rtitle,
             rcontent: content,
             rimgurl: imageUrl,
-            rmetakeys: metakeywords.split(","),
-            rmetadesc: metadescription,
+            rmetakeys: data.rmetakeys.split(","),
+            rmetadesc: data.rmetadesc,
           };
           const requestOptions = {
             method: "POST",
@@ -110,14 +72,23 @@ const NewPost = () => {
             body: JSON.stringify(reqdata),
           };
           const response = await fetch(
-            "/api/posts/createnewpost",
+            "/api/posts",
             requestOptions
           );
+          
+          // if(response.ok){
+          //   redirect('/dashboard/posts');
+          // }
           const res = await response.json();
+          console.log("POSTED", res);
+          alert('Post Posted');
+          router.push("/dashboard/posts")
+          // if(res.ok){
+            
+          // }
           //on sucsess proceed
           //inform user that post created
           //reset this page states
-          console.log("POSTED",res);
           
         } else {
           setError("root", {
@@ -151,8 +122,6 @@ const NewPost = () => {
                   type="text"
                   id="bslug"
                   placeholder="Blog Tile"
-                  value={slug}
-                  onChange={(e) => setSlug(e.target.value)}
                 />
                 {errors.rslug && (
                   <div className="text-red-500">{errors.rslug.message}</div>
@@ -228,8 +197,6 @@ const NewPost = () => {
                 <Label htmlFor="bmetakeys">Meta Keywords</Label>
                 <Input
                   {...register("rmetakeys")}
-                  value={metakeywords}
-                  onChange={(e) => setMetakeywords(e.target.value)}
                   type="text"
                   id="bmetakeys"
                   placeholder="Meta Keywords Here. Comma(,) seperated"
@@ -242,8 +209,6 @@ const NewPost = () => {
                 <Label htmlFor="bdesc">Meta Description</Label>
                 <Textarea
                   {...register("rmetadesc")}
-                  value={metadescription}
-                  onChange={(e) => setMetadescription(e.target.value)}
                   id="bdesc"
                   placeholder="Type your metaderscription(150 words) here."
                   maxLength={150}
@@ -258,9 +223,6 @@ const NewPost = () => {
                 </div>
               )}
               <div className="flex gap-4">
-                {/* <Button variant="secondary" onClick={() => setPreview(true)}>
-                  Preview
-                </Button> */}
                 <Dialog>
                   <DialogTrigger asChild>
                     <Button variant="outline">Preview</Button>
@@ -272,13 +234,9 @@ const NewPost = () => {
                   >
                     <DialogHeader>
                       <DialogTitle>Preview</DialogTitle>
-                      {/* <DialogDescription>
-                 
-                      </DialogDescription> */}
                     </DialogHeader>
                     <DialogHeader>
                       <PreviewPost title={title} content={content} />
-                      {/* <PreviewPost title={title} content={editor?.getHTML()} /> */}
                     </DialogHeader>
                   </DialogContent>
                 </Dialog>
@@ -295,4 +253,4 @@ const NewPost = () => {
   );
 };
 
-export default NewPost;
+export default page;

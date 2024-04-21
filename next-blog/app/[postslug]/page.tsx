@@ -35,9 +35,6 @@ export default async function BlogPostPage({
 }: BlogPostPageProps) {
   const post = await getPostBySlug(postslug);
   await incView(postslug);
-  {
-    /* <p className="text-lg" dangerouslySetInnerHTML={ { __html: post ? post.content: "empty" } }></p> */
-  }
 
   return (
     <>

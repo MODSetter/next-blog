@@ -21,3 +21,27 @@ export async function POST(req: Request) {
         ...postCreated
     });
 }
+
+export async function PATCH(req: Request) {
+    const datareceived = await req.json();
+    console.log(datareceived)
+    //create entry through prisma orm
+    const updatePost = await prisma.post.update({
+        where: {
+            slug: datareceived.rslug,
+        },
+        data: {
+            slug: datareceived.rslug,
+            opengraphimage: datareceived.rimgurl,
+            title: datareceived.rtitle,
+            content: datareceived.rcontent,
+            authorId: 1,
+            metaKeywords: datareceived.rmetakeys,
+            metaDescription: datareceived.rmetadesc
+        },
+    })
+
+    return NextResponse.json({
+        ...updatePost
+    });
+}

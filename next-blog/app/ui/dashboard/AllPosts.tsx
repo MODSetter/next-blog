@@ -1,3 +1,4 @@
+// 'use client';
 import { Button } from "@/components/ui/button";
 import {
   Pagination,
@@ -20,6 +21,7 @@ import { getPostsMetaWithPostSlug } from "@/db/getters";
 import Image from "next/image";
 import prisma from "../../../db/prismaclient";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 export interface PostsProps {
   posts: Post[];
@@ -34,46 +36,39 @@ export interface Post {
   views: number;
 }
 
-const AllPosts = () => {
-  const [recposts, setRecposts] = useState<Post[]>();
-  const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    fetch("/api/posts/getallposts")
-      .then((res) => res.json())
-      .then((data) => {
-        setRecposts(data);
-        console.log(typeof data);
-        console.log("allposts", recposts);
-        setLoading(false);
-      });
-  }, []);
+const AllPosts = async () => {
+  //   const [recposts, setRecposts] = useState<Post[]>();
+  //   const [loading, setLoading] = useState(true);
+  //   useEffect(() => {
+  //     fetch("/api/posts/getallposts")
+  //       .then((res) => res.json())
+  //       .then((data) => {
+  //         setRecposts(data);
+  //         console.log(typeof data);
+  //         console.log("allposts", recposts);
+  //         setLoading(false);
+  //       });
+  //   }, []);
 
-  function json2array(json: any){
-    var result: any[] = [];
-    var keys = Object.keys(json);
-    keys.forEach(function(key){
-        result.push(json[key]);
-    });
-    return result;
-}
+  //   function json2array(json: any){
+  //     var result: any[] = [];
+  //     var keys = Object.keys(json);
+  //     keys.forEach(function(key){
+  //         result.push(json[key]);
+  //     });
+  //     return result;
+  // }
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  //   if (!recposts) {
-  //     return <div>Loading.2..</div>;
-  //   } else{
-
+  //   if (loading) {
+  //     return <div>Loading...</div>;
   //   }
 
-  // const allpostdata = await fetch('/api/posts/getallposts');
-  // const res = awaitallpostdata.json();
+  const recposts = await getPostsMetaWithPostSlug();
 
   return (
     <>
       <div className="text-3xl mb-4">POSTS</div>
-      <Table className="border">
+      <Table>
         <TableHeader>
           <TableRow>
             <TableHead>OpenGraph Image</TableHead>
@@ -83,7 +78,7 @@ const AllPosts = () => {
         </TableHeader>
 
         <TableBody>
-          {json2array(recposts).map((post) => (
+          {recposts.map((post) => (
             <TableRow key={post.slug}>
               <TableCell>
                 <Image
@@ -96,7 +91,9 @@ const AllPosts = () => {
               <TableCell>{post.title}</TableCell>
               <TableCell>{post.updatedAt.toString()}</TableCell>
               <TableCell className="text-right">
-                <Button variant="secondary">Edit</Button>
+                <Link href={`/dashboard/posts/edit/${post.slug}`}>
+                  <Button variant="secondary">Edit</Button>
+                </Link>
               </TableCell>
             </TableRow>
           ))}

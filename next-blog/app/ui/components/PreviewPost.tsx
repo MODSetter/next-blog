@@ -2,7 +2,7 @@ import Footer from '@/components/Footer'
 import NavBar from '@/components/nav-bar'
 import React from 'react'
 
-const PreviewPost = ({title, content}) => {
+const PreviewPost = ({title, content}: {title: string, content:string}) => {
   return (
     <div className="flex flex-col justify-between h-screen">
     <NavBar />
