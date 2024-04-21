@@ -1,5 +1,5 @@
 import { withUt } from "uploadthing/tw";
- 
+
 export default withUt({
   darkMode: ["class"],
   content: [
@@ -8,7 +8,8 @@ export default withUt({
     './components/**/*.{ts,tsx}',
     './app/**/*.{ts,tsx}',
     './src/**/*.{ts,tsx}',
-	],
+    "./lib/**/*.{ts,tsx}",
+  ],
   prefix: "",
   theme: {
     container: {
@@ -75,5 +76,5 @@ export default withUt({
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [require("tailwindcss-animate"), require('@tailwindcss/typography'),],
 });

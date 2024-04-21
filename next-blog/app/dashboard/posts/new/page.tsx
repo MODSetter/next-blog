@@ -3,15 +3,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { useEditor, EditorContent } from "@tiptap/react";
-
-import StarterKit from "@tiptap/starter-kit";
 
 import { UploadDropzone } from "../../../../utils/uploadthing";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import PreviewPost from "../../../ui/dashboard/PreviewPost";
-import { Editor } from "@tinymce/tinymce-react";
+import TailwindAdvancedEditor from "@/components/tailwind/advanced-editor";
+
 
 import {
   Dialog,
@@ -26,7 +24,8 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
+
 
 const schema = z.object({
   rslug: z.string().regex(new RegExp("^[a-z0-9]+(?:-[a-z0-9]+)*$")),
@@ -40,8 +39,15 @@ type FormFields = z.infer<typeof schema>;
 const page = () => {
   const [title, setTitle] = useState<string>("");
   const [imageUrl, setImageUrl] = useState<string>("");
-  const [content, setContent] = useState<string>("");
-  const router = useRouter()
+  const router = useRouter();
+
+  // useEffect(() => {
+  //   const content = window.localStorage.getItem("novel-html");
+  //   console.log(content)
+    
+  // }, []);
+
+
   const {
     register,
     handleSubmit,
@@ -50,18 +56,20 @@ const page = () => {
   } = useForm<FormFields>({
     resolver: zodResolver(schema),
   });
-  
+
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
     try {
+      const novelhtml = window.localStorage.getItem("novel-html");
+      console.log("NOVELHTML",novelhtml)
       console.log(data);
-      if (content) {
+      if (novelhtml) {
         const imgurlregex = new RegExp("(https?://.*.(?:png|jpg))");
         if (imgurlregex.test(imageUrl)) {
           //API CALL TO CREATE POST
           const reqdata = {
             rslug: data.rslug,
             rtitle: data.rtitle,
-            rcontent: content,
+            rcontent: novelhtml,
             rimgurl: imageUrl,
             rmetakeys: data.rmetakeys.split(","),
             rmetadesc: data.rmetadesc,
@@ -71,25 +79,21 @@ const page = () => {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(reqdata),
           };
-          const response = await fetch(
-            "/api/posts",
-            requestOptions
-          );
-          
+          const response = await fetch("/api/posts", requestOptions);
+
           // if(response.ok){
           //   redirect('/dashboard/posts');
           // }
           const res = await response.json();
           console.log("POSTED", res);
-          alert('Post Posted');
-          router.push("/dashboard/posts")
+          alert("Post Posted");
+          router.push("/dashboard/posts");
           // if(res.ok){
-            
+
           // }
           //on sucsess proceed
           //inform user that post created
           //reset this page states
-          
         } else {
           setError("root", {
             message: "Please Upload Opengraph Image",
@@ -106,6 +110,8 @@ const page = () => {
       });
     }
   };
+
+  // const [editcon, setEditcon] = useState<JSONContent>({});
 
   return (
     <>
@@ -143,7 +149,10 @@ const page = () => {
               </div>
               <div>
                 <Label htmlFor="tinymce">Content</Label>
-                <Editor
+                <TailwindAdvancedEditor />
+                {/* <EditorRoot><EditorContent extensions={defaultExtensions}></EditorContent></EditorRoot> */}
+
+                {/* <Editor
                   value={content}
                   apiKey="xwu3jocjfocx1u9e4nw2a6lvttl2iplefdenva04882vkbws"
                   init={{
@@ -158,8 +167,7 @@ const page = () => {
                     console.log(newValue);
                     setContent(newValue);
                   }}
-                />
-                {content}
+                /> */}
                 {/* <EditorContent editor={editor} id="tiptap" className="border" /> */}
               </div>
               <div>
@@ -236,7 +244,7 @@ const page = () => {
                       <DialogTitle>Preview</DialogTitle>
                     </DialogHeader>
                     <DialogHeader>
-                      <PreviewPost title={title} content={content} />
+                      <PreviewPost title={title} content={""} />
                     </DialogHeader>
                   </DialogContent>
                 </Dialog>

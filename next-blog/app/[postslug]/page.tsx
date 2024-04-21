@@ -44,6 +44,7 @@ export default async function BlogPostPage({
           <div className="flex flex-col gap-y-4">
             <h1 className="text-4xl font-semibold">{post?.title}</h1>
             <div
+            className="tiptap ProseMirror prose prose-lg dark:prose-invert prose-headings:font-title font-default focus:outline-none max-w-full"
               dangerouslySetInnerHTML={{
                 __html: post ? post.content : "404 Error",
               }}
