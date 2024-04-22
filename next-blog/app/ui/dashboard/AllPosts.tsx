@@ -35,34 +35,13 @@ export interface Post {
   views: number;
 }
 
+async function allPostMetaDataRequest() {
+  const response = await fetch(`${process.env.PUBLIC_BASE_URL}/api/posts`, { cache: 'no-store' });
+  return response.json();
+}
+
 const AllPosts = async () => {
-  //   const [recposts, setRecposts] = useState<Post[]>();
-  //   const [loading, setLoading] = useState(true);
-  //   useEffect(() => {
-  //     fetch("/api/posts/getallposts")
-  //       .then((res) => res.json())
-  //       .then((data) => {
-  //         setRecposts(data);
-  //         console.log(typeof data);
-  //         console.log("allposts", recposts);
-  //         setLoading(false);
-  //       });
-  //   }, []);
-
-  //   function json2array(json: any){
-  //     var result: any[] = [];
-  //     var keys = Object.keys(json);
-  //     keys.forEach(function(key){
-  //         result.push(json[key]);
-  //     });
-  //     return result;
-  // }
-
-  //   if (loading) {
-  //     return <div>Loading...</div>;
-  //   }
-
-  const recposts = await getPostsMetaWithPostSlug();
+  const recposts = await allPostMetaDataRequest();
 
   return (
     <>
@@ -73,11 +52,12 @@ const AllPosts = async () => {
             <TableHead>OpenGraph Image</TableHead>
             <TableHead>Post Title</TableHead>
             <TableHead>Last Modified</TableHead>
+            <TableHead>Views</TableHead>
           </TableRow>
         </TableHeader>
 
         <TableBody>
-          {recposts.map((post) => (
+          {recposts.map((post: Post) => (
             <TableRow key={post.slug}>
               <TableCell>
                 <Image
@@ -88,7 +68,8 @@ const AllPosts = async () => {
                 />
               </TableCell>
               <TableCell>{post.title}</TableCell>
-              <TableCell>{post.updatedAt.toString()}</TableCell>
+              <TableCell>{(new Date(post.updatedAt)).toDateString()}</TableCell>
+              <TableCell>{post.views}</TableCell>
               <TableCell className="text-right">
                 <Link href={`/dashboard/posts/edit/${post.slug}`}>
                   <Button variant="secondary">Edit</Button>

@@ -1,6 +1,23 @@
 import { NextResponse } from "next/server"
 import prisma from "../../../db/prismaclient";
 
+//Get All Posts
+export async function GET() {
+    const posts = await prisma.post.findMany({
+        select: {
+            slug: true,
+            opengraphimage: true,
+            title: true,
+            metaDescription: true,
+            updatedAt: true,
+            views: true
+        }
+    })
+
+    return NextResponse.json([...posts]);
+}
+
+//Post a new post
 export async function POST(req: Request) {
     const datareceived = await req.json();
     console.log(datareceived)
@@ -22,6 +39,7 @@ export async function POST(req: Request) {
     });
 }
 
+//Edit a old post
 export async function PATCH(req: Request) {
     const datareceived = await req.json();
     console.log(datareceived)

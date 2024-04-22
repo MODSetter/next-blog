@@ -12,6 +12,7 @@ export async function getPostsMetaWithPostSlug() {
             views: true
         }
     })
+    // console.log(posts)
     return posts
 }
 
@@ -20,9 +21,18 @@ export async function getPostBySlug(postslug: string) {
     const post = await prisma.post.findUnique({
         where: {
             slug: postslug
-        }
+        },
     })
     return post
+}
+
+export async function getViews() {
+    const views = await prisma.post.findMany({
+        select: {
+            views: true
+        }
+    })
+    return views
 }
 
 

@@ -7,6 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "format:write": "prettier --write \"**/*.{css,js,json,jsx,ts,tsx}\"",
+    "format": "prettier \"**/*.{css,js,json,jsx,ts,tsx}\"",
     "prisma:generate": "npx dotenv -e .env.local -- prisma generate",
     "migrate:dev": "npx dotenv -e .env.local -- prisma migrate dev",
     "prisma:studio": "npx dotenv -e .env.local -- prisma studio",

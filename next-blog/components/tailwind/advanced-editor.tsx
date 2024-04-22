@@ -81,7 +81,6 @@ const TailwindAdvancedEditor = () => {
           }}
           onUpdate={({ editor }) => {
             debouncedUpdates(editor);
-            // window.localStorage.setItem("novel-html", editor.getHTML());
             setSaveStatus("Unsaved");
           }}
           slotAfter={<ImageResizer />}

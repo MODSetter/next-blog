@@ -19,13 +19,13 @@ const NavBar = () => {
       </div>
 
       <div className="flex gap-2">
-        <div className="flex max-w-sm items-center space-x-2">
+        <div className="hidden lg:flex max-w-sm items-center space-x-2">
           <Input className="rounded-lg" placeholder="Search..." type="search" />
           <Button variant="outline" className="rounded-lg" type="submit">
           <Search size={16}/>
           </Button>
         </div>
-        <Separator orientation="vertical" />
+        <Separator orientation="vertical" className="hidden lg:block"/>
         <Button variant="outline">About Us</Button>
         <Link href={"/dashboard"}>
           <Button variant="outline">Login</Button>

@@ -194,8 +194,6 @@ const page = ({ params: { postslug } }: EditPageProps) => {
                     setContent(newValue);
                   }}
                 />
-                {content}
-                {/* <EditorContent editor={editor} id="tiptap" className="border" /> */}
               </div>
               <div>
                 <Label htmlFor="opengraphimage">
@@ -276,7 +274,7 @@ const page = ({ params: { postslug } }: EditPageProps) => {
                       <DialogTitle>Preview</DialogTitle>
                     </DialogHeader>
                     <DialogHeader>
-                      <PreviewPost title={title} content={content} />
+                      {/* <PreviewPost title={title} content={content} /> */}
                     </DialogHeader>
                   </DialogContent>
                 </Dialog>
