@@ -37,3 +37,13 @@ export async function getViews() {
 
 
 
+export async function getUser() {
+    const user = await prisma.user.findUnique({
+        where: {
+            id: 1
+        },
+    })
+    return user
+}
+
+

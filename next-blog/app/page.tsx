@@ -1,17 +1,45 @@
 import Footer from "@/components/Footer";
+import { DefaultGrid } from "@/components/homepage/grids/DefaultGrid";
+import { FifthGrid } from "@/components/homepage/grids/FifthGrid";
+import { FourthGrid } from "@/components/homepage/grids/FourthGrid";
+import { SecondGrid } from "@/components/homepage/grids/SecondGrid";
+import { ThirdGrid } from "@/components/homepage/grids/ThirdGrid";
+import TestNav from "@/components/homepage/navbars/TestNav";
 import NavBar from "@/components/nav-bar";
-import PostList from "@/components/PostList";
-import TailwindAdvancedEditor from "@/components/tailwind/advanced-editor";
+import { ThemeToggle } from "@/components/theme-toggle";
+import { getUser } from "@/db/getters";
 
-export default function Home() {
+export default async function Home() {
+  const user = await getUser();
+  const getNavbar = (index: number | undefined) => {
+    if (index == 1) {
+      return (
+        <NavBar />
+      );
+    } else if (index == 2) {
+      return (
+        <TestNav />
+        // <NavBar />
+      );
+    }
+  };
+
   return (
     <>
-      <div className="flex flex-col h-screen justify-between">
-        <NavBar />
+      <ThemeToggle />
+      <div className="flex flex-col gap-4 h-screen justify-between">
+        <div>{getNavbar(user?.maingrid)}</div>
         <div className="grow container mx-auto p-4">
-          <PostList />
+          {/* <DefaultGrid /> */}
+          {/* <SecondGrid /> */}
+          {/* <ThirdGrid /> */}
+          {/* <FourthGrid /> */}
+          <FifthGrid />
         </div>
-        <Footer />
+
+        <div>
+          <Footer />
+        </div>
       </div>
     </>
   );
