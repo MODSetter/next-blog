@@ -27,7 +27,7 @@ export default async function Home() {
   return (
     <>
       <ThemeToggle />
-      <div className="flex flex-col gap-4 h-screen justify-between">
+      <div className="flex flex-col gap-4 h-screen justify-between bg-lightImage dark:bg-darkImage">
         <div>{getNavbar(user?.maingrid)}</div>
         <div className="grow container mx-auto p-4">
           {/* <DefaultGrid /> */}

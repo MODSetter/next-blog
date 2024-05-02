@@ -59,7 +59,8 @@ const PostList = async () => {
                 updatedAt,
                 views,
               }: PostMetaData) => (
-                <article className="flex max-w-xl flex-col items-start justify-between border rounded-2xl p-8 bg-slate-100/5">
+                // bg-slate-100/5
+                <article className="backdrop-blur-md bg-white/10  flex max-w-xl flex-col items-start justify-between border rounded-2xl p-8 ">
                   <div className="flex items-center gap-x-4 text-xs">
                     <time className="">
                       {(new Date(updatedAt)).toDateString()}

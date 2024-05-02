@@ -74,7 +74,14 @@ export default withUt({
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
       },
+      backgroundImage: {
+        darkImage: 'url("https://images.unsplash.com/photo-1490814525860-594e82bfd34a")',
+        lightImage: 'url("https://images.unsplash.com/photo-1509647648544-a3e09b751ad6")',
+      },
     },
+  },
+  variants: {
+    extend: { backgroundImage: ['dark'] },
   },
   plugins: [require("tailwindcss-animate"), require('@tailwindcss/typography'),],
 });
