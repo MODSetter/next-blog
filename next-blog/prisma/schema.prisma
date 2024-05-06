@@ -36,4 +36,11 @@ model Post {
 
   author   User @relation(fields: [authorId], references: [id])
   authorId Int
+
+  tags Tag[]
+}
+
+model Tag {
+  tagname String @id
+  posts Post[]
 }

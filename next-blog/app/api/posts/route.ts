@@ -10,7 +10,8 @@ export async function GET() {
             title: true,
             metaDescription: true,
             updatedAt: true,
-            views: true
+            views: true,
+            tags: true,
         }
     })
 

@@ -16,7 +16,7 @@ export default async function Home() {
       return (
         <NavBar />
       );
-    } else if (index == 2) {
+    } else if (index == 0) {
       return (
         <TestNav />
         // <NavBar />
@@ -26,15 +26,18 @@ export default async function Home() {
 
   return (
     <>
+      <div className="fixed left-0 top-0 -z-10 h-full w-full hidden dark:block">
+        <div className="absolute inset-0 -z-10 h-full w-full items-center px-5 py-24 [background:radial-gradient(125%_125%_at_50%_10%,#000_40%,#63e_100%)]" />
+      </div>
       <ThemeToggle />
       <div className="flex flex-col gap-4 h-screen justify-between bg-lightImage dark:bg-darkImage">
         <div>{getNavbar(user?.maingrid)}</div>
         <div className="grow container mx-auto p-4">
-          {/* <DefaultGrid /> */}
+          <DefaultGrid />
           {/* <SecondGrid /> */}
           {/* <ThirdGrid /> */}
           {/* <FourthGrid /> */}
-          <FifthGrid />
+          {/* <FifthGrid /> */}
         </div>
 
         <div>

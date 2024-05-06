@@ -3,14 +3,14 @@ import "@/styles/prosemirror.css";
 
 
 import type { Metadata } from "next";
-import { Inter,Roboto,Montserrat } from "next/font/google";
+import { Inter,Roboto,Montserrat, Figtree } from "next/font/google";
 
 
 import { ThemeProvider } from "@/components/theme-provider"
 import NavBar from "@/components/nav-bar";
 import Footer from "@/components/Footer";
 
-const inter = Montserrat({ weight: "300", subsets: ["latin"] });
+const inter = Figtree({ weight: "300", subsets: ["latin"] });
 
 //Homepage Metas - can define template in title
 export const metadata: Metadata = {
