@@ -47,3 +47,13 @@ export async function getUser() {
 }
 
 
+export async function getGridData(gridId: string) {
+    const grid = await prisma.grid.findUnique({
+        where: {
+            id: gridId
+        },
+    })
+    return grid
+}
+
+

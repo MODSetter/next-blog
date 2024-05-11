@@ -1,4 +1,5 @@
 "use client"
+import { redirect } from "next/navigation";
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import {
@@ -9,32 +10,23 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
-import { validateRequest } from "@/db/auth";
-import { redirect } from "next/navigation";
+import { useToast } from "@/components/ui/use-toast"
+
 
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 
-import { onLogin }  from "./actions/login.actions"
+import { onLogin }  from "@/actions/auth.actions"
+import { loginSchema } from "@/zodschemas/loginschema";
 
-const formSchema = z.object({
-  username: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
-  }),
-  password: z.string().min(2, {
-    message: "Password must be at least 2 characters.",
-  }),
-})
+
 
 export default function Login() {
-  // const { user } = await validateRequest();
-	// if (user) {
-	// 	return redirect("/dashboard");
-	// }
-  // 1. Define your form.
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const { toast } = useToast()
+
+  const form = useForm<z.infer<typeof loginSchema>>({
+    resolver: zodResolver(loginSchema),
     defaultValues: {
       username: "",
       password: "",
@@ -42,10 +34,15 @@ export default function Login() {
   })
 
   // 2. Define a submit handler.
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof loginSchema>) {
     const res = await onLogin(values)
-    console.log(res)
-    // await onLogin(values);
+    // At Failed Login
+    if(res?.error){
+      toast({
+        variant: "destructive",
+        description: res.error,
+      });
+    }
   }
 
   return (

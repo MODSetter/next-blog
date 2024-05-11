@@ -3,7 +3,7 @@ import { Terminal, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { ThemeToggle } from "./theme-toggle";
+import { ThemeToggle } from "./next-toggle/theme-toggle";
 import Link from "next/link";
 import { Separator } from "./ui/separator";
 import { Input } from "./ui/input";

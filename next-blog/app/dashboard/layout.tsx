@@ -1,26 +1,19 @@
-import { ThemeToggle } from "@/components/theme-toggle";
+import { ThemeToggle } from "@/components/next-toggle/theme-toggle";
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import {
   CircleFadingPlus,
-  CircleUser,
   Home,
-  LineChart,
+  LayoutDashboard,
   Menu,
   Rss,
   Settings,
+  Tags,
 } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { validateRequest, lucia, logOut} from "@/db/auth";
+import { validateRequest, onLogout } from "@/actions/auth.actions";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 const Layout = async ({
   children,
@@ -29,10 +22,10 @@ const Layout = async ({
 }>) => {
 
   const { user } = await validateRequest();
-	if (!user) {
-		return redirect("/login");
-	}
-  
+  if (!user) {
+    return redirect("/login");
+  }
+
   return (
     <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
       <div className="hidden border-r bg-muted/40 md:block">
@@ -42,23 +35,6 @@ const Layout = async ({
               <Rss className="h-6 w-6" />
               <span className="">Next-Blog</span>
             </Link>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="secondary"
-                  size="icon"
-                  className="rounded-full"
-                >
-                  <CircleUser className="h-5 w-5" />
-                  <span className="sr-only">Toggle user menu</span>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem><form action={logOut}><Button>Logout</Button></form></DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
           </div>
           <div className="flex-1">
             <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
@@ -74,23 +50,43 @@ const Layout = async ({
                 className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:bg-muted"
               >
                 <CircleFadingPlus className="h-4 w-4" />
-                Posts
+                Posts & Pages
               </Link>
               <Link
                 href={'/dashboard/tags'}
                 className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:bg-muted"
               >
-                <LineChart className="h-4 w-4" />
+                <Tags className="h-4 w-4" />
                 Tags
               </Link>
               <Link
                 href={'/dashboard/settings'}
                 className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:bg-muted"
               >
-                <Settings className="h-4 w-4" />
-                Settings
+                <LayoutDashboard className="h-4 w-4" />
+                Themes & Layout
               </Link>
             </nav>
+          </div>
+          <div className="mt-auto p-4">
+            <Card x-chunk="dashboard-02-chunk-0">
+              <CardHeader className="p-2 pt-0 md:p-4">
+                <CardDescription>My Account</CardDescription>
+              </CardHeader>
+              <CardContent className="p-2 pt-0 md:p-4 md:pt-0">
+                <Button size="sm" className="w-full">
+                  <Settings className="h-4 w-4" />
+                  Account Settings
+                </Button>
+              </CardContent>
+              <CardContent className="p-2 pt-0 md:p-4 md:pt-0">
+                <form action={onLogout}>
+                  <Button size="sm" className="w-full">
+                    Log Out
+                  </Button>
+                </form>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </div>
@@ -128,21 +124,21 @@ const Layout = async ({
                   className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
                 >
                   <CircleFadingPlus className="h-5 w-5" />
-                  Posts
+                  Posts & Pages
                 </Link>
                 <Link
                   href={'/dashboard/tags'}
                   className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
                 >
-                  <LineChart className="h-5 w-5" />
+                  <Tags className="h-5 w-5" />
                   Tags
                 </Link>
                 <Link
                   href={'/dashboard/settings'}
                   className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
                 >
-                  <Settings className="h-5 w-5" />
-                  Settings
+                  <LayoutDashboard className="h-5 w-5" />
+                  Themes & Layout
                 </Link>
               </nav>
             </SheetContent>

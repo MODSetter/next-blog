@@ -5,10 +5,12 @@ import "@/styles/prosemirror.css";
 import type { Metadata } from "next";
 import { Inter,Roboto,Montserrat, Figtree } from "next/font/google";
 
+import { getBackground } from "@/components/next-toggle/background-provider"
+import { getUser } from "@/db/getters";
+
 
 import { ThemeProvider } from "@/components/theme-provider"
-import NavBar from "@/components/nav-bar";
-import Footer from "@/components/Footer";
+import { Toaster } from "@/components/ui/toaster"
 
 const inter = Figtree({ weight: "300", subsets: ["latin"] });
 
@@ -22,14 +24,23 @@ export const metadata: Metadata = {
   keywords: ["Next","Blog","SEO","Fast"]
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const user = await getUser();
+ 
+  
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
+      <div className="hidden dark:block">
+        {getBackground(user?.defaultDark)}
+      </div>
+      <div className="block dark:hidden">
+        {getBackground(user?.defaultLight)}
+      </div>
       <ThemeProvider
             attribute="class"
             defaultTheme="system"
@@ -38,6 +49,7 @@ export default function RootLayout({
           >
             {children}
           </ThemeProvider>
+          <Toaster />
       </body>
     </html>
   );

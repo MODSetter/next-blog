@@ -5,11 +5,24 @@ CREATE TABLE "User" (
     "username" TEXT NOT NULL,
     "password_hash" TEXT NOT NULL,
     "registeredAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "maingrid" INTEGER NOT NULL,
-    "navbar" INTEGER NOT NULL,
-    "footer" INTEGER NOT NULL,
+    "maingrid" TEXT NOT NULL,
+    "navbar" TEXT NOT NULL,
+    "footer" TEXT NOT NULL,
+    "defaultLight" TEXT NOT NULL,
+    "defaultDark" TEXT NOT NULL,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Grid" (
+    "id" TEXT NOT NULL,
+    "comp_one" TEXT NOT NULL,
+    "comp_two" TEXT NOT NULL,
+    "comp_three" TEXT NOT NULL,
+    "comp_four" TEXT NOT NULL,
+
+    CONSTRAINT "Grid_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -51,6 +64,9 @@ CREATE TABLE "_PostToTag" (
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "User_username_key" ON "User"("username");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "_PostToTag_AB_unique" ON "_PostToTag"("A", "B");

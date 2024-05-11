@@ -20,12 +20,23 @@ model User {
   password_hash String
   registeredAt  DateTime @default(now())
 
-  maingrid Int
-  navbar   Int
-  footer   Int
+  maingrid String
+  navbar   String
+  footer   String
+
+  defaultLight String
+  defaultDark  String
 
   posts    Post[]
   sessions Session[]
+}
+
+model Grid {
+  id         String @id
+  comp_one   String
+  comp_two   String
+  comp_three String
+  comp_four  String
 }
 
 model Session {

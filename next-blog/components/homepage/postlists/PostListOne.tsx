@@ -24,7 +24,7 @@ async function allPostMetaDataRequest() {
   return response.json();
 }
 
-const DefaultPostList = async () => {
+const PostListOne = async () => {
   const allPostMetaData = await allPostMetaDataRequest();
   console.log(allPostMetaData);
   return (
@@ -97,7 +97,6 @@ const DefaultPostList = async () => {
   );
 };
 
-// export default PostList;
 
 
-export default DefaultPostList
+export default PostListOne
