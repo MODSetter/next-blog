@@ -20,7 +20,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { validateRequest } from "@/db/auth";
+import { validateRequest, lucia, logOut} from "@/db/auth";
 
 const Layout = async ({
   children,
@@ -56,7 +56,7 @@ const Layout = async ({
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>Logout</DropdownMenuItem>
+                <DropdownMenuItem><form action={logOut}><Button>Logout</Button></form></DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
@@ -77,11 +77,11 @@ const Layout = async ({
                 Posts
               </Link>
               <Link
-                href={'/dashboard/analytics'}
+                href={'/dashboard/tags'}
                 className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:bg-muted"
               >
                 <LineChart className="h-4 w-4" />
-                Analytics
+                Tags
               </Link>
               <Link
                 href={'/dashboard/settings'}
@@ -131,11 +131,11 @@ const Layout = async ({
                   Posts
                 </Link>
                 <Link
-                  href={'/dashboard/analytics'}
+                  href={'/dashboard/tags'}
                   className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
                 >
                   <LineChart className="h-5 w-5" />
-                  Analytics
+                  Tags
                 </Link>
                 <Link
                   href={'/dashboard/settings'}
