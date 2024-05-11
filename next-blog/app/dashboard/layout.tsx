@@ -19,12 +19,20 @@ import {
   Settings,
 } from "lucide-react";
 import Link from "next/link";
+import { redirect } from "next/navigation";
+import { validateRequest } from "@/db/auth";
 
-const Layout = ({
+const Layout = async ({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) => {
+
+  const { user } = await validateRequest();
+	if (!user) {
+		return redirect("/login");
+	}
+  
   return (
     <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
       <div className="hidden border-r bg-muted/40 md:block">

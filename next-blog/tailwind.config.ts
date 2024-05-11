@@ -1,15 +1,13 @@
-import { withUt } from "uploadthing/tw";
+import type { Config } from "tailwindcss"
 
-export default withUt({
+const config = {
   darkMode: ["class"],
   content: [
-    './src/**/*.{ts,tsx,mdx}',
     './pages/**/*.{ts,tsx}',
     './components/**/*.{ts,tsx}',
     './app/**/*.{ts,tsx}',
     './src/**/*.{ts,tsx}',
-    "./lib/**/*.{ts,tsx}",
-  ],
+	],
   prefix: "",
   theme: {
     container: {
@@ -74,14 +72,9 @@ export default withUt({
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
       },
-      backgroundImage: {
-        darkImage: 'url("")',
-        lightImage: 'url("")',
-      },
     },
   },
-  variants: {
-    extend: { backgroundImage: ['dark'] },
-  },
-  plugins: [require("tailwindcss-animate"), require('@tailwindcss/typography'),],
-});
+  plugins: [require("tailwindcss-animate")],
+} satisfies Config
+
+export default config

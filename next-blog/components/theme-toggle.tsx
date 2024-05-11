@@ -17,6 +17,9 @@ export function ThemeToggle() {
 
   return (
     <DropdownMenu>
+      {/* <div className="fixed left-0 top-0 -z-10 h-full w-full hidden dark:block">
+        <div className="absolute inset-0 -z-10 h-full w-full items-center px-5 py-24 [background:radial-gradient(125%_125%_at_50%_10%,#000_40%,#63e_100%)]" />
+      </div> */}
       <DropdownMenuTrigger asChild>
         <Button variant="outline" size="icon">
           <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />

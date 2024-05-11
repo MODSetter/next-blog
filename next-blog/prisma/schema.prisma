@@ -14,13 +14,25 @@ datasource db {
 }
 
 model User {
-  id           Int      @id @default(autoincrement())
-  email        String   @unique
-  passwordHash String
-  name         String?
-  maingrid     Int
-  registeredAt DateTime @default(now())
-  posts        Post[]
+  id            String   @id
+  email         String   @unique
+  username      String   @unique
+  password_hash String
+  registeredAt  DateTime @default(now())
+
+  maingrid Int
+  navbar   Int
+  footer   Int
+
+  posts    Post[]
+  sessions Session[]
+}
+
+model Session {
+  id        String   @id
+  userId    String
+  expiresAt DateTime
+  user      User     @relation(references: [id], fields: [userId], onDelete: Cascade)
 }
 
 model Post {
@@ -31,16 +43,15 @@ model Post {
   updatedAt       DateTime @default(now())
   metaDescription String?
   metaKeywords    String[]
+  views           Int      @default(0)
 
-  views Int @default(0)
-
-  author   User @relation(fields: [authorId], references: [id])
-  authorId Int
+  author   User   @relation(fields: [authorId], references: [id])
+  authorId String
 
   tags Tag[]
 }
 
 model Tag {
   tagname String @id
-  posts Post[]
+  posts   Post[]
 }
