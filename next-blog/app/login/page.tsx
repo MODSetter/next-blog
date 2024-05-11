@@ -27,7 +27,7 @@ const formSchema = z.object({
   }),
 })
 
-export default async function Login() {
+export default function Login() {
   // const { user } = await validateRequest();
 	// if (user) {
 	// 	return redirect("/dashboard");
