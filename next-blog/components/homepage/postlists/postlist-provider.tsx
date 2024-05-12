@@ -1,3 +1,4 @@
+import PaginationTest from "./paginationtest"
 import PostListOne from "./PostListOne"
 import PostListTwo from "./PostListTwo"
 
@@ -16,7 +17,7 @@ const postListProvider = (postListId: string | undefined) => {
             return <></>
         }
         default: {
-            return <PostListOne />;
+            return <></>;
         }
     }
 }

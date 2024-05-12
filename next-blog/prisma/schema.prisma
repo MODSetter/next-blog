@@ -55,6 +55,7 @@ model Post {
   metaDescription String?
   metaKeywords    String[]
   views           Int      @default(0)
+  visibility      Boolean  @default(true)
 
   author   User   @relation(fields: [authorId], references: [id])
   authorId String

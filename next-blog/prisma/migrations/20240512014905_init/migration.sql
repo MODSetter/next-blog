@@ -44,6 +44,7 @@ CREATE TABLE "Post" (
     "metaDescription" TEXT,
     "metaKeywords" TEXT[],
     "views" INTEGER NOT NULL DEFAULT 0,
+    "visibility" BOOLEAN NOT NULL DEFAULT true,
     "authorId" TEXT NOT NULL,
 
     CONSTRAINT "Post_pkey" PRIMARY KEY ("slug")

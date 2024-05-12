@@ -1,4 +1,6 @@
 import { Eye } from "lucide-react";
+import prisma from "@/db/prismaclient";
+import Link from "next/link";
 
 interface PostMetaData {
   title: string;
@@ -24,9 +26,55 @@ async function allPostMetaDataRequest() {
   return response.json();
 }
 
+
+async function getPostsData(perPage: number, page: number) {
+  try {
+    // DB Query
+    const posts = await prisma.post.findMany({
+      select: {
+          slug: true,
+          opengraphimage: true,
+          title: true,
+          metaDescription: true,
+          updatedAt: true,
+          views: true,
+          tags: true,
+      },
+      where: {
+        visibility: true
+      },
+      skip: (perPage * (page - 1)),
+      take: perPage,
+  })
+
+    const postsCount = posts.length;
+
+    const respnse = { posts, postsCount };
+    return respnse;
+  } catch (error) {
+    throw new Error("Failed to fetch data. Please try again later.");
+  }
+}
+
+interface AllPosts {
+  posts: {
+      slug: string;
+      opengraphimage: string;
+      title: string;
+      updatedAt: Date;
+      metaDescription: string | null;
+      views: number;
+      tags: {
+          tagname: string;
+      }[];
+  }[];
+  postsCount: number;
+}
+//{data, page = 1, perPage = 1}:{data: AllPosts, page:number, perPage:number}
 const PostListOne = async () => {
   const allPostMetaData = await allPostMetaDataRequest();
-  console.log(allPostMetaData);
+
+
   return (
     <>
       <div className="flex gap-4 flex-wrap p-2">
@@ -92,7 +140,7 @@ const PostListOne = async () => {
             </div>
           )
         )}
-      </div>
+      </div>        
     </>
   );
 };
