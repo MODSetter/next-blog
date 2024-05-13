@@ -1,5 +1,6 @@
 import { Eye } from 'lucide-react';
 import PostMetaData from '../../common-interfaces';
+import Link from 'next/link';
 
 
 const PostcardLgOne = ({
@@ -25,14 +26,17 @@ const PostcardLgOne = ({
                         </div>
                         <div className="flex items-center gap-2">
                             {tags.map(({ tagname }) => (
-                                <p className={`text-[14px] font-semibold rounded-3xl mb-4 px-[18px] border border-violet-500`}>
+                                <Link href={`/tags/${tagname}`} className={`text-[14px] font-semibold rounded-3xl mb-4 px-[18px] border border-violet-500`}>
                                     {tagname}
-                                </p>
+                                </Link>
                             ))}
                         </div>
                     </div>
-                    <a href="#" className="mb-4 block text-2xl font-medium">{title}</a>
-                    <p className="mb-6">{metaDescription}</p>
+                    <Link href={`/${slug}`}>
+                        <p className="mb-4 block text-2xl font-medium">{title}</p>
+                        <p className="mb-6">{metaDescription}</p>
+                    </Link>
+
                     <div className="flex items-center">
                         <img className="h-10 w-10 rounded-full object-cover" src={"https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"} alt="Simon Lewis" />
                         <p className="ml-4 w-56">

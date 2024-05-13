@@ -1,6 +1,7 @@
 import { Eye } from 'lucide-react';
 import PostMetaData from '../../common-interfaces';
 import { randomBorderColor } from '@/utils/common-functions';
+import Link from 'next/link';
 
 
 const PostcardSmOne = ({
@@ -16,15 +17,16 @@ const PostcardSmOne = ({
         <>
             <div
                 className="max-w-sm mx-auto bg-white/10 backdrop-blur-lg rounded-2xl shadow-md mb-10 flex flex-col p-4"
-                key={slug}
             >
-                <div className="shrink-0 my-4 overflow-hidden">
-                    <img
-                        className="rounded-2xl hover:scale-110 transition-all duration-500 cursor-pointer "
-                        src={opengraphimage}
-                        alt="opengraphimage"
-                    />
-                </div>
+                <Link href={`/${slug}`}>
+                    <div className="shrink-0 my-4 overflow-hidden">
+                        <img
+                            className="rounded-2xl hover:scale-110 transition-all duration-500 cursor-pointer "
+                            src={opengraphimage}
+                            alt="opengraphimage"
+                        />
+                    </div>
+                </Link>
                 <div className="p-5 flex-grow ">
                     <div className="flex xl:justify-between xl:flex-row justify-between flex-row-reverse">
                         <div className="flex  gap-2">
@@ -34,21 +36,22 @@ const PostcardSmOne = ({
 
                         <div className="flex items-center gap-2">
                             {tags.map(({ tagname }) => (
-                                <p className={`text-[14px] font-semibold rounded-3xl mb-4 px-[18px] border border-violet-500`}>
+                                <Link href={`/tags/${tagname}`} className={`text-[14px] font-semibold rounded-3xl mb-4 px-[18px] border border-violet-500`}>
                                     {tagname}
-                                </p>
+                                </Link>
                             ))}
 
                         </div>
 
                     </div>
-
-                    <div>
-                        <h5 className="mb-4 block text-2xl font-semibold text-gray-700 dark:text-white">
-                            {title}
-                        </h5>
-                    </div>
-                    <p className="mb-6 text-gray-500">{metaDescription}</p>
+                    <Link href={`/${slug}`}>
+                        <div>
+                            <h5 className="mb-4 block text-2xl font-semibold text-gray-700 dark:text-white">
+                                {title}
+                            </h5>
+                        </div>
+                        <p className="mb-6 text-gray-500">{metaDescription}</p>
+                    </Link>
                     <div className="flex items-center">
                         <div className="flex-shrink-0">
                             <img

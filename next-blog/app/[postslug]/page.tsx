@@ -67,7 +67,7 @@ export default async function BlogPostPage({
     <>
       <div className="flex flex-col justify-between h-screen">
         <NavBar />
-        <div className="grow container mx-auto p-4 border m-4 rounded-xl">
+        <div className="grow container mx-auto p-4 border m-4 rounded-xl bg-white/10 backdrop-blur-lg">
           <div className="flex flex-col gap-y-4 m-4">
             <div className="flex justify-between items-center p-4 border-b border-dashed border-gray-200">
               <div className="flex flex-col gap-4">
