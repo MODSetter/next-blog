@@ -16,7 +16,7 @@ async function allPostMetaDataRequest() {
 
 const postListProvider = async (postListType: string | undefined) => {
     const allPostMetaData = await allPostMetaDataRequest();
-    const cardno = postListType?.slice(-1);
+    const cardno = postListType?.slice(-4);
     if(postListType?.startsWith("POSTLIST-SM")){
         return <PostListSm data={allPostMetaData} postcardno={cardno}/>
     }else if(postListType?.startsWith("POSTLIST-LG")){

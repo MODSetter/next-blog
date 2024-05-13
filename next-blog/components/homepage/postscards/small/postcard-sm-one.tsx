@@ -1,9 +1,9 @@
 import { Eye } from 'lucide-react';
-import PostMetaData from '../common-interfaces';
+import PostMetaData from '../../common-interfaces';
 import { randomBorderColor } from '@/utils/common-functions';
 
 
-const PostcardOne = ({
+const PostcardSmOne = ({
     slug,
     opengraphimage,
     title,
@@ -34,7 +34,7 @@ const PostcardOne = ({
 
                         <div className="flex items-center gap-2">
                             {tags.map(({ tagname }) => (
-                                <p className={`text-[14px] font-semibold rounded-3xl mb-4 px-[18px] border-2  ${randomBorderColor(12)}`}>
+                                <p className={`text-[14px] font-semibold rounded-3xl mb-4 px-[18px] border border-violet-500`}>
                                     {tagname}
                                 </p>
                             ))}
@@ -71,4 +71,4 @@ const PostcardOne = ({
     )
 }
 
-export default PostcardOne
+export default PostcardSmOne

@@ -1,21 +1,40 @@
 import PostMetaData from "../common-interfaces"
-import PostcardOne from "./postcard-one";
-import PostcardThree from "./postcard-three";
-import PostcardTwo from "./postcard-two";
-const postCardProvider = (postcardid: string | undefined, datarec: PostMetaData) => {
-    switch(postcardid){
-        case "1": {
-            return <PostcardOne {...datarec} />
-        }
-        case "2": {
-            return <PostcardTwo {...datarec} />
-        }
-        case "3": {
-            return <PostcardThree {...datarec} />
-        }
-   
-        default: {
-            return <></>;
+import PostcardSmOne from "./small/postcard-sm-one";
+import PostcardSmTwo from "./small/postcard-sm-two";
+import PostcardLgOne from "./large/postcard-lg-one";
+const postCardProvider = (postScrId: string | undefined, datarec: PostMetaData) => {
+    const data = postScrId?.split("-");
+
+    if(data && data[0] && data[1]){
+        switch(data[0]){
+            case "SM": {
+                switch(data[1]){
+                    case "1":{
+                        return <PostcardSmOne {...datarec} />
+                    }
+                    case "2":{
+                        return <PostcardSmTwo {...datarec} />
+                    }
+                    default: {
+                        return <></>;
+                    }
+
+                }
+            }
+            case "LG": {
+                switch(data[1]){
+                    case "1":{
+                        return <PostcardLgOne {...datarec} />
+                    }
+  
+                    default: {
+                        return <></>;
+                    }
+                }
+            }
+            default: {
+                return <></>;
+            }
         }
     }
 }

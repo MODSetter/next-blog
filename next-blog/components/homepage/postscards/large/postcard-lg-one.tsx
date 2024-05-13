@@ -1,8 +1,8 @@
 import { Eye } from 'lucide-react';
-import PostMetaData from '../common-interfaces';
+import PostMetaData from '../../common-interfaces';
 
 
-const PostcardOne = ({
+const PostcardLgOne = ({
     slug,
     opengraphimage,
     title,
@@ -18,9 +18,18 @@ const PostcardOne = ({
                     <img className="rounded-2xl" src={opengraphimage} alt="opengraphimage" />
                 </div>
                 <div className="flex flex-col gap-2">
-                    <div className="flex gap-2">
-                        <Eye className="" size={20} />
-                        <span className="text-sm">{views}</span>
+                    <div className="flex justify-between">
+                        <div className="flex gap-2">
+                            <Eye className="" size={20} />
+                            <span className="text-sm">{views}</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            {tags.map(({ tagname }) => (
+                                <p className={`text-[14px] font-semibold rounded-3xl mb-4 px-[18px] border border-violet-500`}>
+                                    {tagname}
+                                </p>
+                            ))}
+                        </div>
                     </div>
                     <a href="#" className="mb-4 block text-2xl font-medium">{title}</a>
                     <p className="mb-6">{metaDescription}</p>
@@ -38,4 +47,4 @@ const PostcardOne = ({
     )
 }
 
-export default PostcardOne
+export default PostcardLgOne

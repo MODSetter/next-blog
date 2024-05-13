@@ -1,12 +1,12 @@
 import { ArrowUpRight, Eye } from 'lucide-react';
-import PostMetaData from '../common-interfaces';
+import PostMetaData from '../../common-interfaces';
 import Link from 'next/link';
 import Image from 'next/image';
-import readmore from "../../../public/images/readmore.png"
+import readmore from "../../../../public/images/readmore.png"
 import {randomBorderColor} from "@/utils/common-functions"
 
 
-const PostcardThree = ({
+const PostcardSmTwo = ({
     slug,
     opengraphimage,
     title,
@@ -62,8 +62,8 @@ const PostcardThree = ({
                             </div>
                             <div className="category">
                                 <div className="flex items-center gap-2">
-                                    {tags.map(({ tagname }) => (
-                                        <p className={`text-[14px] font-semibold rounded-3xl mb-4 px-[18px] border-2  ${randomBorderColor(12)}`}>
+                                    {tags.map(({ tagname }, index) => (
+                                        <p className={`text-[14px] font-semibold rounded-3xl mb-4 px-[18px] border border-violet-500`} key={index}>
                                             {tagname}
                                         </p>
                                     ))}
@@ -87,4 +87,4 @@ const PostcardThree = ({
     )
 }
 
-export default PostcardThree
+export default PostcardSmTwo
