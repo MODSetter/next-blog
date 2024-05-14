@@ -12,7 +12,7 @@ import { getUser } from "@/db/getters";
 import { ThemeProvider } from "@/components/theme-provider"
 import { Toaster } from "@/components/ui/toaster"
 
-const inter = Figtree({ weight: "300", subsets: ["latin"] });
+const inter = Montserrat({ weight: "300", subsets: ["latin"] });
 
 //Homepage Metas - can define template in title
 export const metadata: Metadata = {

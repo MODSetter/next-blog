@@ -63,7 +63,7 @@ const PostcardSmTwo = ({
                             <div className="category">
                                 <div className="flex items-center gap-2">
                                     {tags.map(({ tagname }, index) => (
-                                        <Link href={`/tags/${tagname}`} className={`text-[14px] font-semibold rounded-3xl mb-4 px-[18px] border border-violet-500`}>
+                                        <Link href={`/tags/${tagname}`} className={`text-[14px] font-semibold rounded-3xl mb-4 px-[18px] border border-violet-500 bg-emerald-500/10 backdrop-blur-lg`}>
                                             {tagname}
                                         </Link>
                                     ))}

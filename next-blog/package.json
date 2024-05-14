@@ -20,6 +20,7 @@
     "prisma:seed": "npx prisma db seed"
   },
   "dependencies": {
+    "@giscus/react": "^3.0.0",
     "@hookform/resolvers": "^3.3.4",
     "@lucia-auth/adapter-prisma": "^4.0.1",
     "@node-rs/argon2": "^1.8.3",
@@ -59,16 +60,22 @@
     "next-themes": "^0.3.0",
     "novel": "^0.3.1",
     "openai": "^4.27.0",
+    "parameterize": "^1.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.51.4",
     "react-markdown": "^8.0.7",
+    "rehype": "^13.0.1",
+    "rehype-parse": "^9.0.0",
+    "rehype-stringify": "^10.0.0",
     "sonner": "^0.7.0",
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7",
     "tippy.js": "^6.3.7",
     "ts-pattern": "^5.0.6",
     "typescript": "^5.3.3",
+    "unified": "^11.0.4",
+    "unist-util-visit": "^5.0.0",
     "uploadthing": "^6.9.0",
     "use-debounce": "^9.0.3",
     "zod": "^3.23.8"
@@ -76,6 +83,7 @@
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.12",
     "@types/node": "^20",
+    "@types/parameterize": "^1.0.3",
     "@types/react": "^18.2.55",
     "@types/react-dom": "18.2.19",
     "autoprefixer": "^10.0.1",

@@ -42,7 +42,7 @@ const page = () => {
   const [metadescription, setMetadescription] = useState<string>("");
 
   const [metadatasubmitedflag, setMetadatasubmitedflag] =
-    useState<boolean>(false);
+    useState<boolean>(true);
 
   const [previewhtml, setPreviewhtml] = useState<string | null>("");
   const [novelerror, setNovelerror] = useState<string>();
