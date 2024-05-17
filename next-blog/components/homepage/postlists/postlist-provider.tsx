@@ -8,7 +8,7 @@ async function allPostMetaDataRequest() {
     } else {
       console.log("Wrong Home Cache Vals in Env");
     }
-    const response = await fetch(`${process.env.PUBLIC_BASE_URL}/api/posts`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/posts`, {
       next: { revalidate: cacheValidateAt },
     });
     return response.json();

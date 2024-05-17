@@ -32,7 +32,7 @@ async function getPostBySlug(postslug: string) {
   }else{
     console.log("Wrong Post Cache Vals in Env")
   }
-  const response = await fetch(`${process.env.PUBLIC_BASE_URL}/api/posts/getpostbyslug/${postslug}`, {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/posts/getpostbyslug/${postslug}`, {
     next: { revalidate: cacheValidateAt },
   });
   return response.json();

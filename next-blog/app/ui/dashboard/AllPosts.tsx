@@ -36,7 +36,7 @@ export interface Post {
 }
 
 async function allPostMetaDataRequest() {
-  const response = await fetch(`${process.env.PUBLIC_BASE_URL}/api/posts`, { cache: 'no-store' });
+  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/posts`, { cache: 'no-store' });
   return response.json();
 }
 
