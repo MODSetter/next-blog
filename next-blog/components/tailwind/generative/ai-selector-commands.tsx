@@ -1,14 +1,7 @@
-import React from "react";
-import { CommandGroup, CommandItem, CommandSeparator } from "../ui/command";
-import {
-  ArrowDownWideNarrow,
-  CheckCheck,
-  RefreshCcwDot,
-  StepForward,
-  WrapText,
-} from "lucide-react";
+import { ArrowDownWideNarrow, CheckCheck, RefreshCcwDot, StepForward, WrapText } from "lucide-react";
 import { useEditor } from "novel";
-import { getPrevText } from "novel/extensions";
+import { getPrevText } from "novel/utils";
+import { CommandGroup, CommandItem, CommandSeparator } from "../ui/command";
 
 const options = [
   {
@@ -48,9 +41,7 @@ const AISelectorCommands = ({ onSelect }: AISelectorCommandsProps) => {
           <CommandItem
             onSelect={(value) => {
               const slice = editor.state.selection.content();
-              const text = editor.storage.markdown.serializer.serialize(
-                slice.content,
-              );
+              const text = editor.storage.markdown.serializer.serialize(slice.content);
               onSelect(text, value);
             }}
             className="flex gap-2 px-4"
@@ -66,7 +57,9 @@ const AISelectorCommands = ({ onSelect }: AISelectorCommandsProps) => {
       <CommandGroup heading="Use AI to do more">
         <CommandItem
           onSelect={() => {
-            const text = getPrevText(editor, { chars: 5000 });
+            const pos = editor.state.selection.from;
+
+            const text = getPrevText(editor, pos);
             onSelect(text, "continue");
           }}
           value="continue"

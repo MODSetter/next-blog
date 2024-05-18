@@ -1,21 +1,17 @@
 import { EditorBubble, useEditor } from "novel";
-import React, { Fragment, useEffect, type ReactNode } from "react";
-import { Button } from "../ui/button";
-import { AISelector } from "./ai-selector";
-import Magic from "../ui/icons/magic";
-import {} from "novel/plugins";
 import { removeAIHighlight } from "novel/extensions";
+import {} from "novel/plugins";
+import { Fragment, type ReactNode, useEffect } from "react";
+import { Button } from "../ui/button";
+import Magic from "../ui/icons/magic";
+import { AISelector } from "./ai-selector";
 
 interface GenerativeMenuSwitchProps {
   children: ReactNode;
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
-const GenerativeMenuSwitch = ({
-  children,
-  open,
-  onOpenChange,
-}: GenerativeMenuSwitchProps) => {
+const GenerativeMenuSwitch = ({ children, open, onOpenChange }: GenerativeMenuSwitchProps) => {
   const { editor } = useEditor();
 
   useEffect(() => {

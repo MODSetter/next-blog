@@ -3,18 +3,18 @@
 import { Command, CommandInput } from "@/components/tailwind/ui/command";
 
 import { useCompletion } from "ai/react";
-import { toast } from "sonner";
-import { useEditor } from "novel";
-import { useEffect, useState } from "react";
-import Markdown from "react-markdown";
-import AISelectorCommands from "./ai-selector-commands";
-import AICompletionCommands from "./ai-completion-command";
-import { ScrollArea } from "../ui/scroll-area";
-import { Button } from "../ui/button";
 import { ArrowUp } from "lucide-react";
-import Magic from "../ui/icons/magic";
-import CrazySpinner from "../ui/icons/crazy-spinner";
+import { useEditor } from "novel";
 import { addAIHighlight } from "novel/extensions";
+import { useState } from "react";
+import Markdown from "react-markdown";
+import { toast } from "sonner";
+import { Button } from "../ui/button";
+import CrazySpinner from "../ui/icons/crazy-spinner";
+import Magic from "../ui/icons/magic";
+import { ScrollArea } from "../ui/scroll-area";
+import AICompletionCommands from "./ai-completion-command";
+import AISelectorCommands from "./ai-selector-commands";
 //TODO: I think it makes more sense to create a custom Tiptap extension for this functionality https://tiptap.dev/docs/editor/ai/introduction
 
 interface AISelectorProps {
@@ -22,7 +22,7 @@ interface AISelectorProps {
   onOpenChange: (open: boolean) => void;
 }
 
-export function AISelector({ open, onOpenChange }: AISelectorProps) {
+export function AISelector({ onOpenChange }: AISelectorProps) {
   const { editor } = useEditor();
   const [inputValue, setInputValue] = useState("");
 
@@ -70,11 +70,7 @@ export function AISelector({ open, onOpenChange }: AISelectorProps) {
               value={inputValue}
               onValueChange={setInputValue}
               autoFocus
-              placeholder={
-                hasCompletion
-                  ? "Tell AI what to do next"
-                  : "Ask AI to edit or generate..."
-              }
+              placeholder={hasCompletion ? "Tell AI what to do next" : "Ask AI to edit or generate..."}
               onFocus={() => addAIHighlight(editor)}
             />
             <Button
@@ -87,9 +83,7 @@ export function AISelector({ open, onOpenChange }: AISelectorProps) {
                   }).then(() => setInputValue(""));
 
                 const slice = editor.state.selection.content();
-                const text = editor.storage.markdown.serializer.serialize(
-                  slice.content,
-                );
+                const text = editor.storage.markdown.serializer.serialize(slice.content);
 
                 complete(text, {
                   body: { option: "zap", command: inputValue },
@@ -108,11 +102,7 @@ export function AISelector({ open, onOpenChange }: AISelectorProps) {
               completion={completion}
             />
           ) : (
-            <AISelectorCommands
-              onSelect={(value, option) =>
-                complete(value, { body: { option } })
-              }
-            />
+            <AISelectorCommands onSelect={(value, option) => complete(value, { body: { option } })} />
           )}
         </>
       )}

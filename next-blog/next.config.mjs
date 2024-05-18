@@ -17,6 +17,7 @@ const nextConfig = {
   experimental: {
     serverComponentsExternalPackages: ["@node-rs/argon2"],
   },
+  productionBrowserSourceMaps: true,
 };
 
 export default nextConfig;

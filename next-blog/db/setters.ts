@@ -13,16 +13,16 @@ export async function incView(postslug: string) {
   });
 }
 
-export async function uploadImage(imageFile: File) {
+export async function uploadFile(file: File) {
   const req = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/upload`, {
     method: "POST",
     headers: {
-      "x-vercel-filename": imageFile.name,
-      "content-type": imageFile.type,
+      "x-vercel-filename": file.name,
+      "content-type": file.type,
     },
-    body: imageFile,
+    body: file,
   });
   const res = await req.json();
-
-  console.log("BLOB RESPONSE", res);
+  return res
+  // console.log("BLOB RESPONSE", res);
 }

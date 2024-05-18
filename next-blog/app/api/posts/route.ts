@@ -29,7 +29,7 @@ export async function POST(req: Request) {
             opengraphimage: datareceived.rimgurl,
             title: datareceived.rtitle,
             content: datareceived.rcontent,
-            authorId: 1,
+            authorId: "1",
             metaKeywords: datareceived.rmetakeys,
             metaDescription: datareceived.rmetadesc
         },
@@ -54,7 +54,7 @@ export async function PATCH(req: Request) {
             opengraphimage: datareceived.rimgurl,
             title: datareceived.rtitle,
             content: datareceived.rcontent,
-            authorId: 1,
+            authorId: "1",
             metaKeywords: datareceived.rmetakeys,
             metaDescription: datareceived.rmetadesc
         },

@@ -56,4 +56,14 @@ export async function getGridData(gridId: string) {
     return grid
 }
 
+export async function checkSlug(postslug: string) {
+    const post = await prisma.post.findUnique({
+        where: {
+            slug: postslug
+        },
+    })
+    return post
+}
+
+
 

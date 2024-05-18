@@ -38,9 +38,6 @@
     "@radix-ui/react-toast": "^1.1.5",
     "@tailwindcss/typography": "^0.5.10",
     "@tinymce/tinymce-react": "^5.0.1",
-    "@tiptap/pm": "^2.3.0",
-    "@tiptap/react": "^2.3.0",
-    "@tiptap/starter-kit": "^2.3.0",
     "@uploadthing/react": "^6.4.4",
     "@upstash/ratelimit": "^0.4.3",
     "@vercel/analytics": "^1.0.1",
@@ -55,11 +52,12 @@
     "eslint": "8.57.0",
     "eslint-config-next": "^14.2.2",
     "eventsource-parser": "^0.1.0",
+    "lowlight": "^3.1.0",
     "lucia": "^3.2.0",
     "lucide-react": "^0.368.0",
     "next": "^14.2.2",
     "next-themes": "^0.3.0",
-    "novel": "^0.3.1",
+    "novel": "^0.4.1",
     "openai": "^4.27.0",
     "parameterize": "^1.0.0",
     "react": "^18.2.0",
@@ -79,7 +77,8 @@
     "unist-util-visit": "^5.0.0",
     "uploadthing": "^6.9.0",
     "use-debounce": "^9.0.3",
-    "zod": "^3.23.8"
+    "zod": "^3.23.8",
+    "highlight.js": "^11.9.0"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.12",
@@ -94,6 +93,6 @@
     "tailwindcss": "^3.4.1",
     "ts-node": "^10.9.2",
     "tsconfig": "^7.0.0",
-    "typescript": "^5"
+    "typescript": "^5.3.3"
   }
 }

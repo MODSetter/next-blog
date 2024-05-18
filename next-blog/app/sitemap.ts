@@ -5,18 +5,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const posts  = await getPostsMetaWithPostSlug();
 
   const postEntries: MetadataRoute.Sitemap = posts.map(({ slug , updatedAt }) => ({
-    url: `${process.env.PUBLIC_BASE_URL}/${slug}`,
+    url: `${process.env.NEXT_PUBLIC_BASE_URL}/${slug}`,
     lastModified: `${updatedAt}`,
   }));
 
   return [
     //about page
     {
-      url: `${process.env.PUBLIC_BASE_URL}/about`,
+      url: `${process.env.NEXT_PUBLIC_BASE_URL}/about`,
     },
     //privacy page
     {
-        url: `${process.env.PUBLIC_BASE_URL}/privacy`,
+        url: `${process.env.NEXT_PUBLIC_BASE_URL}/privacy`,
     },
     ...postEntries,
   ];
