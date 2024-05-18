@@ -36,6 +36,7 @@
     "@radix-ui/react-separator": "^1.0.3",
     "@radix-ui/react-slot": "^1.0.2",
     "@radix-ui/react-toast": "^1.1.5",
+    "@radix-ui/react-tooltip": "^1.0.7",
     "@tailwindcss/typography": "^0.5.10",
     "@tinymce/tinymce-react": "^5.0.1",
     "@uploadthing/react": "^6.4.4",
@@ -52,6 +53,7 @@
     "eslint": "8.57.0",
     "eslint-config-next": "^14.2.2",
     "eventsource-parser": "^0.1.0",
+    "highlight.js": "^11.9.0",
     "lowlight": "^3.1.0",
     "lucia": "^3.2.0",
     "lucide-react": "^0.368.0",
@@ -77,8 +79,7 @@
     "unist-util-visit": "^5.0.0",
     "uploadthing": "^6.9.0",
     "use-debounce": "^9.0.3",
-    "zod": "^3.23.8",
-    "highlight.js": "^11.9.0"
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.12",

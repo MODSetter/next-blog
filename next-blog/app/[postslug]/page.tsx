@@ -8,6 +8,14 @@ import rehypeParse from 'rehype-parse';
 import rehypeStringify from 'rehype-stringify';
 import parameterize from 'parameterize';
 import { visit } from 'unist-util-visit';
+import { CirclePlus, MessageCircle, SmilePlus } from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
+
 
 interface BlogPostPageProps {
   params: { postslug: string };
@@ -27,9 +35,9 @@ interface Post {
 
 async function getPostBySlug(postslug: string) {
   let cacheValidateAt = 5 //Default Cache Timeout
-  if (`${process.env.POSTS_CACHE_REVALIDATE}`){
+  if (`${process.env.POSTS_CACHE_REVALIDATE}`) {
     cacheValidateAt = parseInt(`${process.env.POSTS_CACHE_REVALIDATE}`);
-  }else{
+  } else {
     console.log("Wrong Post Cache Vals in Env")
   }
   const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/posts/getpostbyslug/${postslug}`, {
@@ -42,8 +50,8 @@ export async function generateMetadata({
   params: { postslug },
 }: BlogPostPageProps): Promise<Metadata> {
   //get post data of this postId
-  const post: Post = await getPostBySlug(postslug); 
-  
+  const post: Post = await getPostBySlug(postslug);
+
 
   return {
     title: post?.title,
@@ -78,7 +86,7 @@ export default async function BlogPostPage({
     .use(() => {
       return (tree) => {
         visit(tree, 'element', function (node: any) {
-          if ( node.tagName === 'h2' ) {
+          if (node.tagName === 'h2') {
             const id = parameterize(node.children[0].value);
             node.properties.id = id;
 
@@ -89,7 +97,8 @@ export default async function BlogPostPage({
           }
         });
         return;
-    }})
+      }
+    })
     .use(rehypeStringify)
     .processSync(post.content)
     .toString();
@@ -123,24 +132,90 @@ export default async function BlogPostPage({
               </div>
             </div>
 
-            <ul>
-          {toc.map(({ id, title}:{id:any, title:any}) => {
-            return (
-              <li key={id}>
-                <a href={`#${id}`}>
-                  { title }
-                </a>
-              </li>
-            )
-          })}
-        </ul>
+            <div className="flex flex-col gap-4 justify-between md:flex-row">
+              <div>
+                <div className="bg-white/10 backdrop-blur-lg bg-gradient-to-r from-green-400 to-blue-300 hover:from-pink-300 hover:to-yellow-300 rounded-2xl p-4 sticky top-8 left-0 z-50 min-w-40">
+                  <p className="border-b-2 py-2 mb-2 text-lg font-semibold">On This Page</p>
+                  <ul>
+                    {toc.map(({ id, title }: { id: any, title: any }) => {
+                      return (
+                        <li key={id} className="text-sm">
+                          <a href={`#${id}`}>
+                            {title}
+                          </a>
+                        </li>
+                      )
+                    })}
+                  </ul>
+                </div>
+              </div>
 
-            <div
-              className="tiptap ProseMirror prose prose-lg dark:prose-invert prose-headings:font-title font-default focus:outline-none max-w-full"
-              dangerouslySetInnerHTML={{
-                __html: post ? contentWithToc : "Not Found",
-              }}
-            ></div>
+              <div
+                className="tiptap ProseMirror prose prose-lg dark:prose-invert prose-headings:font-title font-default focus:outline-none max-w-full"
+                dangerouslySetInnerHTML={{
+                  __html: post ? contentWithToc : "Not Found",
+                }}
+              ></div>
+
+              <div>
+                <div className="flex md:flex-col gap-2 place-items-center justify-around bg-white/10 backdrop-blur-lg bg-gradient-to-r from-indigo-500 to-red-300 hover:from-pink-300 hover:to-yellow-300 p-4 rounded-lg sticky top-8 left-0 z-50">
+                  <div>
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger>
+                          <div>
+                            <MessageCircle className="h-4 w-4" />
+                            2543
+                          </div>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>Post Comments</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+
+                  </div>
+                  <div>
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger>
+                          <div>
+                            <SmilePlus className="h-4 w-4" />
+                            3242
+                          </div>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>Post Reactions</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+
+                  </div>
+                  <div>
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger>
+                          <div>
+                            <CirclePlus className="" />
+                          </div>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>Participate in Post Discussion</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+
+                  </div>
+
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+
           </div>
         </div>
         <Footer />

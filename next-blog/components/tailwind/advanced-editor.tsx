@@ -39,7 +39,7 @@ const TailwindAdvancedEditor = () => {
   const [openLink, setOpenLink] = useState(false);
   const [openAI, setOpenAI] = useState(false);
 
-  //Apply Codeblock Highlighting on the HTML from editor.getHTML()
+  //Apply Codeblock Highlighting on the HTML from  editor.getHTML()
   const highlightCodeblocks = (content: string) => {
     const doc = new DOMParser().parseFromString(content, 'text/html');
     doc.querySelectorAll('pre code').forEach((el) => {
@@ -52,7 +52,7 @@ const TailwindAdvancedEditor = () => {
 
   const debouncedUpdates = useDebouncedCallback(async (editor: EditorInstance) => {
     const json = editor.getJSON();
-    console.log(highlightCodeblocks(editor.getHTML()));
+    // console.log(highlightCodeblocks(editor.getHTML()));
     setCharsCount(editor.storage.characterCount.words());
     
     window.localStorage.setItem("html-content", highlightCodeblocks(editor.getHTML()));
