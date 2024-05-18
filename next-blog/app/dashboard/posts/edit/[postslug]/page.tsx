@@ -7,7 +7,6 @@ import { Button } from "@/components/tailwind/ui/button"
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -18,6 +17,8 @@ import { useState } from "react";
 
 import { useToast } from "@/components/ui/use-toast"
 import TailwindAdvancedEditor from "@/components/tailwind/advanced-editor";
+import ImageUploadForm from "@/components/image-upload/ImageUploadForm";
+import { useRouter } from "next/navigation";
 
 
 const slugFormSchema = z.object({
@@ -75,11 +76,14 @@ export const page = ({ params: { postslug } }: EditPageProps) => {
 
   const [contenthtml, setContenthtml] = useState<string | null>(null);
   const [posttitle, setPosttitle] = useState<string | null>(null);
-  const [postdataformvisibility, setPostdataformvisibility] = useState<string | undefined>("block");
+  const [opengraphurl, setOpengraphurl] = useState<string | null>(null);
+  const [postdataformvisibility, setPostdataformvisibility] = useState<string | undefined>("hidden");
 
-  const [metakeywords, setMetakeywords] = useState<string | null>(null);
-  const [metadescription, setMetadescription] = useState<string | null>(null);
-  const [metadataformvisibility, setMetadataformvisibility] = useState<string | undefined>("block");
+  // const [metakeywords, setMetakeywords] = useState<string | null>(null);
+  // const [metadescription, setMetadescription] = useState<string | null>(null);
+  const [metadataformvisibility, setMetadataformvisibility] = useState<string | undefined>("hidden");
+
+  const [postvisibility, setPostvisibility] = useState<boolean>(true);
 
   async function onSlugSubmit(formdata: z.infer<typeof slugFormSchema>) {
     const req = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/posts/getpostbyslug/${formdata.slug}`, {
@@ -99,7 +103,8 @@ export const page = ({ params: { postslug } }: EditPageProps) => {
       });
 
       setSlug(formdata.slug);
-      setSlugformvisibility("hidden")
+      setSlugformvisibility("hidden");
+      setPostdataformvisibility("block");
     }
 
   }
@@ -108,12 +113,31 @@ export const page = ({ params: { postslug } }: EditPageProps) => {
   async function onPostDataSubmit(formdata: z.infer<typeof postdataFormSchema>) {
     //check if novel have some content
     setPosttitle(formdata.posttitle);
-    setContenthtml("<p>Novel html</p>");
+    setContenthtml(window.localStorage.getItem("html-content"));
     setPostdataformvisibility("hidden");
+    setMetadataformvisibility("block")
   }
 
 
   async function onMetaDataSubmit(formdata: z.infer<typeof metadataFormSchema>) {
+    const reqdata = {
+      rslug: slug,
+      rtitle: posttitle,
+      rcontent: contenthtml,
+      rimgurl: opengraphurl,
+      rmetakeys: formdata.metakeywords?.split(","),
+      rmetadesc: formdata.metadescription,
+      rvisibility: true
+    };
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(reqdata),
+    };
+    const response = await fetch("/api/posts", requestOptions);
+
+    const res = await response.json();
+    console.log("POSTED", res);
 
   }
 
@@ -144,7 +168,10 @@ export const page = ({ params: { postslug } }: EditPageProps) => {
         </Form>
       </div>
 
+
       <div className={postdataformvisibility}>
+        <p className="text-sm">Open Graph Image</p>
+        <ImageUploadForm opengraphurl={opengraphurl} setOpengraphurl={setOpengraphurl} />
         <Form {...postdataform}>
           <form onSubmit={postdataform.handleSubmit(onPostDataSubmit)} className="space-y-8">
             <FormField
@@ -160,6 +187,7 @@ export const page = ({ params: { postslug } }: EditPageProps) => {
                 </FormItem>
               )}
             />
+            <p className="text-sm">Post Content</p>
             <TailwindAdvancedEditor />
 
             <div className="flex gap-4">

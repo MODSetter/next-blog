@@ -23,6 +23,6 @@ export async function uploadFile(file: File) {
     body: file,
   });
   const res = await req.json();
+  console.log("BLOB RESPONSE", res);
   return res
-  // console.log("BLOB RESPONSE", res);
 }

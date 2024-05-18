@@ -21,7 +21,7 @@ export async function GET() {
 //Post a new post
 export async function POST(req: Request) {
     const datareceived = await req.json();
-    console.log(datareceived)
+    
     //create entry through prisma orm
     const postCreated = await prisma.post.create({
         data: {
@@ -31,7 +31,8 @@ export async function POST(req: Request) {
             content: datareceived.rcontent,
             authorId: "1",
             metaKeywords: datareceived.rmetakeys,
-            metaDescription: datareceived.rmetadesc
+            metaDescription: datareceived.rmetadesc,
+            visibility: datareceived.rvisibility,
         },
     })
 
@@ -43,7 +44,7 @@ export async function POST(req: Request) {
 //Edit a old post
 export async function PATCH(req: Request) {
     const datareceived = await req.json();
-    console.log(datareceived)
+    
     //create entry through prisma orm
     const updatePost = await prisma.post.update({
         where: {

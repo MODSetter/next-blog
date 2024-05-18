@@ -60,7 +60,7 @@ const AllPosts = async () => {
           {recposts.map((post: Post) => (
             <TableRow key={post.slug}>
               <TableCell>
-                <Image
+                <img
                   src={post.opengraphimage}
                   alt="Picture of the author"
                   height={55}

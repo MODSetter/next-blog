@@ -5,6 +5,9 @@ const nextConfig = {
       {
         hostname: "utfs.io",
       },
+      {
+        hostname: "vercel-storage.com",
+      },
     ],
   },
   typescript: {

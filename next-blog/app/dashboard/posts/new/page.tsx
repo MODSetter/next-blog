@@ -1,277 +1,244 @@
 "use client";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
 
-import { UploadDropzone } from "../../../../utils/uploadthing";
-import { useEffect, useState } from "react";
-import Image from "next/image";
-import PreviewPost from "../../../ui/dashboard/PreviewPost";
-import TailwindAdvancedEditor from "@/components/tailwind/advanced-editor";
-
+import { Button } from "@/components/tailwind/ui/button"
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { useState } from "react";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { z } from "zod";
+import { useToast } from "@/components/ui/use-toast"
+import TailwindAdvancedEditor from "@/components/tailwind/advanced-editor";
+import ImageUploadForm from "@/components/image-upload/ImageUploadForm";
 import { useRouter } from "next/navigation";
 
-const schema = z.object({
-  rslug: z.string().regex(new RegExp("^[a-z0-9]+(?:-[a-z0-9]+)*$")),
-  rtitle: z.string().trim().min(10),
-  rmetakeys: z.string().includes(","),
-  rmetadesc: z.string().min(100),
-});
 
-type FormFields = z.infer<typeof schema>;
+const slugFormSchema = z.object({
+  slug: z.string().min(3, {
+    message: "Slug must be at least 3 characters.",
+  }),
+})
 
-const page = () => {
-  const [posttslug, setPosttslug] = useState<string>("");
-  const [title, setTitle] = useState<string>("");
-  const [opengraphimage, setOpengraphimage] = useState<string>("");
-  const [metakeywords, setMetakeywords] = useState<string>(",");
-  const [metadescription, setMetadescription] = useState<string>("");
+const postdataFormSchema = z.object({
+  posttitle: z.string().min(3, {
+    message: "Post Title must be at least 3 characters.",
+  }),
+})
 
-  const [metadatasubmitedflag, setMetadatasubmitedflag] =
-    useState<boolean>(true);
+const metadataFormSchema = z.object({
+  metakeywords: z.string(),
+  metadescription: z.string().min(200, {
+    message: "Meta Description must be at least 200 characters.",
+  }),
+})
 
-  const [previewhtml, setPreviewhtml] = useState<string | null>("");
-  const [novelerror, setNovelerror] = useState<string>();
 
+
+export const page = () => {
   const router = useRouter();
+  const slugform = useForm<z.infer<typeof slugFormSchema>>({
+    resolver: zodResolver(slugFormSchema),
+    defaultValues: {
+      slug: "",
+    },
+  })
 
-  const {
-    register,
-    handleSubmit,
-    setError,
-    formState: { errors, isSubmitting },
-  } = useForm<FormFields>({
-    resolver: zodResolver(schema),
-  });
+  const postdataform = useForm<z.infer<typeof postdataFormSchema>>({
+    resolver: zodResolver(postdataFormSchema),
+    defaultValues: {
+      posttitle: "",
+    },
+  })
 
-  const onSubmit: SubmitHandler<FormFields> = async (data) => {
-    try {
-      setPosttslug(data.rslug);
-      setTitle(data.rtitle);
-      setMetakeywords(data.rmetakeys);
-      setMetadescription(data.rmetadesc);
 
-      //To check if its image url
-      console.log("openimage", opengraphimage);
-      if (opengraphimage.length) {
-        const imgurlregex = new RegExp("(https?://.*.(?:png|jpg))");
-        if (!imgurlregex.test(opengraphimage)) {
-          setError("root", {
-            message: "Please Upload Opengraph Image",
-          });
-        }
-        console.log("META DATA SUBMITTED", data);
-        //to show novel editor after verifying metas
-        setMetadatasubmitedflag(true);
-      } else {
-        setError("root", {
-          message: "Please Upload Opengraph Image",
-        });
-      }
-    } catch (error) {
-      setError("root", {
-        message: "Something Wrong with Meta Data Submitted",
+  const metadataform = useForm<z.infer<typeof metadataFormSchema>>({
+    resolver: zodResolver(metadataFormSchema),
+    defaultValues: {
+      metakeywords: "",
+      metadescription: "",
+    },
+  })
+
+  const { toast } = useToast();
+
+  const [slug, setSlug] = useState<string | null>(null);
+  const [slugformvisibility, setSlugformvisibility] = useState<string | undefined>("block");
+
+  const [contenthtml, setContenthtml] = useState<string | null>(null);
+  const [posttitle, setPosttitle] = useState<string | null>(null);
+  const [opengraphurl, setOpengraphurl] = useState<string | null>(null);
+  const [postdataformvisibility, setPostdataformvisibility] = useState<string | undefined>("hidden");
+
+  // const [metakeywords, setMetakeywords] = useState<string | null>(null);
+  // const [metadescription, setMetadescription] = useState<string | null>(null);
+  const [metadataformvisibility, setMetadataformvisibility] = useState<string | undefined>("hidden");
+
+  const [postvisibility, setPostvisibility] = useState<boolean>(true);
+
+  async function onSlugSubmit(formdata: z.infer<typeof slugFormSchema>) {
+    const req = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/posts/getpostbyslug/${formdata.slug}`, {
+      method: "GET"
+    });
+    const res = await req.json();
+    if (res.slug) {
+      toast({
+        variant: "destructive",
+        description: `${process.env.NEXT_PUBLIC_BASE_URL}/${formdata.slug} is not available`,
       });
+    } else {
+      toast({
+        variant: "default",
+        description: `${process.env.NEXT_PUBLIC_BASE_URL}/${formdata.slug} is available`,
+        className: "bg-green-300"
+      });
+
+      setSlug(formdata.slug);
+      setSlugformvisibility("hidden");
+      setPostdataformvisibility("block");
     }
-  };
 
-  const submitFinalData = async () => {
-    try {
-      const editorhtml = window.localStorage.getItem("novel-html");
-      if (editorhtml) {
-        //API CALL TO CREATE POST
-        const reqdata = {
-          rslug: posttslug,
-          rtitle: title,
-          rcontent: editorhtml,
-          rimgurl: opengraphimage,
-          rmetakeys: metakeywords.split(","),
-          rmetadesc: metadescription,
-        };
-        const requestOptions = {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(reqdata),
-        };
-        const response = await fetch("/api/posts", requestOptions);
+  }
 
-        const res = await response.json();
-        console.log("POSTED", res);
-        alert("Post Posted");
-        //empty local storage to reset editor
-        window.localStorage.removeItem("novel-content")
-        window.localStorage.setItem("novel-html", "");
-        router.push("/dashboard/posts");
-      } else {
-        setNovelerror("Something Wrong with editor content");
-      }
-    } catch (error) {
-      setNovelerror("Something Wrong with editor content");
-    }
-  };
 
-  const updatepreviewData = async () => {
-    setPreviewhtml(window.localStorage.getItem("novel-html"));
-  };
+  async function onPostDataSubmit(formdata: z.infer<typeof postdataFormSchema>) {
+    //check if novel have some content
+    setPosttitle(formdata.posttitle);
+    setContenthtml(window.localStorage.getItem("html-content"));
+    setPostdataformvisibility("hidden");
+    setMetadataformvisibility("block")
+  }
+
+
+  async function onMetaDataSubmit(formdata: z.infer<typeof metadataFormSchema>) {
+    const reqdata = {
+      rslug: slug,
+      rtitle: posttitle,
+      rcontent: contenthtml,
+      rimgurl: opengraphurl,
+      rmetakeys: formdata.metakeywords?.split(","),
+      rmetadesc: formdata.metadescription,
+      rvisibility: true
+    };
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(reqdata),
+    };
+    const response = await fetch("/api/posts", requestOptions);
+
+    const res = await response.json();
+    console.log("POSTED", res);
+    router.push("/dashboard/posts")
+  }
+
+
 
   return (
     <>
-      <div className="text-4xl my-4">Create a New Post</div>
-      {metadatasubmitedflag ? (
-        <div>
-          <Label htmlFor="noveleditor">Blog Content:</Label>
-          <div id="noveleditor" className="flex flex-col items-center gap-4 py-4 sm:px-5">
-            <TailwindAdvancedEditor />
-          </div>
+      <p className="text-3xl pb-4">Create A New Post</p>
+      <div className={slugformvisibility}>
+        <Form {...slugform}>
+          <form onSubmit={slugform.handleSubmit(onSlugSubmit)} className="space-y-8">
+            <FormField
+              control={slugform.control}
+              name="slug"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{`${process.env.NEXT_PUBLIC_BASE_URL}/`}</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Post Slug Here" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button type="submit">Check & Proceed</Button>
 
-          {novelerror?.length ? (<div className="text-red-500 text-xs">{novelerror}</div>) : ""}
-          <div className="flex gap-4">
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button variant="outline" onClick={() => updatepreviewData()}>
-                  Preview
-                </Button>
-              </DialogTrigger>
-              <DialogContent
-                className={
-                  "lg:max-w-screen-lg overflow-y-scroll max-h-screen max-w-full"
-                }
-              >
-                <DialogHeader>
-                  <DialogTitle>Preview</DialogTitle>
-                </DialogHeader>
-                <DialogHeader>
-                  <PreviewPost title={title} content={previewhtml} dateposted={new Date()}/>
-                </DialogHeader>
-              </DialogContent>
-            </Dialog>
-
-            <Button onClick={() => submitFinalData()}>POST</Button>
-          </div>
-        </div>
-      ) : (
-        <div className={"flex flex-col p-4 gap-4"}>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <fieldset className="grid gap-6 rounded-lg border p-4">
-              <legend className="-ml-1 px-1 text-sm font-medium">
-                MetaData
-              </legend>
-              <div className="flex flex-col gap-4">
-                <div>
-                  <Label htmlFor="bslug">Slug</Label>
-                  <Input
-                    {...register("rslug")}
-                    type="text"
-                    id="bslug"
-                    placeholder="Blog Tile"
-                  />
-                  {errors.rslug && (
-                    <div className="text-red-500 text-xs">{errors.rslug.message}</div>
-                  )}
-                </div>
-                <div>
-                  <Label htmlFor="btitle">Title</Label>
-                  <Input
-                    {...register("rtitle")}
-                    type="text"
-                    id="btitle"
-                    placeholder="Blog Tile"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                  />
-                  {errors.rtitle && (
-                    <div className="text-red-500 text-xs">{errors.rtitle.message}</div>
-                  )}
-                </div>
-
-                <div>
-                  <Label htmlFor="opengraphimage">
-                    Opengraph Image(Used in social media)
-                  </Label>
-                  {opengraphimage.length ? (
-                    <div>
-                      <Image
-                        src={opengraphimage}
-                        alt="uploadthingimage"
-                        width={100}
-                        height={100}
-                      />
-                    </div>
-                  ) : (
-                    ""
-                  )}
-
-                  <UploadDropzone
-                    className={opengraphimage.length ? "hidden" : ""}
-                    endpoint="imageUploader"
-                    onClientUploadComplete={(res) => {
-                      // Do something with the response
-                      setOpengraphimage(res[0].url);
-                      console.log("Files: ", res);
-                    }}
-                    onUploadError={(error: Error) => {
-                      // Do something with the error.
-                      alert(`ERROR! ${error.message}`);
-                    }}
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="bmetakeys">Meta Keywords</Label>
-                  <Input
-                    {...register("rmetakeys")}
-                    type="text"
-                    id="bmetakeys"
-                    placeholder="Meta Keywords Here. Comma(,) seperated"
-                  />
-                  {errors.rmetakeys && (
-                    <div className="text-red-500 text-xs">
-                      {errors.rmetakeys.message}
-                    </div>
-                  )}
-                </div>
-                <div>
-                  <Label htmlFor="bdesc">Meta Description</Label>
-                  <Textarea
-                    {...register("rmetadesc")}
-                    id="bdesc"
-                    placeholder="Type your metaderscription(150 words) here."
-                    maxLength={150}
-                  />
-                </div>
-                {errors.rmetadesc && (
-                  <div className="text-red-500 text-xs">{errors.rmetadesc.message}</div>
-                )}
-                {errors.root && (
-                  <div className="text-red-500 text-xs">
-                    {errors.root.message}
-                  </div>
-                )}
-                <div className="flex gap-4">
-                  <Button disabled={isSubmitting} type="submit">
-                    {isSubmitting ? "Loading..." : "Proceed"}
-                  </Button>
-                </div>
-              </div>
-            </fieldset>
           </form>
-        </div>
-      )}
+        </Form>
+      </div>
+
+
+      <div className={postdataformvisibility}>
+        <p className="text-sm">Open Graph Image</p>
+        <ImageUploadForm opengraphurl={opengraphurl} setOpengraphurl={setOpengraphurl} />
+        <Form {...postdataform}>
+          <form onSubmit={postdataform.handleSubmit(onPostDataSubmit)} className="space-y-8">
+            <FormField
+              control={postdataform.control}
+              name="posttitle"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Post Title</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Post Title Here" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <p className="text-sm">Post Content</p>
+            <TailwindAdvancedEditor />
+
+            <div className="flex gap-4">
+              <Button>Preview</Button>
+              <Button type="submit">Check & Proceed</Button>
+            </div>
+
+
+          </form>
+        </Form>
+      </div>
+
+      <div className={metadataformvisibility}>
+        <Form {...metadataform}>
+          <form onSubmit={metadataform.handleSubmit(onMetaDataSubmit)} className="space-y-8">
+            <FormField
+              control={metadataform.control}
+              name="metakeywords"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Meta Keywords</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Comma (,) seperated meta keywords here" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={metadataform.control}
+              name="metadescription"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Meta Description</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Meta Description Here" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <div className="flex gap-4">
+              <Button>Preview</Button>
+              <Button type="submit">Post New Post</Button>
+            </div>
+
+
+          </form>
+        </Form>
+      </div>
     </>
   );
-};
+}
 
 export default page;
