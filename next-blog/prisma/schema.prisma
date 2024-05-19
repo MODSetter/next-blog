@@ -23,6 +23,8 @@ model User {
   maingrid String
   navbar   String
   footer   String
+  navbarlinks String
+  footerlinks String
 
   defaultLight String
   defaultDark  String

@@ -1,6 +1,5 @@
 "use client"
 import { AlignLeft, Search, X } from "lucide-react";
-import logo from "../assets/logo.png";
 import { ThemeToggle } from "@/components/next-toggle/theme-toggle";
 
 function NavbarOne() {

@@ -77,7 +77,6 @@
     "typescript": "^5.3.3",
     "unified": "^11.0.4",
     "unist-util-visit": "^5.0.0",
-    "uploadthing": "^6.9.0",
     "use-debounce": "^9.0.3",
     "zod": "^3.23.8"
   },

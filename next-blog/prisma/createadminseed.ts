@@ -20,6 +20,8 @@ async function main() {
         navbar: "NAVBAR-1" ,
         maingrid: "GRID-1",
         footer: "FOOTER-1",
+        navbarlinks: "[]",
+        footerlinks: "[]",
         defaultDark: "D-1",
         defaultLight: "L-2",
     },
@@ -28,7 +30,7 @@ async function main() {
   const createGrids = await prisma.grid.createMany({
     data: [
 
-      { id: 'GRID-1', comp_one: "BANNER-1", comp_two: "POSTLIST-1", comp_three: "XYZ-1", comp_four: "ABC-1" },
+      { id: 'GRID-1', comp_one: "BANNER-1", comp_two: "POSTLIST-SM-1", comp_three: "XYZ-1", comp_four: "ABC-1" },
       { id: 'GRID-2', comp_one: "BANNER-1", comp_two: "POSTLIST-1", comp_three: "XYZ-1", comp_four: "ABC-1" },
       { id: 'GRID-3', comp_one: "BANNER-1", comp_two: "POSTLIST-1", comp_three: "XYZ-1", comp_four: "ABC-1" },
       { id: 'GRID-4', comp_one: "BANNER-1", comp_two: "POSTLIST-1", comp_three: "XYZ-1", comp_four: "ABC-1" },

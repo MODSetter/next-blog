@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 // import sitemap from "../sitemap";
 import NavBar from "@/components/nav-bar";
-import Footer from "@/components/Footer";
+import Footer from "@/components/homepage/footers/footer-one";
 import { incView } from "@/db/setters";
 import { unified } from 'unified';
 import rehypeParse from 'rehype-parse';
@@ -134,7 +134,7 @@ export default async function BlogPostPage({
 
             <div className="flex flex-col gap-4 justify-between md:flex-row">
               <div>
-                <div className="bg-white/10 backdrop-blur-lg bg-gradient-to-r from-green-400 to-blue-300 hover:from-pink-300 hover:to-yellow-300 rounded-2xl p-4 sticky top-8 left-0 z-50 min-w-40">
+                <div className="bg-white/10 backdrop-blur-lg hover:bg-gradient-to-r hover:from-pink-300 hover:to-yellow-300 rounded-2xl p-4 sticky top-8 left-0 z-50 min-w-40">
                   <p className="border-b-2 py-2 mb-2 text-lg font-semibold">On This Page</p>
                   <ul>
                     {toc.map(({ id, title }: { id: any, title: any }) => {
@@ -158,7 +158,7 @@ export default async function BlogPostPage({
               ></div>
 
               <div>
-                <div className="flex md:flex-col gap-2 place-items-center justify-around bg-white/10 backdrop-blur-lg bg-gradient-to-r from-indigo-500 to-red-300 hover:from-pink-300 hover:to-yellow-300 p-4 rounded-lg sticky top-8 left-0 z-50">
+                <div className="flex md:flex-col gap-2 place-items-center justify-around bg-white/10 backdrop-blur-lg hover:bg-gradient-to-r hover:from-pink-300 hover:to-yellow-300 p-4 rounded-lg sticky top-8 left-0 z-50">
                   <div>
                     <TooltipProvider>
                       <Tooltip>
