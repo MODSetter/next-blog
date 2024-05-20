@@ -48,14 +48,14 @@ function NavbarTwo() {
                 <nav className="hidden sm:flex sm:items-center sm:space-x-4">
                     <ul className="hidden lg:flex sm:items-center sm:space-x-4  gap-8">
                         {JSON.parse(user).map((link: any) => (
-                            <li className={`flex gap-2 ${link.css}`} key={link.name}>
+                            <li className={`flex gap-2`} key={link.name}>
                                 <span
                                     dangerouslySetInnerHTML={{
                                         __html: link.icon,
                                     }}></span>
                                 <a
                                     href={link.href}
-                                    className="block font-semibold rounded uppercase transition-all duration-150 hover:text-orange-300 "
+                                    className={`block font-semibold rounded uppercase transition-all duration-150 ${link.css}`}
                                 >
                                     {link.name}
                                 </a>

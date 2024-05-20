@@ -132,10 +132,9 @@ export const page = () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(reqdata),
     };
-    const response = await fetch("/api/posts", requestOptions);
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/posts`, requestOptions);
 
     const res = await response.json();
-    console.log("POSTED", res);
     router.push("/dashboard/posts")
   }
 

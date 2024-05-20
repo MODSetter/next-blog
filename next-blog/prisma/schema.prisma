@@ -20,9 +20,9 @@ model User {
   password_hash String
   registeredAt  DateTime @default(now())
 
-  maingrid String
-  navbar   String
-  footer   String
+  maingrid    String
+  navbar      String
+  footer      String
   navbarlinks String
   footerlinks String
 
@@ -39,6 +39,7 @@ model Grid {
   comp_two   String
   comp_three String
   comp_four  String
+  comp_five  String
 }
 
 model Session {

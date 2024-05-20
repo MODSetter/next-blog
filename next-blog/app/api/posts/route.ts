@@ -21,6 +21,7 @@ export async function GET() {
 //Post a new post
 export async function POST(req: Request) {
     const datareceived = await req.json();
+    // console.log("DATA REC",datareceived);
     
     //create entry through prisma orm
     const postCreated = await prisma.post.create({
@@ -36,8 +37,10 @@ export async function POST(req: Request) {
         },
     })
 
+    // console.log("Post Created",postCreated);
+
     return NextResponse.json({
-        ...postCreated
+        message: "...postCreated",
     });
 }
 

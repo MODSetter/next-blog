@@ -8,6 +8,8 @@ CREATE TABLE "User" (
     "maingrid" TEXT NOT NULL,
     "navbar" TEXT NOT NULL,
     "footer" TEXT NOT NULL,
+    "navbarlinks" TEXT NOT NULL,
+    "footerlinks" TEXT NOT NULL,
     "defaultLight" TEXT NOT NULL,
     "defaultDark" TEXT NOT NULL,
 
@@ -21,6 +23,7 @@ CREATE TABLE "Grid" (
     "comp_two" TEXT NOT NULL,
     "comp_three" TEXT NOT NULL,
     "comp_four" TEXT NOT NULL,
+    "comp_five" TEXT NOT NULL,
 
     CONSTRAINT "Grid_pkey" PRIMARY KEY ("id")
 );

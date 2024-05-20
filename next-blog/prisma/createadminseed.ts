@@ -30,11 +30,11 @@ async function main() {
   const createGrids = await prisma.grid.createMany({
     data: [
 
-      { id: 'GRID-1', comp_one: "BANNER-1", comp_two: "POSTLIST-SM-1", comp_three: "XYZ-1", comp_four: "ABC-1" },
-      { id: 'GRID-2', comp_one: "BANNER-1", comp_two: "POSTLIST-1", comp_three: "XYZ-1", comp_four: "ABC-1" },
-      { id: 'GRID-3', comp_one: "BANNER-1", comp_two: "POSTLIST-1", comp_three: "XYZ-1", comp_four: "ABC-1" },
-      { id: 'GRID-4', comp_one: "BANNER-1", comp_two: "POSTLIST-1", comp_three: "XYZ-1", comp_four: "ABC-1" },
-      { id: 'GRID-5', comp_one: "BANNER-1", comp_two: "POSTLIST-1", comp_three: "XYZ-1", comp_four: "ABC-1" },
+      { id: 'GRID-1', comp_one: "BANNER-1", comp_two: "POSTLIST-SM-1", comp_three: "XYZ-1", comp_four: "ABC-1", comp_five: "BANNER-1"},
+      { id: 'GRID-2', comp_one: "BANNER-1", comp_two: "POSTLIST-1", comp_three: "XYZ-1", comp_four: "ABC-1", comp_five: "BANNER-1"},
+      { id: 'GRID-3', comp_one: "BANNER-1", comp_two: "POSTLIST-1", comp_three: "XYZ-1", comp_four: "ABC-1", comp_five: "BANNER-1"},
+      { id: 'GRID-4', comp_one: "BANNER-1", comp_two: "POSTLIST-1", comp_three: "XYZ-1", comp_four: "ABC-1", comp_five: "BANNER-1"},
+      { id: 'GRID-5', comp_one: "BANNER-1", comp_two: "POSTLIST-1", comp_three: "XYZ-1", comp_four: "ABC-1", comp_five: "BANNER-1"},
     ],
     skipDuplicates: true, 
   })
