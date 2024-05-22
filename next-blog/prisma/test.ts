@@ -1,3 +1,4 @@
+import { create } from "domain";
 import prisma from "../db/prismaclient"
 const createUser = async () => {
     const postCreated = await prisma.post.create({
@@ -10,6 +11,11 @@ const createUser = async () => {
             metaKeywords: ["seo","new"],
             metaDescription: "xyz",
             visibility: true,
+            tags: {
+                create:[
+                    {tagname: "xyz"}
+                ]
+            }
         },
     })
 

@@ -19,7 +19,7 @@ const PostcardLgTwo = ({
                     <div className="p-5 md:w-4/6 md:p-8">
                         <div className="flex justify-between">
                             <div className="flex items-center gap-2">
-                                {tags.map(({ tagname }) => (
+                                {tags?.map(({ tagname }) => (
                                     <Link href={`/tags/${tagname}`} className={`text-[14px] font-semibold rounded-3xl mb-4 px-[18px] bg-orange-400 px-2 py-1 text-xs uppercase text-white`}>
                                         {tagname}
                                     </Link>

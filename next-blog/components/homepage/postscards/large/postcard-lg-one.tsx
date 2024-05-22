@@ -25,7 +25,7 @@ const PostcardLgOne = ({
                             <span className="text-sm">{views}</span>
                         </div>
                         <div className="flex items-center gap-2">
-                            {tags.map(({ tagname }) => (
+                            {tags?.map(({ tagname }) => (
                                 <Link href={`/tags/${tagname}`} className={`text-[14px] font-semibold rounded-3xl mb-4 px-[18px] border border-violet-500`}>
                                     {tagname}
                                 </Link>

@@ -1,4 +1,3 @@
-import { ThemeToggle } from "@/components/next-toggle/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import {
@@ -6,6 +5,7 @@ import {
   Home,
   LayoutDashboard,
   Menu,
+  Palette,
   Rss,
   Settings,
   Tags,
@@ -28,12 +28,12 @@ const Layout = async ({
 
   return (
     <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
-      <div className="hidden border-r bg-muted/40 md:block">
-        <div className="flex h-full max-h-screen flex-col gap-2">
+      <div className="hidden border-r bg-muted/40 backdrop-blur-lg md:block">
+        <div className="flex h-full flex-col gap-2">
           <div className="flex h-14 justify-between items-center border-b px-4 lg:h-[60px] lg:px-6">
             <Link href="/" className="flex items-center gap-2 font-semibold">
               <Rss className="h-6 w-6" />
-              <span className="">Next-Blog</span>
+              <span className="">Management Dashboard</span>
             </Link>
           </div>
           <div className="flex-1">
@@ -53,22 +53,22 @@ const Layout = async ({
                 Posts & Pages
               </Link>
               <Link
-                href={'/dashboard/tags'}
+                href={'/dashboard/themes'}
                 className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:bg-muted"
               >
-                <Tags className="h-4 w-4" />
-                Tags
+                <Palette  className="h-4 w-4" />
+                Themes
               </Link>
               <Link
                 href={'/dashboard/settings'}
                 className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:bg-muted"
               >
                 <LayoutDashboard className="h-4 w-4" />
-                Themes & Layout
+                Layout & Components
               </Link>
             </nav>
           </div>
-          <div className="mt-auto p-4">
+          <div className="mt-auto p-4 sticky bottom-0 left-0 z-50">
             <Card x-chunk="dashboard-02-chunk-0">
               <CardHeader className="p-2 pt-0 md:p-4">
                 <CardDescription>My Account</CardDescription>
@@ -91,7 +91,7 @@ const Layout = async ({
         </div>
       </div>
       <div className="flex flex-col">
-        <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
+        <header className="flex h-14 items-center gap-4 border bg-muted/40 backdrop-blur-lg px-4 lg:h-[60px] lg:px-6">
           <Sheet>
             <SheetTrigger asChild>
               <Button
@@ -110,7 +110,7 @@ const Layout = async ({
                   className="flex items-center gap-2 text-lg font-semibold"
                 >
                   <Rss className="h-6 w-6" />
-                  <span>Next-Blog</span>
+                  <span>Management Dashboard</span>
                 </Link>
                 <Link
                   href={'/dashboard'}
@@ -130,23 +130,21 @@ const Layout = async ({
                   href={'/dashboard/tags'}
                   className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
                 >
-                  <Tags className="h-5 w-5" />
-                  Tags
+                  <Palette  className="h-5 w-5" />
+                Themes
                 </Link>
                 <Link
                   href={'/dashboard/settings'}
                   className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
                 >
                   <LayoutDashboard className="h-5 w-5" />
-                  Themes & Layout
+                  Layout & Components
                 </Link>
               </nav>
             </SheetContent>
           </Sheet>
-          <div className="w-full flex-1"></div>
-          <ThemeToggle />
         </header>
-        <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
+        <main className="flex flex-1 flex-col gap-4 p-4 border lg:gap-6 lg:p-6">
           {children}
         </main>
       </div>

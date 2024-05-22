@@ -92,12 +92,13 @@ export const page = () => {
       toast({
         variant: "destructive",
         description: `${process.env.NEXT_PUBLIC_BASE_URL}/${formdata.slug} is not available`,
+        className: "backdrop-blur-lg"
       });
     } else {
       toast({
         variant: "default",
         description: `${process.env.NEXT_PUBLIC_BASE_URL}/${formdata.slug} is available`,
-        className: "bg-green-300"
+        className: "bg-green-400/20 backdrop-blur-lg"
       });
 
       setSlug(formdata.slug);
