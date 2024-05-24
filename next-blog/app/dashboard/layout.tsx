@@ -53,14 +53,14 @@ const Layout = async ({
                 Posts & Pages
               </Link>
               <Link
-                href={'/dashboard/themes'}
+                href={'/dashboard/user/themes'}
                 className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:bg-muted"
               >
                 <Palette  className="h-4 w-4" />
                 Themes
               </Link>
               <Link
-                href={'/dashboard/settings'}
+                href={'/dashboard/user/settings'}
                 className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:bg-muted"
               >
                 <LayoutDashboard className="h-4 w-4" />

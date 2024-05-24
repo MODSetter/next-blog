@@ -13,12 +13,16 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { useToast } from "@/components/ui/use-toast"
+import { defaultEditorContent } from "@/lib/content";
 import TailwindAdvancedEditor from "@/components/tailwind/advanced-editor";
 import ImageUploadForm from "@/components/image-upload/ImageUploadForm";
 import { useRouter } from "next/navigation";
+import { Checkbox } from "@/components/ui/checkbox";
+import { JSONContent } from "novel";
+import { jsonFromHtml } from "@/utils/common-functions";
 
 
 const slugFormSchema = z.object({
@@ -38,80 +42,115 @@ const metadataFormSchema = z.object({
   metadescription: z.string().min(200, {
     message: "Meta Description must be at least 200 characters.",
   }),
+  postvisibility: z.boolean(),
 })
 
-
-interface EditPageProps {
+interface BlogPostPageProps {
   params: { postslug: string };
 }
 
-export const page = ({ params: { postslug } }: EditPageProps) => {
-  const slugform = useForm<z.infer<typeof slugFormSchema>>({
-    resolver: zodResolver(slugFormSchema),
-    defaultValues: {
-      slug: "",
-    },
-  })
-
-  const postdataform = useForm<z.infer<typeof postdataFormSchema>>({
-    resolver: zodResolver(postdataFormSchema),
-    defaultValues: {
-      posttitle: "",
-    },
-  })
 
 
-  const metadataform = useForm<z.infer<typeof metadataFormSchema>>({
-    resolver: zodResolver(metadataFormSchema),
-    defaultValues: {
-      metakeywords: "",
-      metadescription: "",
-    },
-  })
+export const page = ({
+  params: { postslug },
+}: BlogPostPageProps) => {
+  const router = useRouter();
 
   const { toast } = useToast();
 
-  const [slug, setSlug] = useState<string | null>(null);
+  const [slug, setSlug] = useState<string>("");
   const [slugformvisibility, setSlugformvisibility] = useState<string | undefined>("block");
 
+  const [contentjson, setContentjson] = useState<JSONContent | null>(null);
   const [contenthtml, setContenthtml] = useState<string | null>(null);
-  const [posttitle, setPosttitle] = useState<string | null>(null);
+  const [posttitle, setPosttitle] = useState<string>("");
   const [opengraphurl, setOpengraphurl] = useState<string | null>(null);
   const [postdataformvisibility, setPostdataformvisibility] = useState<string | undefined>("hidden");
 
-  // const [metakeywords, setMetakeywords] = useState<string | null>(null);
-  // const [metadescription, setMetadescription] = useState<string | null>(null);
+  const [metakeywords, setMetakeywords] = useState<string>("");
+  const [metadescription, setMetadescription] = useState<string>("");
+  const [postvisibility, setPostvisibility] = useState<boolean>(true);
+  
   const [metadataformvisibility, setMetadataformvisibility] = useState<string | undefined>("hidden");
 
-  const [postvisibility, setPostvisibility] = useState<boolean>(true);
+
+  useEffect(() => {
+    fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/posts/getpostbyslug/${postslug}`)
+        .then(response => response.json())
+        .then(data => {
+          console.log("DATA",data)
+          setSlug(data.slug);
+          setContentjson(jsonFromHtml(data.content));
+          setPosttitle(data.title);
+          setOpengraphurl(data.opengraphimage);
+          setMetakeywords(data.metaKeywords.join(","));
+          setMetadescription(data.metaDescription);
+          setPostvisibility(data.visibility);
+        })
+}, []);
+
+const slugform = useForm<z.infer<typeof slugFormSchema>>({
+  resolver: zodResolver(slugFormSchema),
+  values: {
+    slug: slug,
+  },
+})
+
+const postdataform = useForm<z.infer<typeof postdataFormSchema>>({
+  resolver: zodResolver(postdataFormSchema),
+  values: {
+    posttitle: posttitle,
+  },
+})
+
+
+const metadataform = useForm<z.infer<typeof metadataFormSchema>>({
+  resolver: zodResolver(metadataFormSchema),
+  values: {
+    metakeywords: metakeywords,
+    metadescription: metadescription,
+    postvisibility: postvisibility,
+  },
+})
 
   async function onSlugSubmit(formdata: z.infer<typeof slugFormSchema>) {
-    const req = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/posts/getpostbyslug/${formdata.slug}`, {
-      method: "GET"
-    });
-    const res = await req.json();
-    if (res.slug) {
-      toast({
-        variant: "destructive",
-        description: `${process.env.NEXT_PUBLIC_BASE_URL}/${formdata.slug} is not available`,
-      });
-    } else {
-      toast({
-        variant: "default",
-        description: `${process.env.NEXT_PUBLIC_BASE_URL}/${formdata.slug} is available`,
-        className: "bg-green-300"
-      });
-
+    if(postslug === formdata.slug){
       setSlug(formdata.slug);
       setSlugformvisibility("hidden");
       setPostdataformvisibility("block");
-    }
 
+      toast({
+        variant: "default",
+        description: `${process.env.NEXT_PUBLIC_BASE_URL}/${formdata.slug} is available`,
+        className: "bg-green-400/20 backdrop-blur-lg"
+      });
+    }else{
+      const req = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/posts/getpostbyslug/${formdata.slug}`, {
+        method: "GET"
+      });
+      const res = await req.json();
+      if (res.slug) {
+        toast({
+          variant: "destructive",
+          description: `${process.env.NEXT_PUBLIC_BASE_URL}/${formdata.slug} is not available`,
+          className: "backdrop-blur-lg"
+        });
+      } else {
+        toast({
+          variant: "default",
+          description: `${process.env.NEXT_PUBLIC_BASE_URL}/${formdata.slug} is available`,
+          className: "bg-green-400/20 backdrop-blur-lg"
+        });
+  
+        setSlug(formdata.slug);
+        setSlugformvisibility("hidden");
+        setPostdataformvisibility("block");
+      }
+    }
   }
 
 
   async function onPostDataSubmit(formdata: z.infer<typeof postdataFormSchema>) {
-    //check if novel have some content
     setPosttitle(formdata.posttitle);
     setContenthtml(window.localStorage.getItem("html-content"));
     setPostdataformvisibility("hidden");
@@ -120,32 +159,34 @@ export const page = ({ params: { postslug } }: EditPageProps) => {
 
 
   async function onMetaDataSubmit(formdata: z.infer<typeof metadataFormSchema>) {
+    // console.log("FORM", formdata)
     const reqdata = {
       rslug: slug,
+      nslug: postslug,
       rtitle: posttitle,
       rcontent: contenthtml,
       rimgurl: opengraphurl,
       rmetakeys: formdata.metakeywords?.split(","),
       rmetadesc: formdata.metadescription,
-      rvisibility: true
+      rvisibility: formdata.postvisibility,
+      updatedAt: new Date()
     };
     const requestOptions = {
-      method: "POST",
+      method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(reqdata),
     };
-    const response = await fetch("/api/posts", requestOptions);
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/posts`, requestOptions);
 
     const res = await response.json();
-    console.log("POSTED", res);
-
+    router.push("/dashboard/posts")
   }
 
 
 
   return (
     <>
-      <p className="text-3xl pb-4">Create A New Post</p>
+      <p className="text-3xl pb-4">Edit A New Post</p>
       <div className={slugformvisibility}>
         <Form {...slugform}>
           <form onSubmit={slugform.handleSubmit(onSlugSubmit)} className="space-y-8">
@@ -156,7 +197,7 @@ export const page = ({ params: { postslug } }: EditPageProps) => {
                 <FormItem>
                   <FormLabel>{`${process.env.NEXT_PUBLIC_BASE_URL}/`}</FormLabel>
                   <FormControl>
-                    <Input placeholder="Post Slug Here" {...field} />
+                    <Input {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -181,14 +222,15 @@ export const page = ({ params: { postslug } }: EditPageProps) => {
                 <FormItem>
                   <FormLabel>Post Title</FormLabel>
                   <FormControl>
-                    <Input placeholder="Post Title Here" {...field} />
+                    <Input placeholder={posttitle} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
             <p className="text-sm">Post Content</p>
-            <TailwindAdvancedEditor />
+            {contentjson ? <TailwindAdvancedEditor initContent={contentjson} /> : ""}
+            
 
             <div className="flex gap-4">
               <Button>Preview</Button>
@@ -210,7 +252,7 @@ export const page = ({ params: { postslug } }: EditPageProps) => {
                 <FormItem>
                   <FormLabel>Meta Keywords</FormLabel>
                   <FormControl>
-                    <Input placeholder="Comma (,) seperated meta keywords here" {...field} />
+                    <Input placeholder={metakeywords} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -224,12 +266,31 @@ export const page = ({ params: { postslug } }: EditPageProps) => {
                 <FormItem>
                   <FormLabel>Meta Description</FormLabel>
                   <FormControl>
-                    <Input placeholder="Meta Description Here" {...field} />
+                    <Input placeholder={metadescription} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
+
+            <FormField
+              control={metadataform.control}
+              name="postvisibility"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Post Visibility</FormLabel>
+                  <FormControl>
+                    <Checkbox
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+
             <div className="flex gap-4">
               <Button>Preview</Button>
               <Button type="submit">Post New Post</Button>

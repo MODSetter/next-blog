@@ -1,7 +1,4 @@
 import type { Metadata } from "next";
-// import sitemap from "../sitemap";
-import NavBar from "@/components/nav-bar";
-import Footer from "@/components/homepage/footers/footer-one";
 import { incView } from "@/db/setters";
 import { unified } from 'unified';
 import rehypeParse from 'rehype-parse';

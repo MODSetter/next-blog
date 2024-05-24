@@ -1,5 +1,5 @@
 "use client";
-import { defaultEditorContent } from "@/lib/content";
+// import { defaultEditorContent } from "@/lib/content";
 import {
   EditorCommand,
   EditorCommandEmpty,
@@ -24,12 +24,13 @@ import GenerativeMenuSwitch from "./generative/generative-menu-switch";
 import { uploadFn } from "./image-upload";
 import { TextButtons } from "./selectors/text-buttons";
 import { slashCommand, suggestionItems } from "./slash-command";
+import { generateHTML } from "@tiptap/html";
 
 const hljs = require('highlight.js');
 
 const extensions = [...defaultExtensions, slashCommand];
 
-const TailwindAdvancedEditor = () => {
+const TailwindAdvancedEditor = ({initContent}:{initContent: JSONContent}) => {
   const [initialContent, setInitialContent] = useState<null | JSONContent>(null);
   const [saveStatus, setSaveStatus] = useState("Saved");
   const [charsCount, setCharsCount] = useState();
@@ -52,7 +53,6 @@ const TailwindAdvancedEditor = () => {
 
   const debouncedUpdates = useDebouncedCallback(async (editor: EditorInstance) => {
     const json = editor.getJSON();
-    // console.log(highlightCodeblocks(editor.getHTML()));
     setCharsCount(editor.storage.characterCount.words());
     
     window.localStorage.setItem("html-content", highlightCodeblocks(editor.getHTML()));
@@ -62,9 +62,16 @@ const TailwindAdvancedEditor = () => {
   }, 500);
 
   useEffect(() => {
-    const content = window.localStorage.getItem("novel-content");
-    if (content) setInitialContent(JSON.parse(content));
-    else setInitialContent(defaultEditorContent);
+    setInitialContent(initContent);
+    window.localStorage.setItem("html-content", highlightCodeblocks(generateHTML(initContent, extensions)));
+    // const content = window.localStorage.getItem("novel-content");
+    // if (content){
+    //   setInitialContent(JSON.parse(content));
+    // }
+    // else{
+    //   setInitialContent(defaultEditorContent);
+    //   window.localStorage.setItem("novel-content", JSON.stringify(defaultEditorContent));
+    // }
   }, []);
 
   if (!initialContent) return null;

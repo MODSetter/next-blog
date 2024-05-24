@@ -51,7 +51,7 @@ export async function PATCH(req: Request) {
     //create entry through prisma orm
     const updatePost = await prisma.post.update({
         where: {
-            slug: datareceived.rslug,
+            slug: datareceived.nslug,
         },
         data: {
             slug: datareceived.rslug,
@@ -60,7 +60,8 @@ export async function PATCH(req: Request) {
             content: datareceived.rcontent,
             authorId: "1",
             metaKeywords: datareceived.rmetakeys,
-            metaDescription: datareceived.rmetadesc
+            metaDescription: datareceived.rmetadesc,
+            visibility: datareceived.rvisibility
         },
     })
 

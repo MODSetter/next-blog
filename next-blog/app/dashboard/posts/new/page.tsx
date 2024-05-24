@@ -16,9 +16,11 @@ import { Input } from "@/components/ui/input"
 import { useState } from "react";
 
 import { useToast } from "@/components/ui/use-toast"
+import { defaultEditorContent } from "@/lib/content";
 import TailwindAdvancedEditor from "@/components/tailwind/advanced-editor";
 import ImageUploadForm from "@/components/image-upload/ImageUploadForm";
 import { useRouter } from "next/navigation";
+import { Checkbox } from "@/components/ui/checkbox";
 
 
 const slugFormSchema = z.object({
@@ -38,6 +40,7 @@ const metadataFormSchema = z.object({
   metadescription: z.string().min(200, {
     message: "Meta Description must be at least 200 characters.",
   }),
+  postvisibility: z.boolean(),
 })
 
 
@@ -64,6 +67,7 @@ export const page = () => {
     defaultValues: {
       metakeywords: "",
       metadescription: "",
+      postvisibility: true,
     },
   })
 
@@ -80,8 +84,6 @@ export const page = () => {
   // const [metakeywords, setMetakeywords] = useState<string | null>(null);
   // const [metadescription, setMetadescription] = useState<string | null>(null);
   const [metadataformvisibility, setMetadataformvisibility] = useState<string | undefined>("hidden");
-
-  const [postvisibility, setPostvisibility] = useState<boolean>(true);
 
   async function onSlugSubmit(formdata: z.infer<typeof slugFormSchema>) {
     const req = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/posts/getpostbyslug/${formdata.slug}`, {
@@ -126,7 +128,7 @@ export const page = () => {
       rimgurl: opengraphurl,
       rmetakeys: formdata.metakeywords?.split(","),
       rmetadesc: formdata.metadescription,
-      rvisibility: true
+      rvisibility: formdata.postvisibility,
     };
     const requestOptions = {
       method: "POST",
@@ -186,7 +188,7 @@ export const page = () => {
               )}
             />
             <p className="text-sm">Post Content</p>
-            <TailwindAdvancedEditor />
+            <TailwindAdvancedEditor initContent={defaultEditorContent} />
 
             <div className="flex gap-4">
               <Button>Preview</Button>
@@ -228,6 +230,25 @@ export const page = () => {
                 </FormItem>
               )}
             />
+
+            <FormField
+              control={metadataform.control}
+              name="postvisibility"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Post Visibility</FormLabel>
+                  <FormControl>
+                    <Checkbox
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+
             <div className="flex gap-4">
               <Button>Preview</Button>
               <Button type="submit">Post New Post</Button>
