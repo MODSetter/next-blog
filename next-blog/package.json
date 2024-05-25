@@ -17,7 +17,8 @@
     "prisma:studio": "npx prisma studio",
     "migrate": "npx prisma migrate deploy",
     "build:production": "npx dotenv -e .env.local -- npm run migrate && npm run generate && npm run build",
-    "prisma:seed": "npx prisma db seed"
+    "prisma:seed": "npx prisma db seed",
+    "prisma:push": "npx prisma db push"
   },
   "dependencies": {
     "@giscus/react": "^3.0.0",

@@ -14,7 +14,8 @@ async function main() {
   const adminUser = await prisma.user.create({
     data: {
         id: "1",
-        email: "admin@xyz.com",
+        name: "John Doe",
+        avatar: "https://ps.w.org/user-avatar-reloaded/assets/icon-128x128.png",
         username: "admin",
         password_hash: passwordHash,
         navbar: "NAVBAR-1" ,
