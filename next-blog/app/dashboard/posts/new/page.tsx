@@ -2,6 +2,7 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
+import "../styles.scss"
 
 import { Button } from "@/components/tailwind/ui/button"
 import {
@@ -21,7 +22,8 @@ import TailwindAdvancedEditor from "@/components/tailwind/advanced-editor";
 import ImageUploadForm from "@/components/image-upload/ImageUploadForm";
 import { useRouter } from "next/navigation";
 import { Checkbox } from "@/components/ui/checkbox";
-
+import type { Tag } from '@/components/react-tag-input/components/SingleTag';
+import { WithContext as ReactTags, SEPARATORS } from '@/components/react-tag-input/index';
 
 const slugFormSchema = z.object({
   slug: z.string().min(3, {
@@ -43,6 +45,11 @@ const metadataFormSchema = z.object({
   postvisibility: z.boolean(),
 })
 
+const suggestions = [
+  { id: "India", text: "India", className: "" },
+  { id: "Vietnam", text: "Vietnam", className: "" },
+  { id: "Turkey", text: "Turkey", className: "" },
+];
 
 
 export const page = () => {
@@ -79,11 +86,50 @@ export const page = () => {
   const [contenthtml, setContenthtml] = useState<string | null>(null);
   const [posttitle, setPosttitle] = useState<string | null>(null);
   const [opengraphurl, setOpengraphurl] = useState<string | null>(null);
-  const [postdataformvisibility, setPostdataformvisibility] = useState<string | undefined>("hidden");
+  const [postdataformvisibility, setPostdataformvisibility] = useState<string | undefined>("block");
 
   // const [metakeywords, setMetakeywords] = useState<string | null>(null);
   // const [metadescription, setMetadescription] = useState<string | null>(null);
   const [metadataformvisibility, setMetadataformvisibility] = useState<string | undefined>("hidden");
+  const [tags, setTags] = useState<Array<Tag>>([
+    { id: "India", text: "India", className: "" },
+    { id: "Vietnam", text: "Vietnam", className: "" },
+    { id: "Turkey", text: "Turkey", className: "" },
+  ]);
+
+  const handleDelete = (index: number) => {
+    setTags(tags.filter((_, i) => i !== index));
+  };
+
+  const onTagUpdate = (index: number, newTag: Tag) => {
+    const updatedTags = [...tags];
+    updatedTags.splice(index, 1, newTag);
+    setTags(updatedTags);
+  };
+
+  const handleAddition = (tag: Tag) => {
+    setTags((prevTags) => {
+      return [...prevTags, tag];
+    });
+  };
+
+  const handleDrag = (tag: Tag, currPos: number, newPos: number) => {
+    const newTags = tags.slice();
+
+    newTags.splice(currPos, 1);
+    newTags.splice(newPos, 0, tag);
+
+    // re-render
+    setTags(newTags);
+  };
+
+  const handleTagClick = (index: number) => {
+    console.log("The tag at index " + index + " was clicked");
+  };
+
+  const onClearAll = () => {
+    setTags([]);
+  };
 
   async function onSlugSubmit(formdata: z.infer<typeof slugFormSchema>) {
     const req = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/posts/getpostbyslug/${formdata.slug}`, {
@@ -189,6 +235,22 @@ export const page = () => {
             />
             <p className="text-sm">Post Content</p>
             <TailwindAdvancedEditor initContent={defaultEditorContent} />
+
+            <ReactTags
+              tags={tags}
+              suggestions={suggestions}
+              separators={[SEPARATORS.ENTER, SEPARATORS.COMMA]}
+              handleDelete={handleDelete}
+              handleAddition={handleAddition}
+              handleDrag={handleDrag}
+              handleTagClick={handleTagClick}
+              onTagUpdate={onTagUpdate}
+              inputFieldPosition="bottom"
+              editable
+              clearAll
+              onClearAll={onClearAll}
+              maxTags={7}
+            />
 
             <div className="flex gap-4">
               <Button>Preview</Button>
