@@ -40,7 +40,7 @@ const UserLayout = async ({
             Navbar/Footer
           </Link>
           <Link
-            href="#"
+            href="/dashboard/user/sitelayout/grids"
             className="text-muted-foreground transition-colors hover:text-foreground"
           >
             Grid
@@ -72,7 +72,7 @@ const UserLayout = async ({
                 Navbar/Footer
               </Link>
               <Link
-                href="#"
+                href="/dashboard/user/sitelayout/grids"
                 className="text-muted-foreground hover:text-foreground"
               >
                 Grid

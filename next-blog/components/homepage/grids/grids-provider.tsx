@@ -57,7 +57,7 @@ export const ThirdGrid = async () => {
     const grid = await getGridData("GRID-3");
     return (
         <div className="flex flex-col gap-4">
-            <div className="flex flex-col">
+            <div className="flex gap-4">
                 <div>
                     {globalComponentProvider(grid?.comp_two)}
                 </div>
@@ -66,7 +66,7 @@ export const ThirdGrid = async () => {
 
             <div>{globalComponentProvider(grid?.comp_one)}</div>
 
-            <div className="flex flex-col">
+            <div className="flex gap-4">
                 <div>
                     {globalComponentProvider(grid?.comp_two)}
                 </div>
