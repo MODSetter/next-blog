@@ -43,6 +43,16 @@ model Grid {
   comp_five  String
 }
 
+model CustomComponent {
+  id          String @id
+  htmlContent String
+}
+
+model GithubDiscussions {
+  url          String @id @unique
+  discussionId String @unique
+}
+
 model Session {
   id        String   @id
   userId    String

@@ -46,8 +46,17 @@ export async function getUser() {
     return user
 }
 
+export async function getGrid() {
+    const user = await prisma.user.findUnique({
+        where: {
+            id: "1"
+        },
+    })
+    return user?.maingrid
+}
 
-export async function getGridData(gridId: string) {
+
+export async function getGridData(gridId: string | undefined) {
     const grid = await prisma.grid.findUnique({
         where: {
             id: gridId

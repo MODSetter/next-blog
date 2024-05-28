@@ -86,15 +86,13 @@ export const page = () => {
   const [contenthtml, setContenthtml] = useState<string | null>(null);
   const [posttitle, setPosttitle] = useState<string | null>(null);
   const [opengraphurl, setOpengraphurl] = useState<string | null>(null);
-  const [postdataformvisibility, setPostdataformvisibility] = useState<string | undefined>("block");
+  const [postdataformvisibility, setPostdataformvisibility] = useState<string | undefined>("hidden");
 
-  // const [metakeywords, setMetakeywords] = useState<string | null>(null);
-  // const [metadescription, setMetadescription] = useState<string | null>(null);
   const [metadataformvisibility, setMetadataformvisibility] = useState<string | undefined>("hidden");
   const [tags, setTags] = useState<Array<Tag>>([
-    { id: "India", text: "India", className: "" },
-    { id: "Vietnam", text: "Vietnam", className: "" },
-    { id: "Turkey", text: "Turkey", className: "" },
+    // { id: "India", text: "India", className: "" },
+    // { id: "Vietnam", text: "Vietnam", className: "" },
+    // { id: "Turkey", text: "Turkey", className: "" },
   ]);
 
   const handleDelete = (index: number) => {
@@ -175,6 +173,7 @@ export const page = () => {
       rmetakeys: formdata.metakeywords?.split(","),
       rmetadesc: formdata.metadescription,
       rvisibility: formdata.postvisibility,
+      rtags: tags,
     };
     const requestOptions = {
       method: "POST",
@@ -216,10 +215,12 @@ export const page = () => {
 
 
       <div className={postdataformvisibility}>
-        <p className="text-sm">Open Graph Image</p>
-        <ImageUploadForm opengraphurl={opengraphurl} setOpengraphurl={setOpengraphurl} />
         <Form {...postdataform}>
-          <form onSubmit={postdataform.handleSubmit(onPostDataSubmit)} className="space-y-8">
+          <form onSubmit={postdataform.handleSubmit(onPostDataSubmit)} className="flex flex-col gap-4">
+            <div>
+              <p className="text-sm py-2">Open Graph Image</p>
+              <ImageUploadForm opengraphurl={opengraphurl} setOpengraphurl={setOpengraphurl} />
+            </div>
             <FormField
               control={postdataform.control}
               name="posttitle"
@@ -233,24 +234,31 @@ export const page = () => {
                 </FormItem>
               )}
             />
-            <p className="text-sm">Post Content</p>
-            <TailwindAdvancedEditor initContent={defaultEditorContent} />
+            <div>
+              <p className="text-sm py-2">Post Content</p>
 
-            <ReactTags
-              tags={tags}
-              suggestions={suggestions}
-              separators={[SEPARATORS.ENTER, SEPARATORS.COMMA]}
-              handleDelete={handleDelete}
-              handleAddition={handleAddition}
-              handleDrag={handleDrag}
-              handleTagClick={handleTagClick}
-              onTagUpdate={onTagUpdate}
-              inputFieldPosition="bottom"
-              editable
-              clearAll
-              onClearAll={onClearAll}
-              maxTags={7}
-            />
+              <TailwindAdvancedEditor initContent={defaultEditorContent} />
+
+            </div>
+     
+            <div>
+            <p className="text-sm py-2">Select Tags</p>
+            {/* suggestions={suggestions} */}
+              <ReactTags
+                tags={tags}
+                separators={[SEPARATORS.ENTER, SEPARATORS.COMMA]}
+                handleDelete={handleDelete}
+                handleAddition={handleAddition}
+                handleDrag={handleDrag}
+                handleTagClick={handleTagClick}
+                onTagUpdate={onTagUpdate}
+                inputFieldPosition="bottom"
+                editable
+                clearAll
+                onClearAll={onClearAll}
+                maxTags={7}
+              />
+            </div>
 
             <div className="flex gap-4">
               <Button>Preview</Button>

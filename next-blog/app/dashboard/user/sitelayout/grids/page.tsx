@@ -5,10 +5,6 @@ import { Button } from "@/components/ui/button";
 
 const GridSettings = () => {
     const [griddisplay, setGriddisplay] = useState<string | undefined>();
-
-    const setDisplay = (gridId: string) => {
-        setGriddisplay(gridId);
-    }
     
     return (
         <>

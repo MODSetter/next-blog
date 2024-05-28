@@ -46,11 +46,18 @@ const UserLayout = async ({
             Grid
           </Link>
           <Link
-            href="#"
-            className="text-muted-foreground transition-colors hover:text-foreground"
-          >
-            Components
-          </Link>
+                href="/dashboard/user/sitelayout/components"
+                className="text-muted-foreground hover:text-foreground"
+              >
+                Select Components
+              </Link>
+
+              <Link
+                href="/dashboard/user/sitelayout/components/new"
+                className="text-muted-foreground hover:text-foreground"
+              >
+                <p className="backdrop-blur-lg bg-emerald-400/10 px-4 py-2 rounded-full">Create a New Component</p>
+              </Link>
         </nav>
         <Sheet>
           <SheetTrigger asChild>
@@ -78,10 +85,17 @@ const UserLayout = async ({
                 Grid
               </Link>
               <Link
-                href="#"
+                href="/dashboard/user/sitelayout/components"
                 className="text-muted-foreground hover:text-foreground"
               >
-                Components
+                Select Components
+              </Link>
+
+              <Link
+                href="/dashboard/user/sitelayout/components/new"
+                className="text-muted-foreground hover:text-foreground"
+              >
+                <Button>Create a New Component</Button>
               </Link>
             </nav>
           </SheetContent>

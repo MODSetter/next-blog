@@ -94,7 +94,7 @@ const useDynamicForm = () => {
         })
     }
 
-    const onSubmit = (data: z.infer<typeof formSchema>) => {
+    const onSubmit: any = (data: z.infer<typeof formSchema>) => {
         console.log(data);
     };
 

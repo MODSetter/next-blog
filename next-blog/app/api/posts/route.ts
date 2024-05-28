@@ -22,6 +22,21 @@ export async function GET() {
 export async function POST(req: Request) {
     const datareceived = await req.json();
     // console.log("DATA REC",datareceived);
+    let ctags: { where: { tagname: string; }; create: { tagname: string; }; }[] = []
+
+    if(datareceived.rtags){
+        datareceived.rtags.forEach((data: any) => {
+            const query = {
+                where: {
+                  tagname: data.text.toLowerCase(),
+                },
+                create: {
+                    tagname: data.text.toLowerCase(),
+                },
+            }
+            ctags.push(query)
+        })
+    }
     
     //create entry through prisma orm
     const postCreated = await prisma.post.create({
@@ -34,19 +49,40 @@ export async function POST(req: Request) {
             metaKeywords: datareceived.rmetakeys,
             metaDescription: datareceived.rmetadesc,
             visibility: datareceived.rvisibility,
+            tags: {
+                connectOrCreate: [
+                    ...ctags
+                ]
+            },
         },
     })
 
     // console.log("Post Created",postCreated);
 
     return NextResponse.json({
-        message: "...postCreated",
+        ...postCreated
+        // message: "...postCreated",
     });
 }
 
 //Edit a old post
 export async function PATCH(req: Request) {
     const datareceived = await req.json();
+    let ctags: { where: { tagname: string; }; create: { tagname: string; }; }[] = []
+
+    if(datareceived.rtags){
+        datareceived.rtags.forEach((data: any) => {
+            const query = {
+                where: {
+                  tagname: data.text.toLowerCase(),
+                },
+                create: {
+                    tagname: data.text.toLowerCase(),
+                },
+            }
+            ctags.push(query)
+        })
+    }
     
     //create entry through prisma orm
     const updatePost = await prisma.post.update({
@@ -61,7 +97,12 @@ export async function PATCH(req: Request) {
             authorId: "1",
             metaKeywords: datareceived.rmetakeys,
             metaDescription: datareceived.rmetadesc,
-            visibility: datareceived.rvisibility
+            visibility: datareceived.rvisibility,
+            tags: {
+                connectOrCreate: [
+                    ...ctags
+                ]
+            },
         },
     })
 

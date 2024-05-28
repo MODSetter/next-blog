@@ -44,7 +44,6 @@
 
 .ReactTags__selected {
   display: flex;
-  justify-content: center;
 
   span.ReactTags__tag {
     border: 1px solid #ddd;
@@ -52,8 +51,10 @@
     color: #fff;
     font-size: 14px;
     padding: 5px;
+    padding-left: 1rem/* 16px */;
+    padding-right: 1rem/* 16px */;
     margin: 0 5px;
-    border-radius: 2px;
+    border-radius: 9999px;
     display: flex;
     align-items: center;
   }

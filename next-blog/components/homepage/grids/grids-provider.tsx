@@ -20,7 +20,7 @@ export const OneGrid = async () => {
                 </div>
             </div>
 
-            <div>{globalComponentProvider(grid?.comp_one)}</div>
+            <div>{globalComponentProvider(grid?.comp_five)}</div>
 
         </div>
     );
@@ -47,7 +47,7 @@ export const SecondGrid = async () => {
                 </div>
             </div>
 
-            <div>{globalComponentProvider(grid?.comp_one)}</div>
+            <div>{globalComponentProvider(grid?.comp_five)}</div>
         </div>
     );
 };
@@ -59,18 +59,18 @@ export const ThirdGrid = async () => {
         <div className="flex flex-col gap-4">
             <div className="flex gap-4">
                 <div>
-                    {globalComponentProvider(grid?.comp_two)}
+                    {globalComponentProvider(grid?.comp_one)}
                 </div>
-                <div>{globalComponentProvider(grid?.comp_three)}</div>
+                <div>{globalComponentProvider(grid?.comp_two)}</div>
             </div>
 
-            <div>{globalComponentProvider(grid?.comp_one)}</div>
+            <div>{globalComponentProvider(grid?.comp_three)}</div>
 
             <div className="flex gap-4">
                 <div>
-                    {globalComponentProvider(grid?.comp_two)}
+                    {globalComponentProvider(grid?.comp_four)}
                 </div>
-                <div>{globalComponentProvider(grid?.comp_three)}</div>
+                <div>{globalComponentProvider(grid?.comp_five)}</div>
             </div>
         </div>
     );
@@ -92,9 +92,9 @@ export const FourthGrid = async () => {
 
             <div className="flex gap-4">
                 <div>
-                    {globalComponentProvider(grid?.comp_two)}
+                    {globalComponentProvider(grid?.comp_four)}
                 </div>
-                <div>{globalComponentProvider(grid?.comp_three)}</div>
+                <div>{globalComponentProvider(grid?.comp_five)}</div>
             </div>
         </div>
     );
@@ -108,13 +108,13 @@ export const FifthGrid = async () => {
             <div>{globalComponentProvider(grid?.comp_one)}</div>
 
             <div className="flex gap-4">
+                <div>{globalComponentProvider(grid?.comp_two)}</div>
                 <div>{globalComponentProvider(grid?.comp_three)}</div>
-                <div>{globalComponentProvider(grid?.comp_four)}</div>
                 <div>{globalComponentProvider(grid?.comp_four)}</div>
             </div>
 
             <div>
-                {globalComponentProvider(grid?.comp_two)}
+                {globalComponentProvider(grid?.comp_five)}
             </div>
         </div>
     );

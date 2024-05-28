@@ -2,6 +2,7 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
+import "../../styles.scss"
 
 import { Button } from "@/components/tailwind/ui/button"
 import {
@@ -13,10 +14,11 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { useEffect, useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 
 import { useToast } from "@/components/ui/use-toast"
-import { defaultEditorContent } from "@/lib/content";
+import type { Tag } from '@/components/react-tag-input/components/SingleTag';
+import { WithContext as ReactTags, SEPARATORS } from '@/components/react-tag-input/index';
 import TailwindAdvancedEditor from "@/components/tailwind/advanced-editor";
 import ImageUploadForm from "@/components/image-upload/ImageUploadForm";
 import { useRouter } from "next/navigation";
@@ -65,56 +67,112 @@ export const page = ({
   const [contenthtml, setContenthtml] = useState<string | null>(null);
   const [posttitle, setPosttitle] = useState<string>("");
   const [opengraphurl, setOpengraphurl] = useState<string | null>(null);
-  const [postdataformvisibility, setPostdataformvisibility] = useState<string | undefined>("hidden");
+  const [postdataformvisibility, setPostdataformvisibility] = useState<string | undefined>("block");
 
   const [metakeywords, setMetakeywords] = useState<string>("");
   const [metadescription, setMetadescription] = useState<string>("");
   const [postvisibility, setPostvisibility] = useState<boolean>(true);
-  
-  const [metadataformvisibility, setMetadataformvisibility] = useState<string | undefined>("hidden");
+
+  const [metadataformvisibility, setMetadataformvisibility] = useState<string | undefined>("block");
+
+  const [tags, setTags] = useState<Array<Tag>>([
+    // { id: "India", text: "India", className: "" },
+    // { id: "Vietnam", text: "Vietnam", className: "" },
+    // { id: "Turkey", text: "Turkey", className: "" },
+  ]);
+
+  const handleDelete = (index: number) => {
+    setTags(tags.filter((_, i) => i !== index));
+  };
+
+  const onTagUpdate = (index: number, newTag: Tag) => {
+    const updatedTags = [...tags];
+    updatedTags.splice(index, 1, newTag);
+    setTags(updatedTags);
+  };
+
+  const handleAddition = (tag: Tag) => {
+    setTags((prevTags) => {
+      return [...prevTags, tag];
+    });
+  };
+
+  const handleDrag = (tag: Tag, currPos: number, newPos: number) => {
+    const newTags = tags.slice();
+
+    newTags.splice(currPos, 1);
+    newTags.splice(newPos, 0, tag);
+
+    // re-render
+    setTags(newTags);
+  };
+
+  const handleTagClick = (index: number) => {
+    console.log("The tag at index " + index + " was clicked");
+  };
+
+  const onClearAll = () => {
+    setTags([]);
+  };
 
 
   useEffect(() => {
     fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/posts/getpostbyslug/${postslug}`)
-        .then(response => response.json())
-        .then(data => {
-          console.log("DATA",data)
-          setSlug(data.slug);
-          setContentjson(jsonFromHtml(data.content));
-          setPosttitle(data.title);
-          setOpengraphurl(data.opengraphimage);
-          setMetakeywords(data.metaKeywords.join(","));
-          setMetadescription(data.metaDescription);
-          setPostvisibility(data.visibility);
-        })
-}, []);
-
-const slugform = useForm<z.infer<typeof slugFormSchema>>({
-  resolver: zodResolver(slugFormSchema),
-  values: {
-    slug: slug,
-  },
-})
-
-const postdataform = useForm<z.infer<typeof postdataFormSchema>>({
-  resolver: zodResolver(postdataFormSchema),
-  values: {
-    posttitle: posttitle,
-  },
-})
+      .then(response => response.json())
+      .then(data => {
+        console.log("DATA", data)
+        setSlug(data.slug);
+        setContentjson(jsonFromHtml(data.content));
+        setPosttitle(data.title);
+        setOpengraphurl(data.opengraphimage);
+        setMetakeywords(data.metaKeywords.join(","));
+        setMetadescription(data.metaDescription);
+        setPostvisibility(data.visibility);
 
 
-const metadataform = useForm<z.infer<typeof metadataFormSchema>>({
-  resolver: zodResolver(metadataFormSchema),
-  values: {
-    metakeywords: metakeywords,
-    metadescription: metadescription,
-    postvisibility: postvisibility,
-  },
-})
+        // console.log("CTAGS", data.tags)
+
+        //If Tags Exist Set tags
+        if (data.tags) {
+          let ctags: SetStateAction<Tag[]> | { id: any; text: any; className: string; }[] = []
+          data.tags.forEach((data: any) => {
+            const tagentry = {
+              id: data.tagname, text: data.tagname, className: ""
+            }
+            ctags.push(tagentry)
+          });
+          // console.log("CTAGS", ctags)
+          setTags(ctags);
+        }
+      })
+  }, []);
+
+  const slugform = useForm<z.infer<typeof slugFormSchema>>({
+    resolver: zodResolver(slugFormSchema),
+    values: {
+      slug: slug,
+    },
+  })
+
+  const postdataform = useForm<z.infer<typeof postdataFormSchema>>({
+    resolver: zodResolver(postdataFormSchema),
+    values: {
+      posttitle: posttitle,
+    },
+  })
+
+
+  const metadataform = useForm<z.infer<typeof metadataFormSchema>>({
+    resolver: zodResolver(metadataFormSchema),
+    values: {
+      metakeywords: metakeywords,
+      metadescription: metadescription,
+      postvisibility: postvisibility,
+    },
+  })
 
   async function onSlugSubmit(formdata: z.infer<typeof slugFormSchema>) {
-    if(postslug === formdata.slug){
+    if (postslug === formdata.slug) {
       setSlug(formdata.slug);
       setSlugformvisibility("hidden");
       setPostdataformvisibility("block");
@@ -124,7 +182,7 @@ const metadataform = useForm<z.infer<typeof metadataFormSchema>>({
         description: `${process.env.NEXT_PUBLIC_BASE_URL}/${formdata.slug} is available`,
         className: "bg-green-400/20 backdrop-blur-lg"
       });
-    }else{
+    } else {
       const req = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/posts/getpostbyslug/${formdata.slug}`, {
         method: "GET"
       });
@@ -141,7 +199,7 @@ const metadataform = useForm<z.infer<typeof metadataFormSchema>>({
           description: `${process.env.NEXT_PUBLIC_BASE_URL}/${formdata.slug} is available`,
           className: "bg-green-400/20 backdrop-blur-lg"
         });
-  
+
         setSlug(formdata.slug);
         setSlugformvisibility("hidden");
         setPostdataformvisibility("block");
@@ -169,6 +227,7 @@ const metadataform = useForm<z.infer<typeof metadataFormSchema>>({
       rmetakeys: formdata.metakeywords?.split(","),
       rmetadesc: formdata.metadescription,
       rvisibility: formdata.postvisibility,
+      rtags: tags,
       updatedAt: new Date()
     };
     const requestOptions = {
@@ -228,9 +287,31 @@ const metadataform = useForm<z.infer<typeof metadataFormSchema>>({
                 </FormItem>
               )}
             />
+            
+            <div>
             <p className="text-sm">Post Content</p>
             {contentjson ? <TailwindAdvancedEditor initContent={contentjson} /> : ""}
-            
+            </div>
+     
+            <div>
+            <p className="text-sm py-2">Select Tags</p>
+            {/* suggestions={suggestions} */}
+              <ReactTags
+                tags={tags}
+                separators={[SEPARATORS.ENTER, SEPARATORS.COMMA]}
+                handleDelete={handleDelete}
+                handleAddition={handleAddition}
+                handleDrag={handleDrag}
+                handleTagClick={handleTagClick}
+                onTagUpdate={onTagUpdate}
+                inputFieldPosition="bottom"
+                editable
+                clearAll
+                onClearAll={onClearAll}
+                maxTags={7}
+              />
+            </div>
+
 
             <div className="flex gap-4">
               <Button>Preview</Button>
