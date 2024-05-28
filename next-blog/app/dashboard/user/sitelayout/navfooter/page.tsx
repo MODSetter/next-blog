@@ -11,6 +11,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Checkbox } from "@/components/ui/checkbox";
 import { P } from "ts-pattern";
 import { CirclePlus, Trash2Icon } from "lucide-react";
+import ImageUploadForm from "@/components/image-upload/ImageUploadForm";
+import { useState } from "react";
 
 // const REQUIRED_ERROR = "This field is required.";
 
@@ -94,15 +96,20 @@ const useDynamicForm = () => {
         })
     }
 
-    const onSubmit: any = (data: z.infer<typeof formSchema>) => {
-        console.log(data);
-    };
 
-    return { form, onSubmit, navlinks: navfields, footerlinks: footerfields, handleRemoveNav, handleInsertNav, handleRemoveFooter, handleInsertFooter };
+
+    return { form, navlinks: navfields, footerlinks: footerfields, handleRemoveNav, handleInsertNav, handleRemoveFooter, handleInsertFooter };
 };
 
 export const DynamicForm = () => {
-    const { form, onSubmit, navlinks, footerlinks, handleRemoveNav, handleInsertNav, handleRemoveFooter, handleInsertFooter } = useDynamicForm();
+    const { form, navlinks, footerlinks, handleRemoveNav, handleInsertNav, handleRemoveFooter, handleInsertFooter } = useDynamicForm();
+
+    const onSubmit: any = (data: z.infer<typeof formSchema>) => {
+        console.log(data,navlogo);
+        //save to db user
+    };
+    
+    const [navlogo, setNavlogo] = useState<string | null>(null);
 
     return (
         <Form {...form}>
@@ -120,19 +127,13 @@ export const DynamicForm = () => {
                         </FormItem>
                     )}
                 />
-                <FormField
-                    control={form.control}
-                    name="footer"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel className="text-lg">Select Footer</FormLabel>
-                            <FormControl>
-                                <Input {...field} />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
+
+                <div>
+                    <p className="my-3 text-sm">Admin Avatar:</p>
+                    <ImageUploadForm opengraphurl={navlogo} setOpengraphurl={setNavlogo} />
+                </div>
+
+
                 <div className="flex flex-col gap-2">
                     <h2 className="text-lg">Navbar Links</h2>
 
@@ -179,6 +180,20 @@ export const DynamicForm = () => {
                         <CirclePlus className="w-4 h-4" />
                     </Button>
                 </div>
+
+                <FormField
+                    control={form.control}
+                    name="footer"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel className="text-lg">Select Footer</FormLabel>
+                            <FormControl>
+                                <Input {...field} />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
 
                 <div className="flex flex-col gap-2">
                     <h2 className="text-lg">Footer Links</h2>

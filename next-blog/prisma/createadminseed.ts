@@ -11,6 +11,13 @@ async function main() {
     parallelism: 1
 });
 
+const navfootlinks = [{
+  name: "",
+  href: "/",
+  css: "",
+  icon: "",
+}]
+
   const adminUser = await prisma.user.create({
     data: {
         id: "1",
@@ -21,8 +28,8 @@ async function main() {
         navbar: "NAVBAR-1" ,
         maingrid: "GRID-1",
         footer: "FOOTER-1",
-        navbarlinks: "[]",
-        footerlinks: "[]",
+        navbarlinks: JSON.stringify(navfootlinks),
+        footerlinks: JSON.stringify(navfootlinks),
         defaultDark: "D-1",
         defaultLight: "L-2",
     },

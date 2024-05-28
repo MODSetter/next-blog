@@ -22,6 +22,7 @@ model User {
   registeredAt  DateTime @default(now())
 
   maingrid    String
+  navbarlogo  String
   navbar      String
   footer      String
   navbarlinks String
