@@ -1,25 +1,17 @@
 "use client";
 
-import { useFieldArray, useForm, useFormState } from "react-hook-form";
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { useFieldArray, useForm } from "react-hook-form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Button } from "@/components/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-// import { useQuery } from "@tanstack/react-query";
-import { Checkbox } from "@/components/ui/checkbox";
-import { P } from "ts-pattern";
 import { CirclePlus, Trash2Icon } from "lucide-react";
 import ImageUploadForm from "@/components/image-upload/ImageUploadForm";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-// const REQUIRED_ERROR = "This field is required.";
 
 const linksSchema = z.object({
-    //  name: z.string().nonempty({ message: REQUIRED_ERROR }),
-    //  country: z.union([z.literal("USA"), z.literal("POL")]).optional(),
-    //  retired: z.boolean(),
     name: z.string(),
     href: z.string(),
     css: z.string(),
@@ -33,37 +25,51 @@ const formSchema = z.object({
     footerlinks: z.array(linksSchema),
 });
 
-// type Employee = z.infer<typeof employeeSchema>;
+// interface DbVals {
+//     navbar: string,
+//     footer: string,
+//     navbarlinks: string,
+//     footerlinks: string,
+//     navbarlogo: string,
+// }
 
-const useDynamicForm = () => {
+export const DynamicForm = () => {
+    const [dbnavbar,setDbnavbar] = useState<string>("");
+    const [dbfooter,setDbfooter] = useState<string>("");
+    const [dbnavbarlinks,setDbnavbarlinks] = useState<string>("[]");
+    const [dbfooterlinks,setDbfooterlinks] = useState<string>("[]");
+    const [navlogo, setNavlogo] = useState<string | null>(null);
+
+    useEffect(() => {
+        fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/user/navfooter`)
+          .then(response => response.json())
+          .then(data => {
+            console.log(data)
+            setDbnavbar(data.navbar);
+            setDbfooter(data.footer);
+            setDbnavbarlinks(data.navbarlinks);
+            setDbfooterlinks(data.footerlinks);
+            setNavlogo(data.navbarlogo)
+          })
+      }, []);
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         values: {
-            navbar: "NAVBAR-1",
-            footer: "FOOTER-1",
-            navbarlinks: [{
-                name: "",
-                href: "/",
-                css: "",
-                icon: "",
-            }],
-            footerlinks: [{
-                name: "",
-                href: "/",
-                css: "",
-                icon: "",
-            }],
+            navbar: dbnavbar,
+            footer: dbfooter,
+            navbarlinks: JSON.parse(dbnavbarlinks),
+            footerlinks: JSON.parse(dbfooterlinks),
         },
     });
 
-    const { fields: navfields, append: navappend, remove: navremove } = useFieldArray({
+    const { fields: navlinks, append: navappend, remove: navremove } = useFieldArray({
         control: form.control,
         name: "navbarlinks",
     });
 
 
-    const { fields: footerfields, append: footerappend, remove: footerremove } = useFieldArray({
+    const { fields: footerlinks, append: footerappend, remove: footerremove } = useFieldArray({
         control: form.control,
         name: "footerlinks",
     });
@@ -96,20 +102,27 @@ const useDynamicForm = () => {
         })
     }
 
-
-
-    return { form, navlinks: navfields, footerlinks: footerfields, handleRemoveNav, handleInsertNav, handleRemoveFooter, handleInsertFooter };
-};
-
-export const DynamicForm = () => {
-    const { form, navlinks, footerlinks, handleRemoveNav, handleInsertNav, handleRemoveFooter, handleInsertFooter } = useDynamicForm();
-
-    const onSubmit: any = (data: z.infer<typeof formSchema>) => {
-        console.log(data,navlogo);
+    const onSubmit: any = async (data: z.infer<typeof formSchema>) => {
+        // console.log(data,navlogo);
         //save to db user
+        const reqdata = {
+            navbar: data.navbar,
+            footer: data.footer,
+            navbarlinks: data.navbarlinks,
+            footerlinks: data.footerlinks,
+          };
+          const requestOptions = {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(reqdata),
+          };
+          const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/user/navfooter`, requestOptions);
+      
+          const res = await response.json();
+          console.log(res)
     };
     
-    const [navlogo, setNavlogo] = useState<string | null>(null);
+    
 
     return (
         <Form {...form}>

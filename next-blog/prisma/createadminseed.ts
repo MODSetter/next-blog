@@ -25,6 +25,7 @@ const navfootlinks = [{
         avatar: "https://ps.w.org/user-avatar-reloaded/assets/icon-128x128.png",
         username: "admin",
         password_hash: passwordHash,
+        navbarlogo: "",
         navbar: "NAVBAR-1" ,
         maingrid: "GRID-1",
         footer: "FOOTER-1",

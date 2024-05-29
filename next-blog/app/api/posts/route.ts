@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
-import prisma from "../../../db/prismaclient";
+import prisma from "@/db/prismaclient";
 
 //Get All Posts
 export async function GET() {

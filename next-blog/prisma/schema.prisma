@@ -47,6 +47,7 @@ model Grid {
 model CustomComponent {
   id          String @id
   htmlContent String
+  tailwindcss String
 }
 
 model GithubDiscussions {
