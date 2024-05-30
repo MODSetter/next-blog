@@ -46,7 +46,7 @@ const NewComponent = () => {
 
   
   const cssform = useForm<z.infer<typeof cssformSchema>>({
-    resolver: zodResolver(nameformSchema),
+    resolver: zodResolver(cssformSchema),
     values: {
       tailwindcss: "",
     },
@@ -57,14 +57,35 @@ const NewComponent = () => {
     setBannerformvisibility("block")
   };
 
+  const [compname, setCompname] = useState<string>("<></>");
+
   const onNameSubmit: any = async (data: z.infer<typeof nameformSchema>) => {
     console.log(data);
     setCompdataformvisibility("block")
+    setCompname(data.name);
   };
+
 
   const onCssSubmit: any = async (data: z.infer<typeof cssformSchema>) => {
     console.log(data);
     // setCompdataformvisibility("block")
+    const reqdata = {
+      name: compname,
+      htmlContent: window.localStorage.getItem("html-content"),
+      tailwindcss: data.tailwindcss,
+    };
+
+    // console.log(reqdata);
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(reqdata),
+    };
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/component`, requestOptions);
+
+    const res = await response.json();
+
+    console.log(res);
   };
 
   const [bannerformvisibility, setBannerformvisibility] = useState<string>("hidden");
@@ -130,8 +151,9 @@ const NewComponent = () => {
             <p className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 py-3">Content</p>
             <TailwindAdvancedEditor initContent={defaultEditorContent}/>
           </div>
+          <div>
           <Form {...cssform}>
-          <form onSubmit={cssform.handleSubmit(onNameSubmit)} className="space-y-8">
+          <form onSubmit={cssform.handleSubmit(onCssSubmit)} className="space-y-8">
             <FormField
               control={cssform.control}
               name="tailwindcss"
@@ -148,6 +170,8 @@ const NewComponent = () => {
             <Button type="submit">Create Component</Button>
           </form>
         </Form>
+          </div>
+          
         </div>
       </div>
     </>
