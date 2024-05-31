@@ -46,7 +46,7 @@ const Layout = async ({
                 Dashboard
               </Link>
               <Link
-                href={'/dashboard/posts'}
+                href={'/dashboard/posts/1'}
                 className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:bg-muted"
               >
                 <CircleFadingPlus className="h-4 w-4" />
@@ -56,7 +56,7 @@ const Layout = async ({
                 href={'/dashboard/user/themes'}
                 className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:bg-muted"
               >
-                <Palette  className="h-4 w-4" />
+                <Palette className="h-4 w-4" />
                 Themes
               </Link>
               <Link
@@ -74,10 +74,12 @@ const Layout = async ({
                 <CardDescription>My Account</CardDescription>
               </CardHeader>
               <CardContent className="p-2 pt-0 md:p-4 md:pt-0">
-                <Button size="sm" className="w-full">
-                  <Settings className="h-4 w-4" />
-                  Account Settings
-                </Button>
+                <Link href={"/dashboard/user/settings"}>
+                  <Button size="sm" className="w-full gap-2">
+                    <Settings className="h-4 w-4" />
+                    Account Settings
+                  </Button>
+                </Link>
               </CardContent>
               <CardContent className="p-2 pt-0 md:p-4 md:pt-0">
                 <form action={onLogout}>
@@ -120,7 +122,7 @@ const Layout = async ({
                   Dashboard
                 </Link>
                 <Link
-                  href={'/dashboard/posts'}
+                  href={'/dashboard/posts/1'}
                   className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
                 >
                   <CircleFadingPlus className="h-5 w-5" />
@@ -130,8 +132,8 @@ const Layout = async ({
                   href={'/dashboard/user/themes'}
                   className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
                 >
-                  <Palette  className="h-5 w-5" />
-                Themes
+                  <Palette className="h-5 w-5" />
+                  Themes
                 </Link>
                 <Link
                   href={'/dashboard/user/sitelayout/navfooter'}

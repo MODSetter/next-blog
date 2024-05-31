@@ -6,6 +6,7 @@ interface PostMetaData {
     metaDescription: string | null;
     views: number;
     tags: { tagname: string; }[];
+    author: any;
 }
 
 export default PostMetaData

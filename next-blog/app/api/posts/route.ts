@@ -12,6 +12,10 @@ export async function GET() {
             updatedAt: true,
             views: true,
             tags: true,
+            author: true,
+        },
+        where: {
+            visibility: true
         }
     })
 

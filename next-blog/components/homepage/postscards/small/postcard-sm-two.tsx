@@ -48,17 +48,20 @@ const PostcardSmTwo = ({
                                         <span className="text-sm">{views}</span>
                                     </div>
                                 </div>
+                                <Link
+                                    href={`/${slug}`} >
+                                    <div className="flex justify-between items-center mt-4">
+                                        <h5 className="block mb-2 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
+                                            {title}
+                                        </h5>
 
-                                <div className="flex justify-between items-center mt-4">
-                                    <h5 className="block mb-2 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
-                                        {title}
-                                    </h5>
+                                        <ArrowUpRight className="h-[24px] w-[24px]" />
+                                    </div>
+                                    <p className="block font-sans text-base antialiased leading-relaxed mb-5">
+                                        {metaDescription}
+                                    </p>
+                                </Link>
 
-                                    <ArrowUpRight className="h-[24px] w-[24px]" />
-                                </div>
-                                <p className="block font-sans text-base antialiased leading-relaxed mb-5">
-                                    {metaDescription}
-                                </p>
                             </div>
                             <div className="category">
                                 <div className="flex items-center gap-2">

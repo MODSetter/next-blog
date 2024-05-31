@@ -63,7 +63,7 @@ const TailwindAdvancedEditor = ({initContent}:{initContent: JSONContent}) => {
 
   useEffect(() => {
     setInitialContent(initContent);
-    window.localStorage.setItem("html-content", highlightCodeblocks(generateHTML(initContent, extensions)));
+    // window.localStorage.setItem("html-content", highlightCodeblocks(generateHTML(initContent, extensions)));
     // const content = window.localStorage.getItem("novel-content");
     // if (content){
     //   setInitialContent(JSON.parse(content));

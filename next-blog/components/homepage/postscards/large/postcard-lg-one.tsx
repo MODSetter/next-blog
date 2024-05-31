@@ -11,10 +11,11 @@ const PostcardLgOne = ({
     updatedAt,
     views,
     tags,
+    author,
 }: PostMetaData) => {
     return (
         <>
-            <article className="flex max-w-md flex-col rounded-2xl p-4 bg-white/10 backdrop-blur-lg shadow md:max-w-5xl md:flex-row md:items-center" key={slug}>
+            <article className="flex max-w-md flex-col rounded-2xl p-4 bg-white/10 backdrop-blur-lg shadow md:max-w-5xl md:flex-row md:items-center place-self-center" key={slug}>
                 <div className="shrink-0 my-4 md:mr-8 md:max-w-sm">
                     <img className="rounded-2xl" src={opengraphimage} alt="opengraphimage" />
                 </div>
@@ -38,9 +39,9 @@ const PostcardLgOne = ({
                     </Link>
 
                     <div className="flex items-center">
-                        <img className="h-10 w-10 rounded-full object-cover" src={"https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"} alt="Simon Lewis" />
+                        <img className="h-10 w-10 rounded-full object-cover" src={author?.avatar} alt="Simon Lewis" />
                         <p className="ml-4 w-56">
-                            <strong className="block font-medium">Johanson Levinsiki</strong>
+                            <strong className="block font-medium">{author?.name}</strong>
                             <span className="text-sm">{(new Date(updatedAt)).toDateString()}</span>
                         </p>
                     </div>

@@ -10,6 +10,7 @@ const PostcardLgTwo = ({
     updatedAt,
     views,
     tags,
+    author,
 }: PostMetaData) => {
 
     return (
@@ -46,9 +47,9 @@ const PostcardLgTwo = ({
 
                             <div className="hidden md:block">
                                 <div className="flex items-center">
-                                    <img className="h-10 w-10 rounded-full object-cover" src={"https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"} alt="Simon Lewis" />
+                                    <img className="h-10 w-10 rounded-full object-cover" src={author?.avatar} alt="Author" />
                                     <p className="ml-4 w-56">
-                                        <strong className="block font-medium">Johanson Levinsiki</strong>
+                                        <strong className="block font-medium">{author?.name}</strong>
                                         <span className="text-sm">{(new Date(updatedAt)).toDateString()}</span>
                                     </p>
                                 </div>

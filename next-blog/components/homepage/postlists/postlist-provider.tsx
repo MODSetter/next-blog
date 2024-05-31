@@ -16,11 +16,13 @@ async function allPostMetaDataRequest() {
 
 const postListProvider = async (postListType: string | undefined) => {
     const allPostMetaData = await allPostMetaDataRequest();
+    const firsttenposts = allPostMetaData.slice(0,10);
+    // console.log("postlist-provider",firstten)
     const cardno = postListType?.slice(-4);
     if(postListType?.startsWith("POSTLIST-SM")){
-        return <PostListSm data={allPostMetaData} postcardno={cardno}/>
+        return <PostListSm data={firsttenposts} postcardno={cardno}/>
     }else if(postListType?.startsWith("POSTLIST-LG")){
-        return <PostListLg data={allPostMetaData} postcardno={cardno}/>
+        return <PostListLg data={firsttenposts} postcardno={cardno}/>
     }
     else{
         return <></>

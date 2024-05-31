@@ -1,6 +1,7 @@
 import PostListOne from "@/components/homepage/postlists/postlist-sm";
 import postCardProvider from "@/components/homepage/postscards/postcard-provider";
 import prisma from "@/db/prismaclient"
+import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
 
 interface PostPagesProps {
@@ -19,6 +20,7 @@ async function getPostsData(perPage: number, page: number) {
         updatedAt: true,
         views: true,
         tags: true,
+        author: true
       },
       where: {
         visibility: true
@@ -49,7 +51,7 @@ export const PostsPage = async ({
 
   let page = parseInt(pageno, 10);
   page = !page || page < 1 ? 1 : page;
-  const perPage = 1;
+  const perPage = 10;
   const data = await getPostsData(perPage, page);
 
   const totalPages = Math.ceil(data.postsCount / perPage);
@@ -68,7 +70,7 @@ export const PostsPage = async ({
 
   return (
     <div>
-      <div className="flex flex-col items-center lg:items-stretch gap-4 p-2">
+      <div className="flex flex-col items-center lg:items-stretch gap-4 p-2 place-items-center">
       {data.posts.map((post) => {
         return (
           <>
@@ -85,11 +87,11 @@ export const PostsPage = async ({
           <div className="flex border-[1px] gap-4 rounded-[10px] border-light-green p-4">
             {page === 1 ? (
               <div className="opacity-60" aria-disabled="true">
-                Previous
+                {"< Previous"}
               </div>
             ) : (
               <Link href={`/posts/${prevPage}`} aria-label="Previous Page">
-                Previous
+                {"< Previous"}
               </Link>
             )}
 
@@ -98,8 +100,8 @@ export const PostsPage = async ({
                 key={index}
                 className={
                   page === pageNumber
-                    ? "bg-green-500 fw-bold px-2 rounded-md text-black"
-                    : "hover:bg-green-500 px-1 rounded-md"
+                    ? "bg-green-500 font-bold px-3 border rounded-md"
+                    : "hover:bg-indigo-500/10 px-1 rounded-md"
                 }
                 href={`/posts/${pageNumber}`}
               >
@@ -109,11 +111,11 @@ export const PostsPage = async ({
 
             {page === totalPages ? (
               <div className="opacity-60" aria-disabled="true">
-                Next
+                {"Next >"}
               </div>
             ) : (
               <Link href={`/posts/${nextPage}`} aria-label="Next Page">
-                Next
+                {"Next >"}
               </Link>
             )}
           </div>

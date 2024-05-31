@@ -61,19 +61,20 @@ export const page = ({
   const { toast } = useToast();
 
   const [slug, setSlug] = useState<string>("");
-  const [slugformvisibility, setSlugformvisibility] = useState<string | undefined>("block");
+
 
   const [contentjson, setContentjson] = useState<JSONContent | null>(null);
   const [contenthtml, setContenthtml] = useState<string | null>(null);
   const [posttitle, setPosttitle] = useState<string>("");
   const [opengraphurl, setOpengraphurl] = useState<string | null>(null);
-  const [postdataformvisibility, setPostdataformvisibility] = useState<string | undefined>("block");
-
   const [metakeywords, setMetakeywords] = useState<string>("");
   const [metadescription, setMetadescription] = useState<string>("");
   const [postvisibility, setPostvisibility] = useState<boolean>(true);
 
-  const [metadataformvisibility, setMetadataformvisibility] = useState<string | undefined>("block");
+  const [slugformvisibility, setSlugformvisibility] = useState<string | undefined>("block");
+  const [postdataformvisibility, setPostdataformvisibility] = useState<string | undefined>("hidden");
+  const [contentsectionvisibility, setContentsectionvisibility] = useState<string | undefined>("hidden");
+  const [metadataformvisibility, setMetadataformvisibility] = useState<string | undefined>("hidden");
 
   const [tags, setTags] = useState<Array<Tag>>([
     // { id: "India", text: "India", className: "" },
@@ -210,8 +211,13 @@ export const page = ({
 
   async function onPostDataSubmit(formdata: z.infer<typeof postdataFormSchema>) {
     setPosttitle(formdata.posttitle);
-    setContenthtml(window.localStorage.getItem("html-content"));
     setPostdataformvisibility("hidden");
+    setContentsectionvisibility("block")
+  }
+
+  async function onContentSubmit() {
+    setContenthtml(window.localStorage.getItem("html-content"));
+    setContentsectionvisibility("hidden")
     setMetadataformvisibility("block")
   }
 
@@ -238,7 +244,14 @@ export const page = ({
     const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/posts`, requestOptions);
 
     const res = await response.json();
-    router.push("/dashboard/posts")
+    if (res.slug) {
+      toast({
+        variant: "default",
+        description: `Post Edited Successfully`,
+        className: "bg-green-400/20 backdrop-blur-lg"
+      });
+    }
+    router.push("/dashboard/posts/1")
   }
 
 
@@ -287,15 +300,10 @@ export const page = ({
                 </FormItem>
               )}
             />
-            
+
             <div>
-            <p className="text-sm">Post Content</p>
-            {contentjson ? <TailwindAdvancedEditor initContent={contentjson} /> : ""}
-            </div>
-     
-            <div>
-            <p className="text-sm py-2">Select Tags</p>
-            {/* suggestions={suggestions} */}
+              <p className="text-sm py-2">Select Tags</p>
+              {/* suggestions={suggestions} */}
               <ReactTags
                 tags={tags}
                 separators={[SEPARATORS.ENTER, SEPARATORS.COMMA]}
@@ -314,13 +322,19 @@ export const page = ({
 
 
             <div className="flex gap-4">
-              <Button>Preview</Button>
+              {/* <Button>Preview</Button> */}
               <Button type="submit">Check & Proceed</Button>
             </div>
 
 
           </form>
         </Form>
+      </div>
+
+      <div className={contentsectionvisibility}>
+        <p className="text-sm py-2">Post Content</p>
+        {contentjson ? <TailwindAdvancedEditor initContent={contentjson} /> : ""}
+        <Button onClick={() => onContentSubmit()}>Check & Proceed</Button>
       </div>
 
       <div className={metadataformvisibility}>
@@ -361,10 +375,12 @@ export const page = ({
                 <FormItem>
                   <FormLabel>Post Visibility</FormLabel>
                   <FormControl>
-                    <Checkbox
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                    />
+                    <div>
+                      <Checkbox
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>

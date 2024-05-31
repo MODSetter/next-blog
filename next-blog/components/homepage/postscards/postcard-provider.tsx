@@ -5,6 +5,7 @@ import PostcardLgOne from "./large/postcard-lg-one";
 import PostcardLgTwo from "./large/postcard-lg-two";
 const postCardProvider = (postScrId: string | undefined, datarec: PostMetaData) => {
     const data = postScrId?.split("-");
+    // console.log("PP",datarec);
 
     if(data && data[0] && data[1]){
         switch(data[0]){

@@ -81,14 +81,15 @@ export const page = () => {
   const { toast } = useToast();
 
   const [slug, setSlug] = useState<string | null>(null);
-  const [slugformvisibility, setSlugformvisibility] = useState<string | undefined>("block");
-
   const [contenthtml, setContenthtml] = useState<string | null>(null);
   const [posttitle, setPosttitle] = useState<string | null>(null);
   const [opengraphurl, setOpengraphurl] = useState<string | null>(null);
-  const [postdataformvisibility, setPostdataformvisibility] = useState<string | undefined>("hidden");
 
+  const [slugformvisibility, setSlugformvisibility] = useState<string | undefined>("block");
+  const [postdataformvisibility, setPostdataformvisibility] = useState<string | undefined>("hidden");
+  const [contentsectionvisibility, setContentsectionvisibility] = useState<string | undefined>("hidden");
   const [metadataformvisibility, setMetadataformvisibility] = useState<string | undefined>("hidden");
+  
   const [tags, setTags] = useState<Array<Tag>>([
     // { id: "India", text: "India", className: "" },
     // { id: "Vietnam", text: "Vietnam", className: "" },
@@ -158,10 +159,18 @@ export const page = () => {
   async function onPostDataSubmit(formdata: z.infer<typeof postdataFormSchema>) {
     //check if novel have some content
     setPosttitle(formdata.posttitle);
-    setContenthtml(window.localStorage.getItem("html-content"));
+    // setContenthtml(window.localStorage.getItem("html-content"));
     setPostdataformvisibility("hidden");
+    setContentsectionvisibility("block")
+    // setMetadataformvisibility("block")
+  }
+
+  async function onContentSubmit() {
+    setContenthtml(window.localStorage.getItem("html-content"));
+    setContentsectionvisibility("hidden")
     setMetadataformvisibility("block")
   }
+
 
 
   async function onMetaDataSubmit(formdata: z.infer<typeof metadataFormSchema>) {
@@ -183,7 +192,14 @@ export const page = () => {
     const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/posts`, requestOptions);
 
     const res = await response.json();
-    router.push("/dashboard/posts")
+    if (res.slug) {
+      toast({
+        variant: "default",
+        description: `Posted Successfully`,
+        className: "bg-green-400/20 backdrop-blur-lg"
+      });
+    }
+    router.push("/dashboard/posts/1")
   }
 
 
@@ -215,12 +231,13 @@ export const page = () => {
 
 
       <div className={postdataformvisibility}>
+        <div>
+          <p className="text-sm py-2">Open Graph Image</p>
+          <ImageUploadForm opengraphurl={opengraphurl} setOpengraphurl={setOpengraphurl} />
+        </div>
         <Form {...postdataform}>
           <form onSubmit={postdataform.handleSubmit(onPostDataSubmit)} className="flex flex-col gap-4">
-            <div>
-              <p className="text-sm py-2">Open Graph Image</p>
-              <ImageUploadForm opengraphurl={opengraphurl} setOpengraphurl={setOpengraphurl} />
-            </div>
+
             <FormField
               control={postdataform.control}
               name="posttitle"
@@ -234,16 +251,11 @@ export const page = () => {
                 </FormItem>
               )}
             />
-            <div>
-              <p className="text-sm py-2">Post Content</p>
 
-              <TailwindAdvancedEditor initContent={defaultEditorContent} />
 
-            </div>
-     
             <div>
-            <p className="text-sm py-2">Select Tags</p>
-            {/* suggestions={suggestions} */}
+              <p className="text-sm py-2">Select Tags</p>
+              {/* suggestions={suggestions} */}
               <ReactTags
                 tags={tags}
                 separators={[SEPARATORS.ENTER, SEPARATORS.COMMA]}
@@ -261,13 +273,20 @@ export const page = () => {
             </div>
 
             <div className="flex gap-4">
-              <Button>Preview</Button>
+              {/* <Button>Preview</Button> */}
               <Button type="submit">Check & Proceed</Button>
             </div>
 
 
           </form>
         </Form>
+      </div>
+
+      {/* <div className={slugformvisibility}></div> */}
+      <div className={contentsectionvisibility}>
+        <p className="text-sm py-2">Post Content</p>
+        <TailwindAdvancedEditor initContent={defaultEditorContent} />
+        <Button onClick={() => onContentSubmit()}>Check & Proceed</Button>
       </div>
 
       <div className={metadataformvisibility}>
@@ -307,11 +326,14 @@ export const page = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Post Visibility</FormLabel>
-                  <FormControl>
+                  <FormControl className="">
+                    <div>
                     <Checkbox
                       checked={field.value}
                       onCheckedChange={field.onChange}
                     />
+                    </div>
+                    
                   </FormControl>
                   <FormMessage />
                 </FormItem>

@@ -12,6 +12,7 @@ const PostcardSmOne = ({
     updatedAt,
     views,
     tags,
+    author,
 }: PostMetaData) => {
     return (
         <>
@@ -27,7 +28,7 @@ const PostcardSmOne = ({
                         />
                     </div>
                 </Link>
-                <div className="p-5 flex-grow ">
+                <div className="p-5 flex-grow flex flex-col justify-between">
                     <div className="flex xl:justify-between xl:flex-row justify-between flex-row-reverse">
                         <div className="flex  gap-2">
                             <Eye className="" size={20} />
@@ -56,13 +57,13 @@ const PostcardSmOne = ({
                         <div className="flex-shrink-0">
                             <img
                                 className="h-10 w-10 rounded-full object-cover"
-                                src={"https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"}
+                                src={author.avatar}
                                 alt="Neil image"
                             />
                         </div>
                         <div className="flex-1 min-w-0 ms-4">
                             <strong className="block font-medium text-gray-700 dark:text-gray-400">
-                                Rohan
+                                {author?.name}
                             </strong>
 
                             <span className="text-sm text-gray-400">{(new Date(updatedAt)).toDateString()}</span>
