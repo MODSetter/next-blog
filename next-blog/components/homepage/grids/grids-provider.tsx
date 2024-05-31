@@ -1,10 +1,10 @@
 import { getGridData } from "@/db/getters"
-import globalComponentProvider from "../global-provider";
+import { globalComponentProvider } from "../global-provider";
 
 export const OneGrid = async () => {
     const grid = await getGridData("GRID-1");
     return (
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 place-items-center">
             <div>{globalComponentProvider(grid?.comp_one)}</div>
 
             <div className="flex flex-col lg:flex-row gap-4">
@@ -31,7 +31,7 @@ export const OneGrid = async () => {
 export const SecondGrid = async () => {
     const grid = await getGridData("GRID-2");
     return (
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 place-items-center">
             <div>{globalComponentProvider(grid?.comp_one)}</div>
 
             <div className="flex gap-4">
@@ -56,7 +56,7 @@ export const SecondGrid = async () => {
 export const ThirdGrid = async () => {
     const grid = await getGridData("GRID-3");
     return (
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 place-items-center">
             <div className="flex gap-4">
                 <div>
                     {globalComponentProvider(grid?.comp_one)}
@@ -80,7 +80,7 @@ export const ThirdGrid = async () => {
 export const FourthGrid = async () => {
     const grid = await getGridData("GRID-4");
     return (
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 place-items-center">
             <div>{globalComponentProvider(grid?.comp_one)}</div>
 
             <div className="flex gap-4">
@@ -104,7 +104,7 @@ export const FourthGrid = async () => {
 export const FifthGrid = async () => {
     const grid = await getGridData("GRID-5");
     return (
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 place-items-center">
             <div>{globalComponentProvider(grid?.comp_one)}</div>
 
             <div className="flex gap-4">

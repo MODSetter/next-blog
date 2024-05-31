@@ -5,7 +5,7 @@ type Params = {
     postslug: string
 }
 
-//gets github discussion ID 
+//gets github discussion
 export async function GET(request: Request, context: { params: Params }) {
     const discussion = await prisma.githubDiscussions.findUnique({
         where: {

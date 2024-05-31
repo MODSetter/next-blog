@@ -1,11 +1,12 @@
 import prisma from "@/db/prismaclient"
+import Banner from "./banner"
 
-const customComponentProvider = async (compId: string) => {
+export const customComponentProvider = async (compId: string) => {
     const comp = await prisma.customComponent.findUnique({
         where: {
             id: compId
         },
     })
     
-    return comp
+    return <Banner htmlContent={comp?.htmlContent} tailwindcss={comp?.tailwindcss} />
 }

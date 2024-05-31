@@ -60,7 +60,7 @@ const Layout = async ({
                 Themes
               </Link>
               <Link
-                href={'/dashboard/user/sitelayout'}
+                href={'/dashboard/user/sitelayout/navfooter'}
                 className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:bg-muted"
               >
                 <LayoutDashboard className="h-4 w-4" />
@@ -134,7 +134,7 @@ const Layout = async ({
                 Themes
                 </Link>
                 <Link
-                  href={'/dashboard/user/sitelayout'}
+                  href={'/dashboard/user/sitelayout/navfooter'}
                   className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
                 >
                   <LayoutDashboard className="h-5 w-5" />

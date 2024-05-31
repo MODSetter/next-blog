@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/tooltip"
 import { createDiscusionForPostSlug } from "@/utils/common-functions";
 import NotFound from "../not-found";
+import Link from "next/link";
 
 
 interface BlogPostPageProps {
@@ -30,6 +31,8 @@ interface Post {
   metaKeywords: string[];
   views: number;
   authorId: number;
+  tags: any[];
+  author: any;
 }
 
 async function getPostBySlug(postslug: string) {
@@ -40,6 +43,19 @@ async function getPostBySlug(postslug: string) {
     console.log("Wrong Post Cache Vals in Env")
   }
   const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/posts/getpostbyslug/${postslug}`, {
+    next: { revalidate: cacheValidateAt },
+  });
+  return response.json();
+}
+
+async function getDiscussionsStats(postslug: string) {
+  let cacheValidateAt = 5 //Default Cache Timeout
+  if (`${process.env.DISCUSSIONS_STATS_REVALIDATE}`) {
+    cacheValidateAt = parseInt(`${process.env.DISCUSSIONS_STATS_REVALIDATE}`);
+  } else {
+    console.log("Wrong Discussion Cache Vals in Env")
+  }
+  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/discussions/stats/${postslug}`, {
     next: { revalidate: cacheValidateAt },
   });
   return response.json();
@@ -71,6 +87,7 @@ export default async function BlogPostPage({
   params: { postslug },
 }: BlogPostPageProps) {
   const post: Post = await getPostBySlug(postslug);
+  const discussion = await getDiscussionsStats(postslug);
 
   if(post.slug){
     incView(postslug);
@@ -112,7 +129,7 @@ export default async function BlogPostPage({
     <>
       <div className="container mx-auto p-4 border m-4 rounded-xl bg-white/10 backdrop-blur-lg">
         <div className="flex flex-col gap-y-4 m-4">
-          <div className="flex justify-between items-center p-4 border-b border-dashed border-gray-200">
+          <div className="flex justify-between items-center p-4 border-b border-gray-200">
             <div className="flex flex-col gap-4">
               <h1 className="text-3xl font-semibold">{post?.title}</h1>
 
@@ -121,14 +138,14 @@ export default async function BlogPostPage({
 
             <div className="flex items-center gap-x-4">
               <img
-                src="https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                alt=""
+                src={post.author.avatar}
+                alt="author"
                 className="h-10 w-10 rounded-full bg-gray-50"
               />
               <div className="text-sm leading-6">
                 <p className="font-semibold">
                   {/* <span className="absolute inset-0"></span> */}
-                  Rohan
+                  {post.author.name}
                 </p>
                 <p>Admin</p>
               </div>
@@ -137,7 +154,7 @@ export default async function BlogPostPage({
 
           <div className="flex flex-col gap-4 justify-between md:flex-row">
             <div>
-              <div className="bg-white/10 backdrop-blur-lg hover:text-black hover:bg-gradient-to-r hover:from-pink-100 hover:to-yellow-100 rounded-2xl p-4 sticky top-20 left-0 z-50 min-w-40">
+              <div className="bg-white/10 backdrop-blur-lg border hover:text-black hover:bg-gradient-to-r hover:from-pink-100 hover:to-yellow-100 rounded-2xl p-4 sticky top-20 left-0 z-50 min-w-40">
                 <p className="border-b-2 py-2 mb-2 text-lg font-semibold">On This Page</p>
                 <ul>
                   {toc.map(({ id, title }: { id: any, title: any }) => {
@@ -161,14 +178,15 @@ export default async function BlogPostPage({
             ></div>
 
             <div>
-              <div className="flex md:flex-col gap-2 place-items-center justify-around bg-white/10 backdrop-blur-lg hover:text-black hover:bg-gradient-to-r hover:from-pink-100 hover:to-yellow-100 p-4 rounded-lg sticky top-20 left-0 z-50">
+              <Link href={`${process.env.NEXT_PUBLIC_BASE_URL}/discussions/${postslug}`}>
+              <div className="flex md:flex-col gap-2 place-items-center justify-around bg-white/10 backdrop-blur-lg border hover:text-black hover:bg-gradient-to-r hover:from-pink-100 hover:to-yellow-100 p-4 rounded-full sticky top-20 left-0 z-50">
                 <div>
                   <TooltipProvider>
                     <Tooltip>
                       <TooltipTrigger>
                         <div>
                           <MessageCircle className="h-4 w-4" />
-                          2543
+                          {discussion.comments}
                         </div>
                       </TooltipTrigger>
                       <TooltipContent>
@@ -184,7 +202,7 @@ export default async function BlogPostPage({
                       <TooltipTrigger>
                         <div>
                           <SmilePlus className="h-4 w-4" />
-                          3242
+                          {discussion.reactions}
                         </div>
                       </TooltipTrigger>
                       <TooltipContent>
@@ -199,11 +217,11 @@ export default async function BlogPostPage({
                     <Tooltip>
                       <TooltipTrigger>
                         <div>
-                          <CirclePlus className="" />
+                        <CirclePlus className="" />
                         </div>
                       </TooltipTrigger>
                       <TooltipContent>
-                        <p>Participate in Post Discussion</p>
+                        Participate in Post Discussion
                       </TooltipContent>
                     </Tooltip>
                   </TooltipProvider>
@@ -212,7 +230,7 @@ export default async function BlogPostPage({
 
 
               </div>
-
+              </Link>
             </div>
 
           </div>

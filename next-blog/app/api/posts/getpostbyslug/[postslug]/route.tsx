@@ -12,8 +12,11 @@ export async function GET(request: Request, context: { params: Params }) {
         },
         include: {
             tags: true,
+            author: true
         },
     })
+
+    console.log("POST",post)
     return NextResponse.json({
         ...post
     });
