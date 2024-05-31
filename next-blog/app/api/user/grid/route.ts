@@ -35,3 +35,20 @@ export async function PATCH(req: Request) {
         ...grid
     });
 }
+
+//Update Grid Val in User 
+export async function PUT(req: Request) {
+    const datareceived = await req.json();
+    const user = await prisma.user.update({
+        where:{
+            id: "1"
+        },
+        data: {
+            maingrid: datareceived.maingrid
+        }
+    })
+    console.log("user api",user)
+    return NextResponse.json({
+        ...user
+    });
+}

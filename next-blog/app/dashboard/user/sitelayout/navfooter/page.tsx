@@ -9,6 +9,15 @@ import { Button } from "@/components/ui/button";
 import { CirclePlus, Trash2Icon } from "lucide-react";
 import ImageUploadForm from "@/components/image-upload/ImageUploadForm";
 import { useEffect, useState } from "react";
+import { toast } from "@/components/ui/use-toast"
+
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+  } from "@/components/ui/select"
 
 
 const linksSchema = z.object({
@@ -34,24 +43,24 @@ const formSchema = z.object({
 // }
 
 export const DynamicForm = () => {
-    const [dbnavbar,setDbnavbar] = useState<string>("");
-    const [dbfooter,setDbfooter] = useState<string>("");
-    const [dbnavbarlinks,setDbnavbarlinks] = useState<string>("[]");
-    const [dbfooterlinks,setDbfooterlinks] = useState<string>("[]");
+    const [dbnavbar, setDbnavbar] = useState<string>("");
+    const [dbfooter, setDbfooter] = useState<string>("");
+    const [dbnavbarlinks, setDbnavbarlinks] = useState<string>("[]");
+    const [dbfooterlinks, setDbfooterlinks] = useState<string>("[]");
     const [navlogo, setNavlogo] = useState<string | null>(null);
 
     useEffect(() => {
         fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/user/navfooter`)
-          .then(response => response.json())
-          .then(data => {
-            console.log(data)
-            setDbnavbar(data.navbar);
-            setDbfooter(data.footer);
-            setDbnavbarlinks(data.navbarlinks);
-            setDbfooterlinks(data.footerlinks);
-            setNavlogo(data.navbarlogo)
-          })
-      }, []);
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+                setDbnavbar(data.navbar);
+                setDbfooter(data.footer);
+                setDbnavbarlinks(data.navbarlinks);
+                setDbfooterlinks(data.footerlinks);
+                setNavlogo(data.navbarlogo)
+            })
+    }, []);
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -106,23 +115,31 @@ export const DynamicForm = () => {
         // console.log(data,navlogo);
         //save to db user
         const reqdata = {
+            navbarlogo: navlogo,
             navbar: data.navbar,
             footer: data.footer,
             navbarlinks: data.navbarlinks,
             footerlinks: data.footerlinks,
-          };
-          const requestOptions = {
+        };
+        const requestOptions = {
             method: "PATCH",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(reqdata),
-          };
-          const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/user/navfooter`, requestOptions);
-      
-          const res = await response.json();
-          console.log(res)
+        };
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/user/navfooter`, requestOptions);
+
+        const res = await response.json();
+        if (res.navbar) {
+            toast({
+                variant: "default",
+                description: `Component Selection Saved`,
+                className: "bg-green-400/20 backdrop-blur-lg"
+            });
+        }
+        console.log(res)
     };
-    
-    
+
+
 
     return (
         <Form {...form}>
@@ -133,17 +150,26 @@ export const DynamicForm = () => {
                     render={({ field }) => (
                         <FormItem>
                             <FormLabel className="text-lg">Select Navbar</FormLabel>
-                            <FormControl>
-                                <Input {...field} />
-                            </FormControl>
+                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                <FormControl>
+                                    <SelectTrigger>
+                                        <SelectValue placeholder={field.value} />
+                                    </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                    <SelectItem value="NAVBAR-1">NAVBAR #1</SelectItem>
+                                    <SelectItem value="NAVBAR-2">NAVBAR #2</SelectItem>
+                                </SelectContent>
+                            </Select>
                             <FormMessage />
                         </FormItem>
                     )}
                 />
 
                 <div>
-                    <p className="my-3 text-sm">Admin Avatar:</p>
+                    <p className="my-3 text-sm">Navbar Logo:</p>
                     <ImageUploadForm opengraphurl={navlogo} setOpengraphurl={setNavlogo} />
+
                 </div>
 
 
@@ -152,6 +178,22 @@ export const DynamicForm = () => {
 
                     {navlinks.map(({ name, href, css, icon }, index) => (
                         <div className="flex gap-2 " key={name}>
+                            <FormField
+                                control={form.control}
+                                name={`navbarlinks.${index}.icon`}
+                                render={({ field }) => (
+                                    <div className="flex items-start justify-center gap-2">
+                                        <FormItem className="flex-grow">
+                                            {index === 0 && <FormLabel>Icon</FormLabel>}
+                                            <FormControl>
+                                                <Input placeholder={field.value} {...field} />
+                                            </FormControl>
+                                            <FormMessage className="text-xs" />
+                                        </FormItem>
+                                    </div>
+                                )}
+                            />
+
                             <FormField
                                 control={form.control}
                                 name={`navbarlinks.${index}.name`}
@@ -200,9 +242,17 @@ export const DynamicForm = () => {
                     render={({ field }) => (
                         <FormItem>
                             <FormLabel className="text-lg">Select Footer</FormLabel>
-                            <FormControl>
-                                <Input {...field} />
-                            </FormControl>
+                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                <FormControl>
+                                    <SelectTrigger>
+                                        <SelectValue placeholder={field.value} />
+                                    </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                    <SelectItem value="FOOTER-1">FOOTER #1</SelectItem>
+                                    <SelectItem value="FOOTER-2">FOOTER #2</SelectItem>
+                                </SelectContent>
+                            </Select>
                             <FormMessage />
                         </FormItem>
                     )}
@@ -212,6 +262,21 @@ export const DynamicForm = () => {
                     <h2 className="text-lg">Footer Links</h2>
                     {footerlinks.map(({ name, href, css, icon }, index) => (
                         <div className="flex gap-2 " key={name}>
+                            <FormField
+                                control={form.control}
+                                name={`footerlinks.${index}.icon`}
+                                render={({ field }) => (
+                                    <div className="flex items-start justify-center gap-2">
+                                        <FormItem className="flex-grow">
+                                            {index === 0 && <FormLabel>Icon</FormLabel>}
+                                            <FormControl>
+                                                <Input placeholder={field.value} {...field} />
+                                            </FormControl>
+                                            <FormMessage className="text-xs" />
+                                        </FormItem>
+                                    </div>
+                                )}
+                            />
                             <FormField
                                 control={form.control}
                                 name={`footerlinks.${index}.name`}

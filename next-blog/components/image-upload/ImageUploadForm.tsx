@@ -53,7 +53,7 @@ export function ImageUploadForm({
             </CardHeader>
             <CardContent className="flex flex-col items-center justify-center border-2 border-dashed border-zinc-200 dark:border-zinc-800 rounded-lg p-10 space-y-6">
                 {opengraphurl ? (<>
-                    <CircleX onClick={() => setOpengraphurl(null)}/>
+                    <CircleX onClick={() => setOpengraphurl("")}/>
                     <img src={opengraphurl} alt="Opengraph Image" />
                 </>
 

@@ -41,9 +41,16 @@ const compFormSchema = z.object({
     compfive: z.string(),
 })
 
+interface Components {
+    id: string;
+    htmlContent: string;
+    tailwindcss: string;
+}
+
 const SelectComponents = () => {
     const [griddisplay, setGriddisplay] = useState<string | undefined>();
     const [grid, setGrid] = useState<Grid>();
+    const [customcmps, setCustomcmps] = useState<Components[]>();
 
     useEffect(() => {
         fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/user/grid`)
@@ -52,6 +59,12 @@ const SelectComponents = () => {
                 // console.log(data)
                 setGriddisplay(data.id)
                 setGrid(data)
+            })
+
+            fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/component`)
+            .then(response => response.json())
+            .then(data => {
+                setCustomcmps(data)
             })
     }, []);
 
@@ -127,6 +140,9 @@ const SelectComponents = () => {
                                             <SelectItem value="POSTLIST-SM-2">PostList - Small Post Card 2</SelectItem>
                                             <SelectItem value="POSTLIST-LG-1">PostList - Large Post Card 1</SelectItem>
                                             <SelectItem value="POSTLIST-LG-2">PostList - Large Post Card 2</SelectItem>
+                                            {customcmps?.map((cmpt) => (
+                                                <SelectItem value={`CUSTOM-BANNER-${cmpt.id}`}>{cmpt.id}</SelectItem>
+                                            ))}
                                             <SelectItem value="XYZ-1">None</SelectItem>
                                         </SelectContent>
                                     </Select>
@@ -153,6 +169,9 @@ const SelectComponents = () => {
                                             <SelectItem value="POSTLIST-SM-2">PostList - Small Post Card 2</SelectItem>
                                             <SelectItem value="POSTLIST-LG-1">PostList - Large Post Card 1</SelectItem>
                                             <SelectItem value="POSTLIST-LG-2">PostList - Large Post Card 2</SelectItem>
+                                            {customcmps?.map((cmpt) => (
+                                                <SelectItem value={`CUSTOM-BANNER-${cmpt.id}`}>{cmpt.id}</SelectItem>
+                                            ))}
                                             <SelectItem value="XYZ-1">None</SelectItem>
                                         </SelectContent>
                                     </Select>
@@ -179,6 +198,9 @@ const SelectComponents = () => {
                                             <SelectItem value="POSTLIST-SM-2">PostList - Small Post Card 2</SelectItem>
                                             <SelectItem value="POSTLIST-LG-1">PostList - Large Post Card 1</SelectItem>
                                             <SelectItem value="POSTLIST-LG-2">PostList - Large Post Card 2</SelectItem>
+                                            {customcmps?.map((cmpt) => (
+                                                <SelectItem value={`CUSTOM-BANNER-${cmpt.id}`}>{cmpt.id}</SelectItem>
+                                            ))}
                                             <SelectItem value="XYZ-1">None</SelectItem>
                                         </SelectContent>
                                     </Select>
@@ -205,6 +227,9 @@ const SelectComponents = () => {
                                             <SelectItem value="POSTLIST-SM-2">PostList - Small Post Card 2</SelectItem>
                                             <SelectItem value="POSTLIST-LG-1">PostList - Large Post Card 1</SelectItem>
                                             <SelectItem value="POSTLIST-LG-2">PostList - Large Post Card 2</SelectItem>
+                                            {customcmps?.map((cmpt) => (
+                                                <SelectItem value={`CUSTOM-BANNER-${cmpt.id}`}>{cmpt.id}</SelectItem>
+                                            ))}
                                             <SelectItem value="XYZ-1">None</SelectItem>
                                         </SelectContent>
                                     </Select>
@@ -231,6 +256,9 @@ const SelectComponents = () => {
                                             <SelectItem value="POSTLIST-SM-2">PostList - Small Post Card 2</SelectItem>
                                             <SelectItem value="POSTLIST-LG-1">PostList - Large Post Card 1</SelectItem>
                                             <SelectItem value="POSTLIST-LG-2">PostList - Large Post Card 2</SelectItem>
+                                            {customcmps?.map((cmpt) => (
+                                                <SelectItem value={`CUSTOM-BANNER-${cmpt.id}`}>{cmpt.id}</SelectItem>
+                                            ))}
                                             <SelectItem value="XYZ-1">None</SelectItem>
                                         </SelectContent>
                                     </Select>

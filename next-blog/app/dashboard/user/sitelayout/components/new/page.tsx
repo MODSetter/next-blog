@@ -15,6 +15,7 @@ import {
 import { useState } from "react";
 import TailwindAdvancedEditor from "@/components/tailwind/advanced-editor";
 import { defaultEditorContent } from "@/lib/content";
+import { toast } from "@/components/ui/use-toast";
 
 const typeformSchema = z.object({
   comptype: z.string(),
@@ -44,7 +45,7 @@ const NewComponent = () => {
     },
   });
 
-  
+
   const cssform = useForm<z.infer<typeof cssformSchema>>({
     resolver: zodResolver(cssformSchema),
     values: {
@@ -53,21 +54,33 @@ const NewComponent = () => {
   });
 
   const onTypeSubmit: any = async (data: z.infer<typeof typeformSchema>) => {
-    console.log(data);
-    setBannerformvisibility("block")
+    // console.log(data);
+    if (data.comptype === "BANNER") {
+      setBannerformvisibility("block")
+    }
   };
 
   const [compname, setCompname] = useState<string>("<></>");
 
   const onNameSubmit: any = async (data: z.infer<typeof nameformSchema>) => {
-    console.log(data);
-    setCompdataformvisibility("block")
-    setCompname(data.name);
+    // console.log(data);
+    const req = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/component/${data.name}`);
+    const res = await req.json();
+    if (res.id) {
+      toast({
+        variant: "default",
+        description: `Duplicate Name`,
+        className: "bg-red-400/20 backdrop-blur-lg"
+      });
+    } else {
+      setCompdataformvisibility("block")
+      setCompname(data.name);
+    }
   };
 
 
   const onCssSubmit: any = async (data: z.infer<typeof cssformSchema>) => {
-    console.log(data);
+    // console.log(data);
     // setCompdataformvisibility("block")
     const reqdata = {
       name: compname,
@@ -75,7 +88,7 @@ const NewComponent = () => {
       tailwindcss: data.tailwindcss,
     };
 
-    // console.log(reqdata);
+    console.log("onCss",reqdata);
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -84,8 +97,15 @@ const NewComponent = () => {
     const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/component`, requestOptions);
 
     const res = await response.json();
+    if(res.id){
+      toast({
+        variant: "default",
+        description: `New Component Created`,
+        className: "bg-green-400/20 backdrop-blur-lg"
+      });
+    }
 
-    console.log(res);
+    // console.log(res);
   };
 
   const [bannerformvisibility, setBannerformvisibility] = useState<string>("hidden");
@@ -149,29 +169,29 @@ const NewComponent = () => {
         <div className="flex flex-col">
           <div>
             <p className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 py-3">Content</p>
-            <TailwindAdvancedEditor initContent={defaultEditorContent}/>
+            <TailwindAdvancedEditor initContent={defaultEditorContent} />
           </div>
           <div>
-          <Form {...cssform}>
-          <form onSubmit={cssform.handleSubmit(onCssSubmit)} className="space-y-8">
-            <FormField
-              control={cssform.control}
-              name="tailwindcss"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Tailwind CSS:</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <Button type="submit">Create Component</Button>
-          </form>
-        </Form>
+            <Form {...cssform}>
+              <form onSubmit={cssform.handleSubmit(onCssSubmit)} className="space-y-8">
+                <FormField
+                  control={cssform.control}
+                  name="tailwindcss"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Tailwind CSS:</FormLabel>
+                      <FormControl>
+                        <Input {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <Button type="submit">Create Component</Button>
+              </form>
+            </Form>
           </div>
-          
+
         </div>
       </div>
     </>

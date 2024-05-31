@@ -50,7 +50,7 @@ function NavbarTwo() {
                             <AlignLeft />
                         </div>
                         <a href={`${process.env.NEXT_PUBLIC_BASE_URL}`}>
-                            {user.navbarlogo ? <img src={user.navbarlogo} alt="logo" /> : <span className="text-green-600 font-semibold text-[30px] uppercase">{`${process.env.NEXT_PUBLIC_WEBSITE_NAME}`}</span>}
+                            {user.navbarlogo ? <img src={user.navbarlogo} alt="logo" className="w-25 h-12"/> : <span className="text-green-600 font-semibold text-[30px] uppercase">{`${process.env.NEXT_PUBLIC_WEBSITE_NAME}`}</span>}
                         </a>
                     </div>
                     <nav className="hidden sm:flex sm:items-center sm:space-x-4">

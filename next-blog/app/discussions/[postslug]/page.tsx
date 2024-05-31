@@ -40,7 +40,7 @@ export const DiscussionPage = ({
         return (
             <div className="flex flex-col m-8">
                 <div className='max-w-30 mb-6'>
-                    {postCardProvider("SM-2", postdata)}
+                    {postCardProvider("LG-2", postdata)}
                 </div>
                 <div className="bg-slate-500/80 p-4 rounded-lg">
                     <Giscus
