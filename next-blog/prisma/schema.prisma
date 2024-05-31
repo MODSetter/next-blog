@@ -52,7 +52,7 @@ model CustomComponent {
 
 model GithubDiscussions {
   url          String @id @unique
-  discussionId String @unique
+  discussionId Int @unique
 }
 
 model Session {

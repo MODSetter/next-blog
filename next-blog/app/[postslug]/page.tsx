@@ -12,6 +12,8 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
+import { createDiscusionForPostSlug } from "@/utils/common-functions";
+import NotFound from "../not-found";
 
 
 interface BlogPostPageProps {
@@ -69,8 +71,14 @@ export default async function BlogPostPage({
   params: { postslug },
 }: BlogPostPageProps) {
   const post: Post = await getPostBySlug(postslug);
-  //Increment the view of Post
-  incView(postslug);
+
+  if(post.slug){
+    incView(postslug);
+    await createDiscusionForPostSlug(`${process.env.NEXT_PUBLIC_BASE_URL}/discussions/${postslug}`)
+  }else{
+    return <NotFound />
+  }
+  
 
   //contains toc 
   const toc: any = [];
