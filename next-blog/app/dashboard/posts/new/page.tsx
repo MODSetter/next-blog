@@ -18,7 +18,7 @@ import { Input } from "@/components/ui/input"
 import { useState } from "react";
 
 import { useToast } from "@/components/ui/use-toast"
-import { defaultEditorContent } from "@/lib/content";
+import { defaultEditorContent, defaultHtmlEditorContent } from "@/lib/content";
 import TailwindAdvancedEditor from "@/components/tailwind/advanced-editor";
 import ImageUploadForm from "@/components/image-upload/ImageUploadForm";
 import { useRouter } from "next/navigation";
@@ -83,6 +83,7 @@ export const page = () => {
 
   const [slug, setSlug] = useState<string | null>(null);
   const [contenthtml, setContenthtml] = useState<string | null>(null);
+  const [contentjson, setContentjson] = useState<string | null>(null);
   const [posttitle, setPosttitle] = useState<string | null>(null);
   const [opengraphurl, setOpengraphurl] = useState<string | null>(null);
 
@@ -152,6 +153,9 @@ export const page = () => {
       setSlug(formdata.slug);
       setSlugformvisibility("hidden");
       setPostdataformvisibility("block");
+
+      window.localStorage.setItem("html-content", defaultHtmlEditorContent);
+      window.localStorage.setItem("novel-content", JSON.stringify(defaultEditorContent));
     }
 
   }
@@ -168,6 +172,7 @@ export const page = () => {
 
   async function onContentSubmit() {
     setContenthtml(window.localStorage.getItem("html-content"));
+    setContentjson(window.localStorage.getItem("novel-content"));
     setContentsectionvisibility("hidden")
     setMetadataformvisibility("block")
   }
@@ -175,10 +180,14 @@ export const page = () => {
 
 
   async function onMetaDataSubmit(formdata: z.infer<typeof metadataFormSchema>) {
+    const contentobj = {
+      json: contentjson,
+      html: contenthtml
+    }
     const reqdata = {
       rslug: slug,
       rtitle: posttitle,
-      rcontent: contenthtml,
+      rcontent: JSON.stringify(contentobj),
       rimgurl: opengraphurl,
       rmetakeys: formdata.metakeywords?.split(","),
       rmetadesc: formdata.metadescription,
@@ -286,7 +295,7 @@ export const page = () => {
       {/* <div className={slugformvisibility}></div> */}
       <div className={contentsectionvisibility}>
         <p className="text-sm py-2">Post Content</p>
-        <TailwindAdvancedEditor initContent={defaultEditorContent} />
+        <TailwindAdvancedEditor />
         <Button onClick={() => onContentSubmit()}>Check & Proceed</Button>
       </div>
 

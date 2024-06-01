@@ -21,12 +21,14 @@ import { useToast } from "@/components/ui/use-toast"
 import type { Tag } from '@/components/react-tag-input/components/SingleTag';
 import { WithContext as ReactTags, SEPARATORS } from '@/components/react-tag-input/index';
 import TailwindAdvancedEditor from "@/components/tailwind/advanced-editor";
+import {extensions} from "@/components/tailwind/advanced-editor";
 import ImageUploadForm from "@/components/image-upload/ImageUploadForm";
 import { useRouter } from "next/navigation";
 import { Checkbox } from "@/components/ui/checkbox";
 import { JSONContent } from "novel";
 import { jsonFromHtml } from "@/utils/common-functions";
 import { UndoDot } from "lucide-react";
+import { generateJSON } from "@tiptap/html";
 
 
 const slugFormSchema = z.object({
@@ -65,7 +67,7 @@ export const page = ({
   const [slug, setSlug] = useState<string>("");
 
 
-  const [contentjson, setContentjson] = useState<JSONContent | null>(null);
+  const [contentjson, setContentjson] = useState<string | null>(null);
   const [contenthtml, setContenthtml] = useState<string | null>(null);
   const [posttitle, setPosttitle] = useState<string>("");
   const [opengraphurl, setOpengraphurl] = useState<string | null>(null);
@@ -124,13 +126,22 @@ export const page = ({
       .then(response => response.json())
       .then(data => {
         console.log("DATA", data)
+
+        const content = JSON.parse(data.content)
+        // console.log(typeof content.json)
+        window.localStorage.setItem("html-content", content.html);
+        window.localStorage.setItem("novel-content", content.json);
+
+        
         setSlug(data.slug);
-        setContentjson(jsonFromHtml(data.content));
+        // setContentjson();
         setPosttitle(data.title);
         setOpengraphurl(data.opengraphimage);
         setMetakeywords(data.metaKeywords.join(","));
         setMetadescription(data.metaDescription);
         setPostvisibility(data.visibility);
+
+        
 
 
         // console.log("CTAGS", data.tags)
@@ -218,6 +229,7 @@ export const page = ({
   }
 
   async function onContentSubmit() {
+    setContentjson(window.localStorage.getItem("novel-content"));
     setContenthtml(window.localStorage.getItem("html-content"));
     setContentsectionvisibility("hidden")
     setMetadataformvisibility("block")
@@ -225,12 +237,15 @@ export const page = ({
 
 
   async function onMetaDataSubmit(formdata: z.infer<typeof metadataFormSchema>) {
-    // console.log("FORM", formdata)
+    const contentobj = {
+      json: contentjson,
+      html: contenthtml
+    }
     const reqdata = {
       rslug: slug,
       nslug: postslug,
       rtitle: posttitle,
-      rcontent: contenthtml,
+      rcontent: JSON.stringify(contentobj),
       rimgurl: opengraphurl,
       rmetakeys: formdata.metakeywords?.split(","),
       rmetadesc: formdata.metadescription,
@@ -345,7 +360,7 @@ export const page = ({
       }} className="flex gap-2 my-2"><UndoDot />Go Back
         </Button>
         <p className="text-sm py-2">Post Content</p>
-        {contentjson ? <TailwindAdvancedEditor initContent={contentjson} /> : ""}
+        {slug ? <TailwindAdvancedEditor /> : ""}
         <Button onClick={() => onContentSubmit()}>Check & Proceed</Button>
       </div>
 

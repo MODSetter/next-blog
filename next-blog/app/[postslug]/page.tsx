@@ -88,6 +88,7 @@ export default async function BlogPostPage({
 }: BlogPostPageProps) {
   const post: Post = await getPostBySlug(postslug);
   const discussion = await getDiscussionsStats(postslug);
+  const content = JSON.parse(post.content)
 
   if(post.slug){
     incView(postslug);
@@ -122,7 +123,7 @@ export default async function BlogPostPage({
       }
     })
     .use(rehypeStringify)
-    .processSync(post.content)
+    .processSync(content.html)
     .toString();
 
   return (

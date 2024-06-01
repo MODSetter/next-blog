@@ -1,5 +1,5 @@
 "use client";
-// import { defaultEditorContent } from "@/lib/content";
+import { defaultEditorContent } from "@/lib/content";
 import {
   EditorCommand,
   EditorCommandEmpty,
@@ -24,13 +24,12 @@ import GenerativeMenuSwitch from "./generative/generative-menu-switch";
 import { uploadFn } from "./image-upload";
 import { TextButtons } from "./selectors/text-buttons";
 import { slashCommand, suggestionItems } from "./slash-command";
-import { generateHTML } from "@tiptap/html";
 
 const hljs = require('highlight.js');
 
 const extensions = [...defaultExtensions, slashCommand];
 
-const TailwindAdvancedEditor = ({initContent}:{initContent: JSONContent}) => {
+const TailwindAdvancedEditor = () => {
   const [initialContent, setInitialContent] = useState<null | JSONContent>(null);
   const [saveStatus, setSaveStatus] = useState("Saved");
   const [charsCount, setCharsCount] = useState();
@@ -40,7 +39,7 @@ const TailwindAdvancedEditor = ({initContent}:{initContent: JSONContent}) => {
   const [openLink, setOpenLink] = useState(false);
   const [openAI, setOpenAI] = useState(false);
 
-  //Apply Codeblock Highlighting on the HTML from  editor.getHTML()
+  //Apply Codeblock Highlighting on the HTML from editor.getHTML()
   const highlightCodeblocks = (content: string) => {
     const doc = new DOMParser().parseFromString(content, 'text/html');
     doc.querySelectorAll('pre code').forEach((el) => {
@@ -54,7 +53,6 @@ const TailwindAdvancedEditor = ({initContent}:{initContent: JSONContent}) => {
   const debouncedUpdates = useDebouncedCallback(async (editor: EditorInstance) => {
     const json = editor.getJSON();
     setCharsCount(editor.storage.characterCount.words());
-    
     window.localStorage.setItem("html-content", highlightCodeblocks(editor.getHTML()));
     window.localStorage.setItem("novel-content", JSON.stringify(json));
     window.localStorage.setItem("markdown", editor.storage.markdown.getMarkdown());
@@ -62,16 +60,9 @@ const TailwindAdvancedEditor = ({initContent}:{initContent: JSONContent}) => {
   }, 500);
 
   useEffect(() => {
-    setInitialContent(initContent);
-    window.localStorage.setItem("html-content", highlightCodeblocks(generateHTML(initContent, extensions)));
-    // const content = window.localStorage.getItem("novel-content");
-    // if (content){
-    //   setInitialContent(JSON.parse(content));
-    // }
-    // else{
-    //   setInitialContent(defaultEditorContent);
-    //   window.localStorage.setItem("novel-content", JSON.stringify(defaultEditorContent));
-    // }
+    const content = window.localStorage.getItem("novel-content");
+    if (content) setInitialContent(JSON.parse(content));
+    else setInitialContent(defaultEditorContent);
   }, []);
 
   if (!initialContent) return null;

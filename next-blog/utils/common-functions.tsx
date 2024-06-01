@@ -35,13 +35,13 @@ const extensions = [
   HorizontalRule,
 ];
 
-export const htmlFromJson = (jsonContent: JSONContent) => {
-  return generateHTML(jsonContent, extensions);
-};
+// export const htmlFromJson = (jsonContent: JSONContent) => {
+//   return generateHTML(jsonContent, extensions);
+// };
 
-export const jsonFromHtml = (htmlContent: string) => {
-  return generateJSON(htmlContent, extensions);
-};
+// export const jsonFromHtml = (htmlContent: string) => {
+//   return generateJSON(htmlContent, extensions);
+// };
 
 
 export const randomBorderColor = (max: number) => {
