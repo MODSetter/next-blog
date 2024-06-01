@@ -47,7 +47,9 @@ FOR LOCAL TESTING:
 #### DEFAULT CREDENTIALS
 Default username and password after first seed.
 
-> **Login Page :** /login 
+> **Login Page :** /login
+
+
 > **Management Dashboard:** /dashboard
 
     USERNAME : admin
