@@ -16,7 +16,7 @@ export async function GET(request: Request, context: { params: Params }) {
         },
     })
 
-    console.log("POST",post)
+    // console.log("POST",post)
     return NextResponse.json({
         ...post
     });

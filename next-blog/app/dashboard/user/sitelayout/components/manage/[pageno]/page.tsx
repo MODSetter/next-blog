@@ -65,28 +65,31 @@ export const ManageCustomComponents = async ({
   return (
     <div>
       <div className="flex flex-col items-center lg:items-stretch gap-4 p-2 place-items-center">
-      <Table>
-                <TableHeader>
-                    <TableRow>
-                        <TableHead>Component Name</TableHead>
-                    </TableRow>
-                </TableHeader>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Component Name</TableHead>
+            </TableRow>
+          </TableHeader>
 
-                <TableBody>
-                    {data.components.map((comp: any) => (
-                        <TableRow key={comp.id}>
-                            <TableCell>
-                               {comp.id}
-                            </TableCell>
-                            <TableCell>
-                            <Link href={`/dashboard/user/components/manage/edit/${comp.id}`}>
-                                    <Button variant="secondary">Edit</Button>
-                                </Link>
-                            </TableCell>
-                        </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
+          <TableBody>
+            {data.components.map((comp: any) => (
+              <TableRow key={comp.id}>
+                <TableCell>
+                  {comp.id}
+                </TableCell>
+                <TableCell>
+                  <Link href={`/dashboard/user/components/manage/edit/${comp.id}`}>
+                    <Button variant="secondary">Edit</Button>
+                  </Link>
+                </TableCell>
+                <TableCell className="text-right">
+                  <Button variant="destructive">Delete</Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
       </div>
       {isPageOutOfRange ? (
         <div>No more pages...</div>

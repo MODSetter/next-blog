@@ -113,6 +113,9 @@ export const DashboardPostsPage = async ({
                                     <Button variant="secondary">Edit</Button>
                                 </Link>
                             </TableCell>
+                            <TableCell className="text-right">
+                                <Button variant="destructive">Delete</Button>
+                            </TableCell>
                         </TableRow>
                     ))}
                 </TableBody>

@@ -8,6 +8,7 @@ import { Button } from "@/components/tailwind/ui/button"
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -25,6 +26,7 @@ import { useRouter } from "next/navigation";
 import { Checkbox } from "@/components/ui/checkbox";
 import { JSONContent } from "novel";
 import { jsonFromHtml } from "@/utils/common-functions";
+import { UndoDot } from "lucide-react";
 
 
 const slugFormSchema = z.object({
@@ -41,8 +43,8 @@ const postdataFormSchema = z.object({
 
 const metadataFormSchema = z.object({
   metakeywords: z.string(),
-  metadescription: z.string().min(200, {
-    message: "Meta Description must be at least 200 characters.",
+  metadescription: z.string().min(150, {
+    message: "Meta Description must be at least 150 characters.",
   }),
   postvisibility: z.boolean(),
 })
@@ -283,6 +285,11 @@ export const page = ({
 
 
       <div className={postdataformvisibility}>
+      <Button onClick={() => {
+        setPostdataformvisibility("hidden");
+        setSlugformvisibility("block");
+      }} className="flex gap-2 my-2"><UndoDot />Go Back
+        </Button>
         <p className="text-sm">Open Graph Image</p>
         <ImageUploadForm opengraphurl={opengraphurl} setOpengraphurl={setOpengraphurl} />
         <Form {...postdataform}>
@@ -332,12 +339,24 @@ export const page = ({
       </div>
 
       <div className={contentsectionvisibility}>
+      <Button onClick={() => {
+        setContentsectionvisibility("hidden");
+        setPostdataformvisibility("block")
+      }} className="flex gap-2 my-2"><UndoDot />Go Back
+        </Button>
         <p className="text-sm py-2">Post Content</p>
         {contentjson ? <TailwindAdvancedEditor initContent={contentjson} /> : ""}
         <Button onClick={() => onContentSubmit()}>Check & Proceed</Button>
       </div>
 
       <div className={metadataformvisibility}>
+
+      <Button onClick={() => {
+        setMetadataformvisibility("hidden");
+        setContentsectionvisibility("block");
+      }} className="flex gap-2 my-2"><UndoDot />Go Back
+        </Button>
+       
         <Form {...metadataform}>
           <form onSubmit={metadataform.handleSubmit(onMetaDataSubmit)} className="space-y-8">
             <FormField
@@ -382,6 +401,9 @@ export const page = ({
                       />
                     </div>
                   </FormControl>
+                  <FormDescription>
+                    Set Post Visibility To Treat This Post as A Page instead of Post.
+                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -390,7 +412,7 @@ export const page = ({
 
             <div className="flex gap-4">
               <Button>Preview</Button>
-              <Button type="submit">Post New Post</Button>
+              <Button type="submit">Update Post</Button>
             </div>
 
 

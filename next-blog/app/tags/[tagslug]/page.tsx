@@ -14,7 +14,7 @@ export const PostsPage = async ({
 
   return (
     <div>
-      <ImageUploadForm />
+      TAGS PAGE ARE CURRENTLY IN DEVELOPMENT
     </div>
   )
 }

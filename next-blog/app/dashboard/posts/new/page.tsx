@@ -8,6 +8,7 @@ import { Button } from "@/components/tailwind/ui/button"
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -39,8 +40,8 @@ const postdataFormSchema = z.object({
 
 const metadataFormSchema = z.object({
   metakeywords: z.string(),
-  metadescription: z.string().min(200, {
-    message: "Meta Description must be at least 200 characters.",
+  metadescription: z.string().min(150, {
+    message: "Meta Description must be at least 150 characters.",
   }),
   postvisibility: z.boolean(),
 })
@@ -335,6 +336,9 @@ export const page = () => {
                     </div>
                     
                   </FormControl>
+                  <FormDescription>
+                    Set Post Visibility To Treat This Post as A Page instead of Post.
+                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
