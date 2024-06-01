@@ -1,6 +1,6 @@
 ## Introducing Next-Blog
 
-Next-Blog is a out of box **fast, SEO Friendly** blogging based ***CMS supporting multiple themes, Notion like WYSIWYG editor with AI - Assistant Writer, Modern Layouts , Admin Dashboard and Custom Components***. Whether you want to make a fast Single Page Applications or blogs, next-blog got you covered. Next-Blog is beginner friendly to use and aim's to keep the paid SaaS dependencies to minimum. Currently the only paid dependecy we use is Vercel-Blob for file management and we are looking into eliminating this dependency as well.
+Next-Blog is a out of box **fast, SEO Friendly** blogging based ***CMS supporting multiple themes, Notion like WYSIWYG editor with AI - Assistant Writer, Modern Layouts , Admin Dashboard and Custom Components***. Whether you want to make a fast Single Page Applications or blogs, next-blog got you covered. Next-Blog is beginner friendly to use and aim's to keep the paid SaaS dependencies to minimum. Currently the only SaaS dependecy we use is Vercel-Blob for file management and we are looking into eliminating this dependency as well.
 ## First Look MVP
 [![NEXT-TOGGLE](https://img.youtube.com/vi/XFdW18MOubU/0.jpg)](https://www.youtube.com/watch?v=XFdW18MOubU)
 
