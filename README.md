@@ -79,6 +79,19 @@ Next-Blog currently supports 5 layouts and have out of box support for 4 post co
 ### Admin Dashboard
 
 Next-Blog have its own dashboard to keep the management of your websites streamlined.
+### Screenshots
+
+#### DashBoard
+![dark](https://i.ibb.co/J2V7D0N/dark.png)
+![light](https://i.ibb.co/JmkMxtD/light.png)
+
+#### Login
+![dark](https://i.ibb.co/H45VJnn/dark.png)
+![light](https://i.ibb.co/HKJJhkt/light.png)
+
+#### Initial HomePage
+![dark](https://i.ibb.co/3h42Fhd/dark.png)
+![light](https://i.ibb.co/rcgSG3M/light.png)
 
 
 ## TECH STACK
