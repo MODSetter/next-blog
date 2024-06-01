@@ -44,6 +44,16 @@ FOR LOCAL TESTING:
 
 > npm run prisma:seed
 
+#### DEFAULT CREDENTIALS
+Default username and password after first seed.
+
+> **Login Page :** /login 
+> **Management Dashboard:** /dashboard
+
+    USERNAME : admin
+    PASSWORD: admin
+
+
 ## Features 
 
 ### Fast & SEO Friendly
