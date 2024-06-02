@@ -105,3 +105,13 @@ Next-Blog have its own dashboard to keep the management of your websites streaml
 - ***ORM:***  Prisma ORM
 - ***Form Management:*** Shadcn + React Hook Forms with zod validation
 - ***Auth:*** [Lucia-Auth](https://github.com/lucia-auth/lucia)
+
+
+## FUTURE DEVLOPMENT TIMELINE
+
+ - [x] Protect API Routes (.....In Progress.....)
+ - [ ] Add missing functionalities.
+ - [ ] Refactor to remove junk code.
+ - [ ] Integrate a Dynamic Layout Builder
+ - [ ] Integrate Email Subscription and Management system.
+ - [ ] Updating File Management System to remove Vercel-Blob dependency
