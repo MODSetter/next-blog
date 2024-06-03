@@ -15,6 +15,7 @@ import {
 import { createDiscusionForPostSlug } from "@/utils/common-functions";
 import NotFound from "../not-found";
 import Link from "next/link";
+import prisma from "@/db/prismaclient"
 
 
 interface BlogPostPageProps {
@@ -36,16 +37,27 @@ interface Post {
 }
 
 async function getPostBySlug(postslug: string) {
-  let cacheValidateAt = 5 //Default Cache Timeout
-  if (`${process.env.POSTS_CACHE_REVALIDATE}`) {
-    cacheValidateAt = parseInt(`${process.env.POSTS_CACHE_REVALIDATE}`);
-  } else {
-    console.log("Wrong Post Cache Vals in Env")
-  }
-  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/posts/getpostbyslug/${postslug}`, {
-    next: { revalidate: cacheValidateAt },
-  });
-  return response.json();
+  // let cacheValidateAt = 5 //Default Cache Timeout
+  // if (`${process.env.POSTS_CACHE_REVALIDATE}`) {
+  //   cacheValidateAt = parseInt(`${process.env.POSTS_CACHE_REVALIDATE}`);
+  // } else {
+  //   console.log("Wrong Post Cache Vals in Env")
+  // }
+  // const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/posts/getpostbyslug/${postslug}`, {
+  //   next: { revalidate: cacheValidateAt },
+  // });
+  // return response.json();
+  const post = await prisma.post.findUnique({
+    where: {
+      slug: postslug
+    },
+    include: {
+      tags: true,
+      author: true
+    },
+  })
+
+  return post
 }
 
 async function getDiscussionsStats(postslug: string) {
@@ -90,13 +102,13 @@ export default async function BlogPostPage({
   const discussion = await getDiscussionsStats(postslug);
   const content = JSON.parse(post.content)
 
-  if(post.slug){
+  if (post.slug) {
     incView(postslug);
     await createDiscusionForPostSlug(`${process.env.NEXT_PUBLIC_BASE_URL}/discussions/${postslug}`)
-  }else{
+  } else {
     return <NotFound />
   }
-  
+
 
   //contains toc 
   const toc: any = [];
@@ -180,57 +192,57 @@ export default async function BlogPostPage({
 
             <div>
               <Link href={`${process.env.NEXT_PUBLIC_BASE_URL}/discussions/${postslug}`}>
-              <div className="flex md:flex-col gap-2 place-items-center justify-around bg-white/10 backdrop-blur-lg border hover:text-black hover:bg-gradient-to-r hover:from-pink-100 hover:to-yellow-100 p-4 rounded-full sticky top-20 left-0 z-50">
-                <div>
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger>
-                        <div>
-                          <MessageCircle className="h-4 w-4" />
-                          {discussion.comments}
-                        </div>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>Post Comments</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
+                <div className="flex md:flex-col gap-2 place-items-center justify-around bg-white/10 backdrop-blur-lg border hover:text-black hover:bg-gradient-to-r hover:from-pink-100 hover:to-yellow-100 p-4 rounded-full sticky top-20 left-0 z-50">
+                  <div>
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger>
+                          <div>
+                            <MessageCircle className="h-4 w-4" />
+                            {discussion.comments}
+                          </div>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>Post Comments</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+
+                  </div>
+                  <div>
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger>
+                          <div>
+                            <SmilePlus className="h-4 w-4" />
+                            {discussion.reactions}
+                          </div>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>Post Reactions</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+
+                  </div>
+                  <div>
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger>
+                          <div>
+                            <CirclePlus className="" />
+                          </div>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          Participate in Post Discussion
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+
+                  </div>
+
 
                 </div>
-                <div>
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger>
-                        <div>
-                          <SmilePlus className="h-4 w-4" />
-                          {discussion.reactions}
-                        </div>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>Post Reactions</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-
-                </div>
-                <div>
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger>
-                        <div>
-                        <CirclePlus className="" />
-                        </div>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        Participate in Post Discussion
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-
-                </div>
-
-
-              </div>
               </Link>
             </div>
 

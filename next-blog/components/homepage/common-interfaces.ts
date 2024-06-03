@@ -7,6 +7,7 @@ interface PostMetaData {
     views: number;
     tags: { tagname: string; }[];
     author: any;
+    authorId: string;
 }
 
 export default PostMetaData

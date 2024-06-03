@@ -13,6 +13,7 @@ const PostcardLgOne = ({
     tags,
     author,
 }: PostMetaData) => {
+    console.log("Lg",author);
     return (
         <>
             <article className="flex max-w-md flex-col rounded-2xl p-4 bg-white/10 backdrop-blur-lg shadow md:max-w-5xl md:flex-row md:items-center place-self-center" key={slug}>
@@ -39,7 +40,7 @@ const PostcardLgOne = ({
                     </Link>
 
                     <div className="flex items-center">
-                        <img className="h-10 w-10 rounded-full object-cover" src={author?.avatar} alt="Simon Lewis" />
+                        <img className="h-10 w-10 rounded-full object-cover" src={author?.avatar} alt="author avatar" />
                         <p className="ml-4 w-56">
                             <strong className="block font-medium">{author?.name}</strong>
                             <span className="text-sm">{(new Date(updatedAt)).toDateString()}</span>
