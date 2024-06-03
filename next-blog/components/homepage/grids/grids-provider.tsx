@@ -7,12 +7,12 @@ export const OneGrid = async () => {
         <div className="flex flex-col gap-4 place-items-center">
             <div>{globalComponentProvider(grid?.comp_one)}</div>
 
-            <div className="flex flex-col lg:flex-row gap-4 place-items-center">
+            <div className="flex flex-col lg:flex-row gap-4">
                 <div>
                     {globalComponentProvider(grid?.comp_two)}
                 </div>
 
-                <div className="flex flex-col place-items-center">
+                <div className="flex flex-col">
                     <div>
                         {globalComponentProvider(grid?.comp_three)}
                     </div>
@@ -34,8 +34,8 @@ export const SecondGrid = async () => {
         <div className="flex flex-col gap-4 place-items-center">
             <div>{globalComponentProvider(grid?.comp_one)}</div>
 
-            <div className="flex gap-4 place-items-center">
-                <div className="flex flex-col place-items-center">
+            <div className="flex gap-4">
+                <div className="flex flex-col">
                     <div>
                         {globalComponentProvider(grid?.comp_two)}
                     </div>
@@ -66,7 +66,7 @@ export const ThirdGrid = async () => {
 
             <div>{globalComponentProvider(grid?.comp_three)}</div>
 
-            <div className="flex gap-4 place-items-center">
+            <div className="flex gap-4">
                 <div>
                     {globalComponentProvider(grid?.comp_four)}
                 </div>
@@ -83,14 +83,14 @@ export const FourthGrid = async () => {
         <div className="flex flex-col gap-4 place-items-center">
             <div>{globalComponentProvider(grid?.comp_one)}</div>
 
-            <div className="flex gap-4 place-items-center">
+            <div className="flex gap-4">
                 <div>
                     {globalComponentProvider(grid?.comp_two)}
                 </div>
                 <div>{globalComponentProvider(grid?.comp_three)}</div>
             </div>
 
-            <div className="flex gap-4 place-items-center">
+            <div className="flex gap-4">
                 <div>
                     {globalComponentProvider(grid?.comp_four)}
                 </div>
@@ -107,7 +107,7 @@ export const FifthGrid = async () => {
         <div className="flex flex-col gap-4 place-items-center">
             <div>{globalComponentProvider(grid?.comp_one)}</div>
 
-            <div className="flex gap-4 place-items-center">
+            <div className="flex gap-4">
                 <div>{globalComponentProvider(grid?.comp_two)}</div>
                 <div>{globalComponentProvider(grid?.comp_three)}</div>
                 <div>{globalComponentProvider(grid?.comp_four)}</div>

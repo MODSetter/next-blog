@@ -10,9 +10,9 @@ const PostListSm = async ({ data, postcardno }: { data: PostMetaData[], postcard
       <div className="grid grid-cols-1 gap-6 px-2  md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 xl:max-w-screen-xl">
         {data.map(
           (datarec: PostMetaData) => (
-            <div key={datarec.slug}>
+            <>
               {postCardProvider(postcardno, datarec)}
-            </div>
+            </>
           )
         )}
       </div>

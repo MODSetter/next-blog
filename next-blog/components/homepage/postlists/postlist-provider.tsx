@@ -1,20 +1,18 @@
 import PostListSm from "./postlist-sm";
 import PostListLg from "./postlist-lg";
-import prisma from "@/db/prismaclient"
-import PostMetaData from "../common-interfaces";
 
 async function allPostMetaDataRequest() {
-  const posts: PostMetaData[] = await prisma.post.findMany({
-    include: {
-        author: true,
-    },
-    where : {
-        visibility: true
+    let cacheValidateAt = 5; //Default Cache Timeout
+    if (`${process.env.HOMEPAGE_CACHE_REVALIDATE}`) {
+      cacheValidateAt = parseInt(`${process.env.HOMEPAGE_CACHE_REVALIDATE}`);
+    } else {
+      console.log("Wrong Home Cache Vals in Env");
     }
-  })
-  return posts
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/posts`, {
+      next: { revalidate: cacheValidateAt },
+    });
+    return response.json();
 }
-
 
 const postListProvider = async (postListType: string | undefined) => {
     const allPostMetaData = await allPostMetaDataRequest();

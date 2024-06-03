@@ -21,10 +21,12 @@ import { useToast } from "@/components/ui/use-toast"
 import type { Tag } from '@/components/react-tag-input/components/SingleTag';
 import { WithContext as ReactTags, SEPARATORS } from '@/components/react-tag-input/index';
 import TailwindAdvancedEditor from "@/components/tailwind/advanced-editor";
+import {extensions} from "@/components/tailwind/advanced-editor";
 import ImageUploadForm from "@/components/image-upload/ImageUploadForm";
 import { useRouter } from "next/navigation";
 import { Checkbox } from "@/components/ui/checkbox";
 import { JSONContent } from "novel";
+import { jsonFromHtml } from "@/utils/common-functions";
 import { UndoDot } from "lucide-react";
 import { generateJSON } from "@tiptap/html";
 

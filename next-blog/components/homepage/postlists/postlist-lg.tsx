@@ -11,9 +11,9 @@ const PostListLg = async ({ data, postcardno }: { data: PostMetaData[], postcard
             <div className="flex flex-col items-center lg:items-stretch gap-4 p-2">
                 {data.map(
                     (datarec: PostMetaData) => (
-                        <div key={datarec.slug}>
+                        <>
                             {postCardProvider(postcardno, datarec)}
-                        </div>
+                        </>
                     )
                 )}
             </div>
