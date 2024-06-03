@@ -85,13 +85,18 @@ Next-Blog have its own dashboard to keep the management of your websites streaml
 ![dark](https://i.ibb.co/J2V7D0N/dark.png)
 ![light](https://i.ibb.co/JmkMxtD/light.png)
 
-#### Login
-![dark](https://i.ibb.co/H45VJnn/dark.png)
-![light](https://i.ibb.co/HKJJhkt/light.png)
+#### Layout Selection
+![dark](https://i.ibb.co/X230KR0/dark.png)
+![light](https://i.ibb.co/WBJGXVD/light.png)
 
 #### Initial HomePage
 ![dark](https://i.ibb.co/3h42Fhd/dark.png)
 ![light](https://i.ibb.co/rcgSG3M/light.png)
+
+#### Login
+![dark](https://i.ibb.co/H45VJnn/dark.png)
+![light](https://i.ibb.co/HKJJhkt/light.png)
+
 
 
 ## TECH STACK
