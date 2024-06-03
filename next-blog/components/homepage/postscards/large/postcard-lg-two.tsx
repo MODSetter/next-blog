@@ -21,7 +21,7 @@ const PostcardLgTwo = ({
                         <div className="flex justify-between">
                             <div className="flex items-center gap-2">
                                 {tags?.map(({ tagname }) => (
-                                    <Link href={`/tags/${tagname}`} className={`text-[14px] font-semibold rounded-3xl mb-4 px-[18px] bg-orange-400 px-2 py-1 text-xs uppercase text-white`}>
+                                    <Link href={`/tags/${tagname}`} className={`text-[14px] font-semibold rounded-3xl mb-4 bg-orange-400 px-2 py-1 text-xs uppercase text-white`}>
                                         {tagname}
                                     </Link>
                                 ))}
@@ -47,7 +47,7 @@ const PostcardLgTwo = ({
 
                             <div className="hidden md:block">
                                 <div className="flex items-center">
-                                    <img className="h-10 w-10 rounded-full object-cover" src={author?.avatar} alt="Author" />
+                                    <img className="h-10 w-10 rounded-full object-cover" src={author?.avatar} alt="author pic" />
                                     <p className="ml-4 w-56">
                                         <strong className="block font-medium">{author?.name}</strong>
                                         <span className="text-sm">{(new Date(updatedAt)).toDateString()}</span>

@@ -110,7 +110,7 @@ Next-Blog have its own dashboard to keep the management of your websites streaml
 ## FUTURE DEVLOPMENT TIMELINE
 
  - [x] Protect API Routes (.....In Progress.....)
- - [ ] Add missing functionalities.
+ - [x] Add missing functionalities. (.....In Progress.....)
  - [ ] Refactor to remove junk code.
  - [ ] Integrate a Dynamic Layout Builder
  - [ ] Integrate Email Subscription and Management system.

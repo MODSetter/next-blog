@@ -39,7 +39,7 @@ const PostcardLgOne = ({
                     </Link>
 
                     <div className="flex items-center">
-                        <img className="h-10 w-10 rounded-full object-cover" src={author?.avatar} alt="Simon Lewis" />
+                        <img className="h-10 w-10 rounded-full object-cover" src={author?.avatar} alt="author pic" />
                         <p className="ml-4 w-56">
                             <strong className="block font-medium">{author?.name}</strong>
                             <span className="text-sm">{(new Date(updatedAt)).toDateString()}</span>

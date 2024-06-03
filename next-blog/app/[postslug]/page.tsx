@@ -15,6 +15,7 @@ import {
 import { createDiscusionForPostSlug } from "@/utils/common-functions";
 import NotFound from "../not-found";
 import Link from "next/link";
+import prisma from "@/db/prismaclient";
 
 
 interface BlogPostPageProps {
@@ -36,16 +37,27 @@ interface Post {
 }
 
 async function getPostBySlug(postslug: string) {
-  let cacheValidateAt = 5 //Default Cache Timeout
-  if (`${process.env.POSTS_CACHE_REVALIDATE}`) {
-    cacheValidateAt = parseInt(`${process.env.POSTS_CACHE_REVALIDATE}`);
-  } else {
-    console.log("Wrong Post Cache Vals in Env")
-  }
-  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/posts/getpostbyslug/${postslug}`, {
-    next: { revalidate: cacheValidateAt },
-  });
-  return response.json();
+  // let cacheValidateAt = 5 //Default Cache Timeout
+  // if (`${process.env.POSTS_CACHE_REVALIDATE}`) {
+  //   cacheValidateAt = parseInt(`${process.env.POSTS_CACHE_REVALIDATE}`);
+  // } else {
+  //   console.log("Wrong Post Cache Vals in Env")
+  // }
+  // const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/posts/getpostbyslug/${postslug}`, {
+  //   next: { revalidate: cacheValidateAt },
+  // });
+  // return response.json();
+  const post = await prisma.post.findUnique({
+    where: {
+      slug: postslug
+    },
+    include: {
+      tags: true,
+      author: true
+    },
+  })
+
+  return post
 }
 
 async function getDiscussionsStats(postslug: string) {

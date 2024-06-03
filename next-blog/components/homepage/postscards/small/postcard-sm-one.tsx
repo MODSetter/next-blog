@@ -36,7 +36,7 @@ const PostcardSmOne = ({
                         </div>
 
                         <div className="flex items-center gap-2">
-                            {tags.map(({ tagname }) => (
+                            {tags?.map(({ tagname }) => (
                                 <Link href={`/tags/${tagname}`} className={`text-[14px] font-semibold rounded-3xl mb-4 px-[18px] border border-violet-500 bg-emerald-500/10 backdrop-blur-lg`}>
                                     {tagname}
                                 </Link>
@@ -58,7 +58,7 @@ const PostcardSmOne = ({
                             <img
                                 className="h-10 w-10 rounded-full object-cover"
                                 src={author.avatar}
-                                alt="Neil image"
+                                alt="author pic"
                             />
                         </div>
                         <div className="flex-1 min-w-0 ms-4">
