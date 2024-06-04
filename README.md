@@ -72,9 +72,9 @@ Next-Blog uses Novel, a beautiful Notion like WYSIWYG editor powered with AI Ass
 #### AI ASSISTANT
 ![enter image description here](https://i.ibb.co/CbvQNFM/AI.png)
 
-### Layouts and Components
+### Custom Layouts and Components
 
-Next-Blog currently supports 5 layouts and have out of box support for 4 post components(2 Large & 2 Small), 2 Navbars and 2 Footers. Customize components according to your liking or contribute components to our GitHub.
+Next-Blog currently supports 5 layouts and have out of box support for 4 post components(2 Large & 2 Small), 2 Navbars and 2 Footers. All components are rendered Server Side. Customize components according to your liking or contribute components to our GitHub.
 
 ### Admin Dashboard
 
