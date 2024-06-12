@@ -53,7 +53,7 @@ Default username and password after first seed.
 > **Management Dashboard:** /dashboard
 
     USERNAME : admin
-    PASSWORD: admin
+    PASSWORD : admin
 
 
 ## Features 
