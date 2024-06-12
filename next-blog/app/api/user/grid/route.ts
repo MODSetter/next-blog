@@ -1,7 +1,18 @@
 import prisma from "@/db/prismaclient";
 import { NextResponse } from "next/server";
+import { validateRequest } from "@/actions/auth.actions";
+
 export async function GET() {
-    const user = await prisma.user.findUnique({
+        //Validate Session
+        const { user } = await validateRequest();
+        if (!user) {
+            return NextResponse.json({
+                error: "NOT AUTHORISED",
+            });
+        }
+
+
+    const userrec = await prisma.user.findUnique({
         where: {
             id: "1"
         },
@@ -9,7 +20,7 @@ export async function GET() {
 
     const grid = await prisma.grid.findUnique({
         where: {
-            id: user?.maingrid
+            id: userrec?.maingrid
         },
     })
 
@@ -18,6 +29,14 @@ export async function GET() {
 
 
 export async function PATCH(req: Request) {
+        //Validate Session
+        const { user } = await validateRequest();
+        if (!user) {
+            return NextResponse.json({
+                error: "NOT AUTHORISED",
+            });
+        }
+
     const datareceived = await req.json();
     const grid = await prisma.grid.update({
         where:{

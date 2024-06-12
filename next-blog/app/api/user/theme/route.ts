@@ -1,21 +1,37 @@
 import { NextResponse } from "next/server";
 import prisma from "@/db/prismaclient";
+import { validateRequest } from "@/actions/auth.actions";
 
 export async function GET() {
-    const user = await prisma.user.findUnique({
-        where: {
-            id: "1"
-        },
-        select: {
-            defaultLight: true,
-            defaultDark: true
-        }
-    })
+  //Validate Session
+  const { user } = await validateRequest();
+  if (!user) {
+    return NextResponse.json({
+      error: "NOT AUTHORISED",
+    });
+  }
+  const userrec = await prisma.user.findUnique({
+    where: {
+      id: "1",
+    },
+    select: {
+      defaultLight: true,
+      defaultDark: true,
+    },
+  });
 
-    return NextResponse.json(user);
+  return NextResponse.json(userrec);
 }
 
 export async function PATCH(req: Request) {
+  //Validate Session
+  const { user } = await validateRequest();
+  if (!user) {
+    return NextResponse.json({
+      error: "NOT AUTHORISED",
+    });
+  }
+
   const datareceived = await req.json();
 
   //create entry through prisma orm

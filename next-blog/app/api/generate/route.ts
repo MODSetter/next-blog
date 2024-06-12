@@ -4,6 +4,8 @@ import { kv } from "@vercel/kv";
 import { Ratelimit } from "@upstash/ratelimit";
 import { match } from "ts-pattern";
 import type { ChatCompletionMessageParam } from "openai/resources/index.mjs";
+import { validateRequest } from "@/actions/auth.actions";
+import { NextResponse } from "next/server";
 
 // Create an OpenAI API client (that's edge friendly!)
 // Using LLamma's OpenAI client:
@@ -17,6 +19,14 @@ const llama = new OpenAI({
 });
 
 export async function POST(req: Request): Promise<Response> {
+  //Validate Session
+  const { user } = await validateRequest();
+  if (!user) {
+    return NextResponse.json({
+      error: "NOT AUTHORISED",
+    });
+  }
+
   const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
     baseURL: process.env.OPENAI_BASE_URL || "https://api.openai.com/v1",
@@ -27,7 +37,7 @@ export async function POST(req: Request): Promise<Response> {
       "Missing OPENAI_API_KEY - make sure to add it to your .env file.",
       {
         status: 400,
-      },
+      }
     );
   }
   if (process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN) {
@@ -38,7 +48,7 @@ export async function POST(req: Request): Promise<Response> {
     });
 
     const { success, limit, reset, remaining } = await ratelimit.limit(
-      `novel_ratelimit_${ip}`,
+      `novel_ratelimit_${ip}`
     );
 
     if (!success) {
