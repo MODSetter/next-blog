@@ -7,6 +7,18 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+
 import prisma from "@/db/prismaclient"
 import Link from "next/link";
 
@@ -82,6 +94,16 @@ export const DashboardPostsPage = async ({
         }
     }
 
+    const onDelete = async (postslug: string) => {
+        const deletePost = await prisma.post.delete({
+            where: {
+                slug: postslug,
+            },
+        })
+
+        console.log(deletePost)
+    }
+
     return (
         <div>
             <Table>
@@ -114,7 +136,24 @@ export const DashboardPostsPage = async ({
                                 </Link>
                             </TableCell>
                             <TableCell className="text-right">
-                                <Button variant="destructive">Delete</Button>
+                                {/* <Button variant="destructive">Delete</Button> */}
+                                <AlertDialog>
+                                    <AlertDialogTrigger asChild>
+                                        <Button variant="destructive">Delete</Button>
+                                    </AlertDialogTrigger>
+                                    <AlertDialogContent>
+                                        <AlertDialogHeader>
+                                            <AlertDialogTitle>Are you absolutely sure you want to delete post?</AlertDialogTitle>
+                                            <AlertDialogDescription>
+                                                This action cannot be undone. Post <span className="font-semibold">{post.title}</span> will be permanently deleted and removed from servers.
+                                            </AlertDialogDescription>
+                                        </AlertDialogHeader>
+                                        <AlertDialogFooter>
+                                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                            <AlertDialogAction>Confirm</AlertDialogAction>
+                                        </AlertDialogFooter>
+                                    </AlertDialogContent>
+                                </AlertDialog>
                             </TableCell>
                         </TableRow>
                     ))}

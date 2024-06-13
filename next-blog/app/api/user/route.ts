@@ -6,12 +6,12 @@ import { validateRequest } from "@/actions/auth.actions";
 //Get All Posts
 export async function GET() {
   //Validate Session
-  const { user } = await validateRequest();
-  if (!user) {
-    return NextResponse.json({
-      error: "NOT AUTHORISED",
-    });
-  }
+  // const { user } = await validateRequest();
+  // if (!user) {
+  //   return NextResponse.json({
+  //     error: "NOT AUTHORISED",
+  //   });
+  // }
 
   const userrec = await prisma.user.findUnique({
     where: {
