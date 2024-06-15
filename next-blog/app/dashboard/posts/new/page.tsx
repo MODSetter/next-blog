@@ -209,7 +209,7 @@ export const page = () => {
         className: "bg-green-400/20 backdrop-blur-lg"
       });
     }
-    router.push("/dashboard/posts/1")
+    router.push("/dashboard/posts/manage")
   }
 
 

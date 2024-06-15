@@ -1,17 +1,9 @@
 import { put } from "@vercel/blob";
 import { NextResponse } from "next/server";
-import { validateRequest } from "@/actions/auth.actions";
 
 export const runtime = "edge";
 
 export async function POST(req: Request) {
-  const { user } = await validateRequest();
-  if (!user) {
-      return NextResponse.json({
-          error: "NOT AUTHORISED",
-      });
-  }
-
   if (!process.env.BLOB_READ_WRITE_TOKEN) {
     return new Response(
       "Missing BLOB_READ_WRITE_TOKEN. Don't forget to add that to your .env file.",

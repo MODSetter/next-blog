@@ -46,7 +46,7 @@ const Layout = async ({
                 Dashboard
               </Link>
               <Link
-                href={'/dashboard/posts/1'}
+                href={'/dashboard/posts/manage'}
                 className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:bg-muted"
               >
                 <CircleFadingPlus className="h-4 w-4" />
@@ -122,7 +122,7 @@ const Layout = async ({
                   Dashboard
                 </Link>
                 <Link
-                  href={'/dashboard/posts/1'}
+                  href={'/dashboard/posts/manage'}
                   className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
                 >
                   <CircleFadingPlus className="h-5 w-5" />
