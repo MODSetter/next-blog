@@ -21,14 +21,11 @@ import { useToast } from "@/components/ui/use-toast"
 import type { Tag } from '@/components/react-tag-input/components/SingleTag';
 import { WithContext as ReactTags, SEPARATORS } from '@/components/react-tag-input/index';
 import TailwindAdvancedEditor from "@/components/tailwind/advanced-editor";
-// import {extensions} from "@/components/tailwind/advanced-editor";
 import ImageUploadForm from "@/components/image-upload/ImageUploadForm";
 import { useRouter } from "next/navigation";
 import { Checkbox } from "@/components/ui/checkbox";
-import { JSONContent } from "novel";
-// import { jsonFromHtml } from "@/utils/common-functions";
 import { UndoDot } from "lucide-react";
-import { generateJSON } from "@tiptap/html";
+
 
 
 const slugFormSchema = z.object({
@@ -81,9 +78,6 @@ export const page = ({
   const [metadataformvisibility, setMetadataformvisibility] = useState<string | undefined>("hidden");
 
   const [tags, setTags] = useState<Array<Tag>>([
-    // { id: "India", text: "India", className: "" },
-    // { id: "Vietnam", text: "Vietnam", className: "" },
-    // { id: "Turkey", text: "Turkey", className: "" },
   ]);
 
   const handleDelete = (index: number) => {
@@ -125,26 +119,17 @@ export const page = ({
     fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/posts/getpostbyslug/${postslug}`)
       .then(response => response.json())
       .then(data => {
-        console.log("DATA", data)
-
         const content = JSON.parse(data.content)
-        // console.log(typeof content.json)
         window.localStorage.setItem("html-content", content.html);
         window.localStorage.setItem("novel-content", content.json);
 
-        
+
         setSlug(data.slug);
-        // setContentjson();
         setPosttitle(data.title);
         setOpengraphurl(data.opengraphimage);
         setMetakeywords(data.metaKeywords.join(","));
         setMetadescription(data.metaDescription);
         setPostvisibility(data.visibility);
-
-        
-
-
-        // console.log("CTAGS", data.tags)
 
         //If Tags Exist Set tags
         if (data.tags) {
@@ -155,7 +140,6 @@ export const page = ({
             }
             ctags.push(tagentry)
           });
-          // console.log("CTAGS", ctags)
           setTags(ctags);
         }
       })
@@ -268,6 +252,9 @@ export const page = ({
         className: "bg-green-400/20 backdrop-blur-lg"
       });
     }
+
+    window.localStorage.removeItem("novel-content");
+    window.localStorage.removeItem("html-content");
     router.push("/dashboard/posts/manage")
   }
 
@@ -300,10 +287,10 @@ export const page = ({
 
 
       <div className={postdataformvisibility}>
-      <Button onClick={() => {
-        setPostdataformvisibility("hidden");
-        setSlugformvisibility("block");
-      }} className="flex gap-2 my-2"><UndoDot />Go Back
+        <Button onClick={() => {
+          setPostdataformvisibility("hidden");
+          setSlugformvisibility("block");
+        }} className="flex gap-2 my-2"><UndoDot />Go Back
         </Button>
         <p className="text-sm">Open Graph Image</p>
         <ImageUploadForm opengraphurl={opengraphurl} setOpengraphurl={setOpengraphurl} />
@@ -354,10 +341,10 @@ export const page = ({
       </div>
 
       <div className={contentsectionvisibility}>
-      <Button onClick={() => {
-        setContentsectionvisibility("hidden");
-        setPostdataformvisibility("block")
-      }} className="flex gap-2 my-2"><UndoDot />Go Back
+        <Button onClick={() => {
+          setContentsectionvisibility("hidden");
+          setPostdataformvisibility("block")
+        }} className="flex gap-2 my-2"><UndoDot />Go Back
         </Button>
         <p className="text-sm py-2">Post Content</p>
         {slug ? <TailwindAdvancedEditor /> : ""}
@@ -366,12 +353,12 @@ export const page = ({
 
       <div className={metadataformvisibility}>
 
-      <Button onClick={() => {
-        setMetadataformvisibility("hidden");
-        setContentsectionvisibility("block");
-      }} className="flex gap-2 my-2"><UndoDot />Go Back
+        <Button onClick={() => {
+          setMetadataformvisibility("hidden");
+          setContentsectionvisibility("block");
+        }} className="flex gap-2 my-2"><UndoDot />Go Back
         </Button>
-       
+
         <Form {...metadataform}>
           <form onSubmit={metadataform.handleSubmit(onMetaDataSubmit)} className="space-y-8">
             <FormField

@@ -28,7 +28,34 @@ export async function POST(req: Request) {
   const customcomponent = await prisma.customComponent.create({
     data: {
       id: datareceived.name,
-      htmlContent: datareceived.htmlContent,
+      content: datareceived.content,
+      tailwindcss: datareceived.tailwindcss,
+    },
+  });
+
+  return NextResponse.json({
+    ...customcomponent,
+  });
+}
+
+export async function PATCH(req: Request) {
+  //Validate Session
+  const { user } = await validateRequest();
+  if (!user) {
+    return NextResponse.json({
+      error: "NOT AUTHORISED",
+    });
+  }
+  const datareceived = await req.json();
+  // console.log(datareceived)
+
+  const customcomponent = await prisma.customComponent.update({
+    where: {
+      id: datareceived.oldname
+    },
+    data: {
+      id: datareceived.newname,
+      content: datareceived.content,
       tailwindcss: datareceived.tailwindcss,
     },
   });

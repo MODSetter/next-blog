@@ -7,6 +7,11 @@ export const customComponentProvider = async (compId: string) => {
             id: compId
         },
     })
-    
-    return <Banner htmlContent={comp?.htmlContent} tailwindcss={comp?.tailwindcss} />
+
+    if (comp) {
+        const content = JSON.parse(comp?.content)
+
+        return <Banner htmlContent={content?.html} tailwindcss={comp?.tailwindcss} />
+    }
+
 }

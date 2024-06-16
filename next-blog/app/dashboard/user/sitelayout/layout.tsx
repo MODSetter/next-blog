@@ -53,7 +53,7 @@ const UserLayout = async ({
             </Link>
 
             <Link
-              href="/dashboard/user/sitelayout/components/manage/1"
+              href="/dashboard/user/sitelayout/components/manage/"
               className="text-muted-foreground hover:text-foreground"
             >
               Manage Components
@@ -99,7 +99,7 @@ const UserLayout = async ({
                 </Link>
 
                 <Link
-                  href="/dashboard/user/sitelayout/components/manage/1"
+                  href="/dashboard/user/sitelayout/components/manage/"
                   className="text-muted-foreground hover:text-foreground"
                 >
                   Manage Components

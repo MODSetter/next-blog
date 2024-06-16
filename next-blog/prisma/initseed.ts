@@ -82,7 +82,7 @@ const bannercontent = `<html xmlns="http://www.w3.org/1999/xhtml"><head></head><
   const cmpt = await prisma.customComponent.create({
     data: {
       id: "nextblog",
-      htmlContent: bannercontent,
+      content: JSON.stringify(initContent),
       tailwindcss: "border-2 bg-emerald-500/20 backdrop-blur-lg rounded-3xl"
     }
   })

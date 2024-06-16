@@ -46,13 +46,13 @@ model Grid {
 
 model CustomComponent {
   id          String @id
-  htmlContent String
+  content     String
   tailwindcss String
 }
 
 model GithubDiscussions {
   url          String @id @unique
-  discussionId Int @unique
+  discussionId Int    @unique
 }
 
 model Session {

@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button"
 import {
     Form,
     FormControl,
-    FormDescription,
     FormField,
     FormItem,
     FormLabel,
@@ -107,7 +106,6 @@ const SelectComponents = () => {
               className: "bg-green-400/20 backdrop-blur-lg"
             });
           }
-          console.log(res)
         //   router.push("/dashboard/posts")
     }
 

@@ -91,7 +91,7 @@ export const page = () => {
   const [postdataformvisibility, setPostdataformvisibility] = useState<string | undefined>("hidden");
   const [contentsectionvisibility, setContentsectionvisibility] = useState<string | undefined>("hidden");
   const [metadataformvisibility, setMetadataformvisibility] = useState<string | undefined>("hidden");
-  
+
   const [tags, setTags] = useState<Array<Tag>>([
     // { id: "India", text: "India", className: "" },
     // { id: "Vietnam", text: "Vietnam", className: "" },
@@ -150,24 +150,21 @@ export const page = () => {
         className: "bg-green-400/20 backdrop-blur-lg"
       });
 
+      window.localStorage.setItem("html-content", defaultHtmlEditorContent);
+      window.localStorage.setItem("novel-content", JSON.stringify(defaultEditorContent));
+
       setSlug(formdata.slug);
       setSlugformvisibility("hidden");
       setPostdataformvisibility("block");
-
-      window.localStorage.setItem("html-content", defaultHtmlEditorContent);
-      window.localStorage.setItem("novel-content", JSON.stringify(defaultEditorContent));
     }
 
   }
 
 
   async function onPostDataSubmit(formdata: z.infer<typeof postdataFormSchema>) {
-    //check if novel have some content
     setPosttitle(formdata.posttitle);
-    // setContenthtml(window.localStorage.getItem("html-content"));
     setPostdataformvisibility("hidden");
     setContentsectionvisibility("block")
-    // setMetadataformvisibility("block")
   }
 
   async function onContentSubmit() {
@@ -209,6 +206,9 @@ export const page = () => {
         className: "bg-green-400/20 backdrop-blur-lg"
       });
     }
+
+    window.localStorage.removeItem("novel-content");
+    window.localStorage.removeItem("html-content");
     router.push("/dashboard/posts/manage")
   }
 
@@ -338,12 +338,12 @@ export const page = () => {
                   <FormLabel>Post Visibility</FormLabel>
                   <FormControl className="">
                     <div>
-                    <Checkbox
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
-                    />
+                      <Checkbox
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
                     </div>
-                    
+
                   </FormControl>
                   <FormDescription>
                     Set Post Visibility To Treat This Post as A Page instead of Post.

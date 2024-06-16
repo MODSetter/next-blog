@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/select"
 import { useState } from "react";
 import TailwindAdvancedEditor from "@/components/tailwind/advanced-editor";
-import { defaultEditorContent } from "@/lib/content";
+import { defaultEditorContent, defaultHtmlEditorContent } from "@/lib/content";
 import { toast } from "@/components/ui/use-toast";
 
 const typeformSchema = z.object({
@@ -54,7 +54,6 @@ const NewComponent = () => {
   });
 
   const onTypeSubmit: any = async (data: z.infer<typeof typeformSchema>) => {
-    // console.log(data);
     if (data.comptype === "BANNER") {
       setBannerformvisibility("block")
     }
@@ -63,7 +62,6 @@ const NewComponent = () => {
   const [compname, setCompname] = useState<string>("<></>");
 
   const onNameSubmit: any = async (data: z.infer<typeof nameformSchema>) => {
-    // console.log(data);
     const req = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/component/${data.name}`);
     const res = await req.json();
     if (res.id) {
@@ -75,20 +73,24 @@ const NewComponent = () => {
     } else {
       setCompdataformvisibility("block")
       setCompname(data.name);
+
+      window.localStorage.setItem("html-content", defaultHtmlEditorContent);
+      window.localStorage.setItem("novel-content", JSON.stringify(defaultEditorContent));
     }
   };
 
 
   const onCssSubmit: any = async (data: z.infer<typeof cssformSchema>) => {
-    // console.log(data);
-    // setCompdataformvisibility("block")
+    const contentobj = {
+      json: window.localStorage.getItem("novel-content"),
+      html: window.localStorage.getItem("html-content")
+    }
     const reqdata = {
       name: compname,
-      htmlContent: window.localStorage.getItem("html-content"),
+      content: JSON.stringify(contentobj),
       tailwindcss: data.tailwindcss,
     };
 
-    console.log("onCss",reqdata);
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -97,7 +99,7 @@ const NewComponent = () => {
     const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/component`, requestOptions);
 
     const res = await response.json();
-    if(res.id){
+    if (res.id) {
       toast({
         variant: "default",
         description: `New Component Created`,
@@ -105,7 +107,8 @@ const NewComponent = () => {
       });
     }
 
-    // console.log(res);
+    window.localStorage.removeItem("novel-content");
+    window.localStorage.removeItem("html-content");
   };
 
   const [bannerformvisibility, setBannerformvisibility] = useState<string>("hidden");

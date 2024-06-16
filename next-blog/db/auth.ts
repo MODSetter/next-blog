@@ -1,10 +1,5 @@
 import { Lucia } from "lucia";
 import adapter from "./lucia-adapter";
-import { cache } from "react";
-import { cookies } from "next/headers";
-import type { Session, User } from "lucia";
-import { ActionResult } from "next/dist/server/app-render/types";
-import { redirect } from "next/navigation";
 
 export const lucia = new Lucia(adapter, {
 	sessionCookie: {

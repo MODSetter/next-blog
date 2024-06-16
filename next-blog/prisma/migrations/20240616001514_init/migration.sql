@@ -33,7 +33,7 @@ CREATE TABLE "Grid" (
 -- CreateTable
 CREATE TABLE "CustomComponent" (
     "id" TEXT NOT NULL,
-    "htmlContent" TEXT NOT NULL,
+    "content" TEXT NOT NULL,
     "tailwindcss" TEXT NOT NULL,
 
     CONSTRAINT "CustomComponent_pkey" PRIMARY KEY ("id")
