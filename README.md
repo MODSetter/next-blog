@@ -116,7 +116,7 @@ Next-Blog have its own dashboard to keep the management of your websites streaml
 
  - [x] Protect API Routes (DONE)
  - [x] Add missing functionalities. (DONE)
- - [ ] Refactor to remove junk code.
- - [x] Integrate a Dynamic Layout Builder (.......In Progress............)
+ - [x] Refactor to remove junk code. (.......In Progress.......)
+ - [x] Integrate a Dynamic Layout Builder (.......In Progress.......)
  - [ ] Integrate Email Subscription and Management system.
  - [ ] Updating File Management System to remove Vercel-Blob dependency
