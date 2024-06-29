@@ -21,7 +21,16 @@ const nextConfig = {
     serverComponentsExternalPackages: ["@node-rs/argon2"],
   },
   productionBrowserSourceMaps: true,
-  
+  async redirects() {
+    return [
+      // Tags Page Redirect
+      {
+        source: '/tags/:slug',
+        destination: '/tags/:slug/1',
+        permanent: true,
+      },
+    ]
+  },
 };
 
 export default nextConfig;

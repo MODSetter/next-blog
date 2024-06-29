@@ -2,55 +2,57 @@ import postCardProvider from "@/components/homepage/postscards/postcard-provider
 import prisma from "@/db/prismaclient"
 import Link from "next/link";
 
-interface PostPagesProps {
-  params: { pageno: string };
+interface TagsPagesProps {
+  params: { tagslug: string, pageno: string };
 }
 
-async function getPostsData(perPage: number, page: number) {
+async function getPostsByTag(tagSlug: string, perPage: number, page: number) {
   try {
     // DB Query
-    const posts = await prisma.post.findMany({
+    const tag = await prisma.tag.findUnique({
       select: {
-        slug: true,
-        opengraphimage: true,
-        title: true,
-        metaDescription: true,
-        updatedAt: true,
-        views: true,
-        tags: true,
-        author: true
+        tagname: true,
+        posts: {
+          select: {
+            slug: true,
+            opengraphimage: true,
+            title: true,
+            metaDescription: true,
+            updatedAt: true,
+            views: true,
+            tags: true,
+            author: true
+          }
+        }
       },
       where: {
-        visibility: true
-      },
-      skip: (perPage * (page - 1)),
-      take: perPage,
-    })
-
-    const allposts = await prisma.post.findMany({
-      where: {
-        visibility: true
+        tagname: tagSlug
       },
     })
 
-    const postsCount = allposts.length
+    const skip = (perPage * (page - 1));
+    const take = perPage;
+
+    const posts = tag?.posts.slice(skip, skip + take) ?? []
+
+    const postsCount = tag?.posts?.length ?? 0
 
     const respnse = { posts, postsCount };
+
     return respnse;
   } catch (error) {
     throw new Error("Failed to fetch data. Please try again later.");
   }
 }
 
-export const PostsPage = async ({
-  params: { pageno },
-}: PostPagesProps) => {
-
+export const TagsPage = async ({
+  params: { tagslug, pageno },
+}: TagsPagesProps) => {
 
   let page = parseInt(pageno, 10);
   page = !page || page < 1 ? 1 : page;
   const perPage = 10;
-  const data = await getPostsData(perPage, page);
+  const data = await getPostsByTag(tagslug, perPage, page);
 
   const totalPages = Math.ceil(data.postsCount / perPage);
 
@@ -68,14 +70,17 @@ export const PostsPage = async ({
 
   return (
     <div>
+      <div className="my-4">
+        Showing Posts for : <span className="font-semibold underline text-xl">{tagslug}</span>
+      </div>
       <div className="flex flex-col items-center lg:items-stretch gap-4 p-2 place-items-center">
-      {data.posts.map((post) => {
-        return (
-          <>
-            {postCardProvider("LG-1", post)}
-          </>
-        )
-      })}
+        {data.posts.map((post) => {
+          return (
+            <>
+              {postCardProvider("LG-1", post)}
+            </>
+          )
+        })}
       </div>
       {isPageOutOfRange ? (
         <div>No more pages...</div>
@@ -88,7 +93,7 @@ export const PostsPage = async ({
                 {"< Previous"}
               </div>
             ) : (
-              <Link href={`/posts/${prevPage}`} aria-label="Previous Page">
+              <Link href={`/tags/${tagslug}/${prevPage}`} aria-label="Previous Page">
                 {"< Previous"}
               </Link>
             )}
@@ -101,7 +106,7 @@ export const PostsPage = async ({
                     ? "bg-green-500 font-bold px-3 border rounded-md"
                     : "hover:bg-indigo-500/10 px-1 rounded-md"
                 }
-                href={`/posts/${pageNumber}`}
+                href={`/tags/${tagslug}/${pageNumber}`}
               >
                 {pageNumber}
               </Link>
@@ -112,7 +117,7 @@ export const PostsPage = async ({
                 {"Next >"}
               </div>
             ) : (
-              <Link href={`/posts/${nextPage}`} aria-label="Next Page">
+              <Link href={`/tags/${tagslug}/${nextPage}`} aria-label="Next Page">
                 {"Next >"}
               </Link>
             )}
@@ -124,4 +129,4 @@ export const PostsPage = async ({
   )
 }
 
-export default PostsPage;
+export default TagsPage;
