@@ -1,5 +1,4 @@
 "use client"
-import { redirect } from "next/navigation";
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import {
@@ -17,13 +16,15 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 
-import { onLogin }  from "@/actions/auth.actions"
 import { loginSchema } from "@/zodschemas/loginschema";
+import { useRouter } from "next/navigation";
 
 
 
 export default function Login() {
   const { toast } = useToast()
+  const router = useRouter();
+
 
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
@@ -35,7 +36,20 @@ export default function Login() {
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof loginSchema>) {
-    const res = await onLogin(values)
+    // console.log(values)
+    // const res = await onLogin(values)
+
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(values),
+    };
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/login`, requestOptions);
+
+    const res = await response.json();
+
+    // console.log("Onsub",res)
+
     // At Failed Login
     if(res?.error){
       toast({
@@ -43,6 +57,17 @@ export default function Login() {
         description: res.error,
       });
     }
+
+    if(res?.message){
+      toast({
+        variant: "default",
+        description: res.message,
+        className: "bg-green-400/20 backdrop-blur-lg"
+      });
+      router.push("/dashboard")
+    }
+
+    
   }
 
   return (

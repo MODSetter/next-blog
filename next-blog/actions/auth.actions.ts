@@ -97,5 +97,9 @@ export const onLogin = async (values: z.infer<typeof loginSchema>) => {
       sessionCookie.value,
       sessionCookie.attributes
     );
-    return redirect("/dashboard")
+
+    return {
+      message: "Success",
+    };
+    // return redirect("/dashboard")
   }

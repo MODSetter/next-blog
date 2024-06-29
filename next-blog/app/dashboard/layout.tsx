@@ -8,12 +8,11 @@ import {
   Palette,
   Rss,
   Settings,
-  Tags,
 } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { validateRequest, onLogout } from "@/actions/auth.actions";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader } from "@/components/ui/card";
 
 const Layout = async ({
   children,
