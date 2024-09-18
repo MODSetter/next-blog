@@ -63,7 +63,7 @@
     "lowlight": "^3.1.0",
     "lucia": "^3.2.0",
     "lucide-react": "^0.368.0",
-    "next": "^14.2.2",
+    "next": "^14.2.12",
     "next-themes": "^0.3.0",
     "novel": "^0.4.1",
     "openai": "^4.27.0",
